@@ -1,0 +1,6 @@
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleDatabase\obj\Debug\net9.0\ArticleDatabase.csproj.AssemblyReference.cache
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleDatabase\obj\Debug\net9.0\ArticleDatabase.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleDatabase\obj\Debug\net9.0\ArticleDatabase.AssemblyInfoInputs.cache
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleDatabase\obj\Debug\net9.0\ArticleDatabase.AssemblyInfo.cs
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleDatabase\obj\Debug\net9.0\ArticleDatabase.csproj.CoreCompileInputs.cache
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleDatabase\obj\Debug\net9.0\ArticleDatabase.sourcelink.json

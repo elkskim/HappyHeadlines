@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <AssemblyName>ArticleDatabase</AssemblyName>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>

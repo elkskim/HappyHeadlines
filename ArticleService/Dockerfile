@@ -1,17 +1,22 @@
 ﻿# Get Base Image (Full .NET Core SDK)
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-env
-WORKDIR /app
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
 
 # Copy csproj and restore
-COPY *.csproj ./
-RUN dotnet restore
+COPY ["ArticleService/ArticleService.csproj", "ArticleService/"]
+RUN dotnet restore "ArticleService/ArticleService.csproj"
 
-# this doesnt work. point to the database
-COPY ../ArticleDatabase ./
-RUN dotnet publish -c Release -o out
+# Copy everything else and build
+COPY . .
+WORKDIR "/src/ArticleService"
+RUN dotnet build "ArticleService.csproj" -c Release -o /app/build
+
+# Publish stage
+FROM build AS publish
+RUN dotnet publish "ArticleService.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Generate runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
-COPY --from=build-env /app/out .
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ArticleService.dll"]

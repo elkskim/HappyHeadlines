@@ -13,33 +13,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="afb7ca4c-a995-43b3-abc3-2e22c4ba560f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ArticleDatabase/Models/ArticleDbContext.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ArticleService/Controllers/ArticleController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.HappyHeadlines.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.HappyHeadlines.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleDatabase/ArticleDatabase.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/ArticleDatabase.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArticleDatabase/Program.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArticleService/ArticleService.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/ArticleService.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/Controllers/ArticleController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/Controllers/ArticleController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleService/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArticleService/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/appsettings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HappyHeadlines.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Properties/launchSettings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/appsettings.Development.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/appsettings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/HappyHeadlines.AssemblyInfo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/HappyHeadlines.AssemblyInfoInputs.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/HappyHeadlines.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/HappyHeadlines.GlobalUsings.g.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/HappyHeadlines.assets.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/HappyHeadlines.csproj.nuget.dgspec.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/HappyHeadlines.csproj.nuget.g.props" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/HappyHeadlines.csproj.nuget.g.targets" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/project.assets.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/project.nuget.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,6 +202,7 @@
       <workItem from="1757525346508" duration="1253000" />
       <workItem from="1757526860599" duration="311000" />
       <workItem from="1757527230616" duration="527000" />
+      <workItem from="1757529166133" duration="1774000" />
     </task>
     <servers />
   </component>

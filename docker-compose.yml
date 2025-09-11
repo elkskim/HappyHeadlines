@@ -57,7 +57,7 @@ services:
     ports:
       - "1437:1433"
     volumes:
-      - mssql-asia:/var/opt/mssql
+      - mssql-northamerica:/var/opt/mssql
   
   southamericadb:
     image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
@@ -112,6 +112,8 @@ services:
       - antarcticadb
     deploy:
       replicas: 3
+    ports:
+      - "8000-8002:80"
 
 volumes:
   mssql-global:

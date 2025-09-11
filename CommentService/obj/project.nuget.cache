@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "2dg3+6KqS+Y=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\elksk\\Documents\\rimeligt legit skolesager\\Programmeringsprojekter\\DLS\\Project\\Week36 - implement ArticleService, ArticleDatabase\\HappyHeadlines\\CommentService\\CommentService.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\elksk\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.8\\microsoft.aspnetcore.openapi.9.0.8.nupkg.sha512",
+    "C:\\Users\\elksk\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}

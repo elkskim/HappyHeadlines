@@ -11,3 +11,5 @@ C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\P
 C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleDatabase\obj\Debug\net9.0\refint\ArticleDatabase.dll
 C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleDatabase\obj\Debug\net9.0\ArticleDatabase.pdb
 C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleDatabase\obj\Debug\net9.0\ref\ArticleDatabase.dll
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleDatabase\bin\Debug\net9.0\ArticleDatabase.runtimeconfig.json
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleDatabase\obj\Debug\net9.0\ArticleDatabase.genruntimeconfig.cache

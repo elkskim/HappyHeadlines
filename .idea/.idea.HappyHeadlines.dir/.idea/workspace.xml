@@ -14,22 +14,96 @@
   <component name="ChangeListManager">
     <list default="true" id="afb7ca4c-a995-43b3-abc3-2e22c4ba560f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.HappyHeadlines.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.HappyHeadlines.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArticleDatabase/ArticleDatabase.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/ArticleDatabase.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleDatabase/Models/Article.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/Models/Article.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleDatabase/bin/Debug/net9.0/ArticleDatabase.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/bin/Debug/net9.0/ArticleDatabase.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleDatabase/bin/Debug/net9.0/ArticleDatabase.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/bin/Debug/net9.0/ArticleDatabase.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ArticleDatabase.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ref/ArticleDatabase.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/ref/ArticleDatabase.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/refint/ArticleDatabase.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/Debug/net9.0/refint/ArticleDatabase.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/rider.project.model.nuget.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleDatabase/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleDatabase/obj/rider.project.restore.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleService/Controllers/ArticleController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/Controllers/ArticleController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArticleService/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArticleService/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/bin/Debug/net9.0/ArticleDatabase.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/bin/Debug/net9.0/ArticleDatabase.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/bin/Debug/net9.0/ArticleDatabase.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/bin/Debug/net9.0/ArticleDatabase.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/bin/Debug/net9.0/ArticleService.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/bin/Debug/net9.0/ArticleService.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/bin/Debug/net9.0/ArticleService.exe" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/bin/Debug/net9.0/ArticleService.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/bin/Debug/net9.0/ArticleService.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/bin/Debug/net9.0/ArticleService.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/bin/Debug/net9.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/bin/Debug/net9.0/appsettings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.AssemblyInfoInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ArticleService.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/apphost.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ref/ArticleService.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/ref/ArticleService.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/refint/ArticleService.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/refint/ArticleService.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/rjsmcshtml.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/rjsmcshtml.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/rjsmrazor.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/rjsmrazor.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/rpswa.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/Debug/net9.0/rpswa.dswa.cache.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleService/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/rider.project.model.nuget.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArticleService/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/ArticleService/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentDatabase/CommentDatabase.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/CommentDatabase/CommentDatabase.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentDatabase/ProfaneWord.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentDatabase/obj/CommentDatabase.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/CommentDatabase/obj/CommentDatabase.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentDatabase/obj/CommentDatabase.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/CommentDatabase/obj/CommentDatabase.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentDatabase/obj/CommentDatabase.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/CommentDatabase/obj/CommentDatabase.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentDatabase/obj/Debug/net9.0/CommentDatabase.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CommentDatabase/obj/Debug/net9.0/CommentDatabase.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentDatabase/obj/Debug/net9.0/CommentDatabase.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/CommentDatabase/obj/Debug/net9.0/CommentDatabase.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentDatabase/obj/Debug/net9.0/CommentDatabase.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/CommentDatabase/obj/Debug/net9.0/CommentDatabase.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentDatabase/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/CommentDatabase/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentDatabase/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/CommentDatabase/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentDatabase/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/CommentDatabase/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentDatabase/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/CommentDatabase/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentDatabase/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/CommentDatabase/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/CommentService.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/CommentService.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/obj/CommentService.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/obj/CommentService.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/obj/CommentService.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/obj/CommentService.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/obj/CommentService.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/obj/CommentService.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/obj/Debug/net9.0/CommentService.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/obj/Debug/net9.0/CommentService.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/obj/Debug/net9.0/CommentService.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/obj/Debug/net9.0/CommentService.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/obj/Debug/net9.0/CommentService.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/obj/Debug/net9.0/CommentService.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/obj/Debug/net9.0/CommentService.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/obj/Debug/net9.0/CommentService.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommentService/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/CommentService/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityDatabase/Class1.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityDatabase/ProfanityDatabase.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityDatabase/ProfanityDatabase.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityDatabase/obj/Debug/net9.0/ProfanityDatabase.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityDatabase/obj/Debug/net9.0/ProfanityDatabase.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityDatabase/obj/Debug/net9.0/ProfanityDatabase.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityDatabase/obj/Debug/net9.0/ProfanityDatabase.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityDatabase/obj/Debug/net9.0/ProfanityDatabase.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityDatabase/obj/Debug/net9.0/ProfanityDatabase.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityDatabase/obj/ProfanityDatabase.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityDatabase/obj/ProfanityDatabase.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityDatabase/obj/ProfanityDatabase.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityDatabase/obj/ProfanityDatabase.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityDatabase/obj/ProfanityDatabase.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityDatabase/obj/ProfanityDatabase.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityDatabase/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityDatabase/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityDatabase/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityDatabase/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityDatabase/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityDatabase/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityDatabase/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityDatabase/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityDatabase/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityDatabase/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/ProfanityService.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/ProfanityService.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/obj/Debug/net9.0/ProfanityService.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/obj/Debug/net9.0/ProfanityService.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/obj/Debug/net9.0/ProfanityService.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/obj/Debug/net9.0/ProfanityService.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/obj/Debug/net9.0/ProfanityService.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/obj/Debug/net9.0/ProfanityService.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/obj/Debug/net9.0/ProfanityService.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/obj/Debug/net9.0/ProfanityService.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/obj/ProfanityService.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/obj/ProfanityService.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/obj/ProfanityService.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/obj/ProfanityService.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/obj/ProfanityService.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/obj/ProfanityService.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProfanityService/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/ProfanityService/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +113,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "elkskim"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/elkskim/HappyHeadlines.git",
+    "accountId": "778def64-4a9a-469a-8fa9-410f74cc64a9"
+  }
+}]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/ArticleDatabase/Models/Article.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ArticleDatabase/Models/ArticleDbContext.cs" root0="FORCE_HIGHLIGHTING" />
@@ -203,6 +289,8 @@
       <workItem from="1757526860599" duration="311000" />
       <workItem from="1757527230616" duration="527000" />
       <workItem from="1757529166133" duration="1774000" />
+      <workItem from="1758267683109" duration="269000" />
+      <workItem from="1758275090864" duration="97000" />
     </task>
     <servers />
   </component>

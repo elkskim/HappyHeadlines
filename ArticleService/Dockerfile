@@ -4,6 +4,7 @@ WORKDIR /src
 
 # Copy csproj and restore
 COPY ["ArticleService/ArticleService.csproj", "ArticleService/"]
+COPY ["ArticleDatabase/ArticleDatabase.csproj", "ArticleDatabase/"]
 RUN dotnet restore "ArticleService/ArticleService.csproj"
 
 # Copy everything else and build

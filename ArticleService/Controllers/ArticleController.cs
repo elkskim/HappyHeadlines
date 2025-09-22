@@ -1,7 +1,7 @@
 using ArticleDatabase.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HappyHeadlines.ArticleService.Controllers;
+namespace ArticleService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -17,21 +17,20 @@ public class ArticleController : Controller
     [HttpGet]
     public ActionResult<IEnumerable<Article>> ReadArticles(string region)
     {
-        var db = _dbContextFactory.CreateDbContext(region);
+        var db = _dbContextFactory.CreateDbContext(["region", region]);
         return db.Articles;
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateArticle(string region, string? title, string? content, string? author)
     {
-        var db = _dbContextFactory.CreateDbContext(region);
-        db.Articles.Add(new Article()
-        {
-            Title = title ?? "Default Title", 
-            Content = content ?? "Default Content", 
-            Author = author ??  "Default Author"
-            
-        });
+        title = title ?? "";
+        content = content ?? "";
+        author = author ?? "";
+        
+        var article = new Article(title, content, author);
+        var db = _dbContextFactory.CreateDbContext(["region", region]);
+        db.Articles.Add(article);
         await db.SaveChangesAsync();
         return Accepted();
     }
@@ -39,7 +38,7 @@ public class ArticleController : Controller
     [HttpPatch]
     public async Task<IActionResult> UpdateArticle(string region, int id, string? title, string? content, string? author)
     {
-        var db = _dbContextFactory.CreateDbContext(region);
+        var db = _dbContextFactory.CreateDbContext(["region", region]);
         var article = await db.Articles.FindAsync(id);
         if (article != null)
         {
@@ -55,7 +54,7 @@ public class ArticleController : Controller
     [HttpDelete]
     public async Task<IActionResult> DeleteArticle(string region, int id)
     {
-        var db = _dbContextFactory.CreateDbContext(region);
+        var db = _dbContextFactory.CreateDbContext(["region", region]);
         if (await db.Articles.FindAsync(id) is { } article)
         {
             db.Articles.Remove(article);

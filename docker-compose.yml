@@ -95,6 +95,50 @@ services:
     volumes:
       - mssql-antarctica:/var/opt/mssql
   
+  profanitydb:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    container_name: profanity-db
+    environment:
+      SA_PASSWORD: "Pazzw0rd2025"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Express
+      PROFANITY_DB_CONSTR: "Server=profanity-db,1441;Database=AntarcticaDb;Initial Catalog=Profanity;User ID=SA;Password=Pazzw0rd2025;TrustServerCertificate=True;"
+    ports:
+      - "1441:1433"
+    volumes:
+      - mssql-profanity:/var/opt/mssql
+  
+  commentdb:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    container_name: comment-db
+    environment:
+      SA_PASSWORD: "Pazzw0rd2025"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Express
+      COMMENT_DB_CONSTR: "Server=comment-db,1442;Database=AntarcticaDb;Initial Catalog=Profanity;User ID=SA;Password=Pazzw0rd2025;TrustServerCertificate=True;"
+    
+    ports:
+      - "1442:1433"
+    volumes:
+      - mssql-comment:/var/opt/mssql
+  
+  profanity-service:
+    build:
+      context: .
+      dockerfile: ProfanityService/Dockerfile
+    depends_on:
+      - profanitydb
+    ports:
+      - 8003:80
+  
+  comment-service:
+    build:
+      context: .
+      dockerfile: CommentService/Dockerfile
+    depends_on:
+      - commentdb
+    ports:
+      - 8004:80
   
   
   article-service:
@@ -124,3 +168,5 @@ volumes:
   mssql-southamerica:
   mssql-oceania:
   mssql-antarctica:
+  mssql-profanity:
+  mssql-comment:

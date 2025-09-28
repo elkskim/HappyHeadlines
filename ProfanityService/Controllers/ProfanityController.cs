@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using ProfanityDatabase.Models;
+using ProfanityService.Services;
+using System.Linq;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ProfanityService.Controllers;
 
@@ -7,27 +10,29 @@ namespace ProfanityService.Controllers;
 [ApiController]
 public class ProfanityController : Controller
 {
-    private readonly ProfanityDbContextFactory _context;
+    private readonly IProfanityDiService _profanityDiService;
 
-    public ProfanityController(ProfanityDbContextFactory context)
+    public ProfanityController(IProfanityDiService profanityDiService)
     {
-        _context = context;
+        _profanityDiService = profanityDiService;
     }
     
     [HttpGet]
-    public List<Profanity> GetProfanities()
+    public async Task<List<Profanity>> GetProfanities()
     {
-        var db = _context.CreateDbContext([""]);
-        return db.Profanities.ToList();
+        return await _profanityDiService.GetProfanityListAsync();
     }
 
     [HttpPost]
-    public async Task<Profanity> CreateProfanity(string word)
+    public async Task<ActionResult<Profanity>> CreateProfanity([FromBody] Profanity profanity)
     {
-        var db = _context.CreateDbContext([""]);
-        var newProfanity = new Profanity { Word = word } ;
-        await db.Profanities.AddAsync(newProfanity);
-        await db.SaveChangesAsync();
-        return newProfanity;
+        profanity.Word = profanity.Word.ToLower();
+        if (string.IsNullOrWhiteSpace(profanity.Word))
+            return BadRequest("What did you think? Empty Space won't work at all!");
+        if (!(await GetProfanities()).Where(p => p.Word.ToLower() == profanity.Word).IsNullOrEmpty())
+        {
+            return BadRequest($"Profanity database already contains {profanity.Word}");
+        }
+        return Ok(await _profanityDiService.AddProfanityAsync(profanity));
     }
 }

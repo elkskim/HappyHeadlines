@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProfanityDatabase")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2d16ad0995d47fbe663bd9eec10f4fdbe30bc2fe")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4e3f1209bfbdfad31bb84e03c8d2594b2756ccb7")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProfanityDatabase")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProfanityDatabase")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

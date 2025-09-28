@@ -4,30 +4,32 @@ using Microsoft.Extensions.Configuration;
 
 namespace ArticleDatabase.Models;
 
-public class DbContextFactory : IDesignTimeDbContextFactory<ArticleDbContext>
+public class DbContextFactory
 {
-    
     public ArticleDbContext CreateDbContext(string[] args)
     {
-        string region = args.Length > 0 ? args[0] : "Global";
+        var region = args.Length > 1 ? args[1] : "Global";
         var optionsBuilder = new DbContextOptionsBuilder<ArticleDbContext>();
-        
-        
+
+
         var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("./ArticleService/appsettings.json")
+            .AddJsonFile("appsettings.json")
             .Build();
         
+        var runningInContainer = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
+        var connectionName = runningInContainer ? region : region + "Host";
+        var connectionString = config.GetConnectionString(connectionName);
         
-        var connectionString = config.GetConnectionString(region);
         if (string.IsNullOrEmpty(connectionString))
             throw new ArgumentException($"Invalid connection string: {region}");
-        
-        
-        ;
-        optionsBuilder.UseSqlServer(connectionString);
-        return new ArticleDbContext(optionsBuilder.Options);
-    }
-
     
+
+        ;//, sqlOptions => sqlOptions.EnableRetryOnFailure()
+        optionsBuilder.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
+        var context = new ArticleDbContext(optionsBuilder.Options);
+        context.Database.EnsureCreated();
+        context.Database.Migrate();
+        return context;;
+    }
 }

@@ -1,0 +1,13 @@
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\Monitoring\bin\Debug\net9.0\Monitoring.deps.json
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\Monitoring\bin\Debug\net9.0\Monitoring.dll
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\Monitoring\bin\Debug\net9.0\Monitoring.pdb
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\Monitoring\obj\Debug\net9.0\Monitoring.csproj.AssemblyReference.cache
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\Monitoring\obj\Debug\net9.0\Monitoring.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\Monitoring\obj\Debug\net9.0\Monitoring.AssemblyInfoInputs.cache
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\Monitoring\obj\Debug\net9.0\Monitoring.AssemblyInfo.cs
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\Monitoring\obj\Debug\net9.0\Monitoring.csproj.CoreCompileInputs.cache
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\Monitoring\obj\Debug\net9.0\Monitoring.sourcelink.json
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\Monitoring\obj\Debug\net9.0\Monitoring.dll
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\Monitoring\obj\Debug\net9.0\refint\Monitoring.dll
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\Monitoring\obj\Debug\net9.0\Monitoring.pdb
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\Monitoring\obj\Debug\net9.0\ref\Monitoring.dll

@@ -1,35 +1,64 @@
-// See https://aka.ms/new-console-template for more information
 using ArticleDatabase;
 using ArticleDatabase.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Monitoring;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add DbContext (points to Docker DB connection string)
-/*
-builder.Services.AddDbContext<ArticleDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-    */
-    builder.Services.AddSingleton<DbContextFactory>();
+// Load configuration
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-// Add controllers
-    builder.Services.AddControllers();
+// Register services
+builder.Services.AddDbContext<ArticleDbContext>();
+builder.Services.AddSingleton<DbContextFactory>();
+builder.Services.AddScoped<DesignTimeDbContextFactory>();
+builder.WebHost.ConfigureKestrel(options => options.ListenAnyIP(80));
+builder.Services.AddControllers();
 
-// Swagger for dev
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+// Define regions and their container hostnames/ports
+var regions = new Dictionary<string, string>
+{
+    ["Global"] = "global-article-db,1433",
+    ["Africa"] = "africa-article-db,1433",
+    ["Asia"] = "asia-article-db,1433",
+    ["Europe"] = "europe-article-db,1433",
+    ["NorthAmerica"] = "northamerica-article-db,1433",
+    ["SouthAmerica"] = "southamerica-article-db,1433",
+    ["Oceania"] = "oceania-article-db,1433",
+    ["Antarctica"] = "antarctica-article-db,1433"
+};
 
-    var app = builder.Build();
+var app = builder.Build();
 
-        if (app.Environment.IsDevelopment())
+// Ensure databases exist & apply migrations
+using (var scope = app.Services.CreateScope())
+{
+    
+    var factory = scope.ServiceProvider.GetRequiredService<DbContextFactory>();
+    
+    using var activity = MonitorService.ActivitySource.StartActivity();
+
+    foreach (var region in regions.Keys)
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        
+        try
+        {
+            Thread.Sleep(1000);
+            using var context = factory.CreateDbContext(["region", region]);
+            context.Database.Migrate(); // creates DB if missing, applies migrations
+            MonitorService.Log.Debug("✅ {Region} database ensured/migrated.", region);
+        }
+        catch (Exception ex)
+        {
+            Thread.Sleep(1000);
+            MonitorService.Log.Debug("❌ Failed to migrate {Region}: {ExMessage}", region, ex.Message);
+        }
     }
+}
 
-    app.UseAuthorization();
-    app.MapControllers();
-
-    app.Run();
-
+app.UseAuthorization();
+app.MapControllers();
+app.Run();

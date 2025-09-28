@@ -6,7 +6,14 @@ public class DbInitializer : IDbInitializer
 {
     public void Initialize(ProfanityDbContext context)
     {
-        var presence = context.Profanities.Any();
+        context.Database.EnsureCreated();
+
+        if (context.Profanities.Any()) return;
+        context.Profanities.Add(new Profanity { Word = "shit" });
+        context.Profanities.Add(new Profanity { Word = "fuck" });
+        context.Profanities.Add(new Profanity { Word = "piss" });
+        context.Profanities.Add(new Profanity { Word = "ouioiouiouhidiot" });
+        
         context.SaveChanges();
     }
 }

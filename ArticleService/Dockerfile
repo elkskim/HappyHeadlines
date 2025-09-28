@@ -4,20 +4,21 @@ WORKDIR /src
 
 # Copy csproj and restore
 COPY ["ArticleService/ArticleService.csproj", "ArticleService/"]
-COPY ["ArticleDatabase/ArticleDatabase.csproj", "ArticleDatabase/"]
+COPY ["../ArticleDatabase/ArticleDatabase.csproj", "../ArticleDatabase/"]
 RUN dotnet restore "ArticleService/ArticleService.csproj"
 
 # Copy everything else and build
 COPY . .
+COPY ../ArticleDatabase ../ArticleDatabase
 WORKDIR "/src/ArticleService"
 RUN dotnet build "ArticleService.csproj" -c Release -o /app/build
 
 # Publish stage
-FROM build AS publish
 RUN dotnet publish "ArticleService.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Generate runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ArticleService.dll"]
+COPY --from=build /app/publish .
+COPY ArticleService/appsettings.json ./appsettings.json
+ENTRYPOINT ["dotnet", "ArticleService.dll", "migrate"]

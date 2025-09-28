@@ -8,7 +8,7 @@ namespace ArticleService.Controllers;
 public class ArticleController : Controller
 {
     private readonly DbContextFactory _dbContextFactory;
-    
+
     public ArticleController(DbContextFactory dbContextFactory)
     {
         _dbContextFactory = dbContextFactory;
@@ -22,21 +22,21 @@ public class ArticleController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateArticle(string region, string? title, string? content, string? author)
+    public async Task<IActionResult> CreateArticle([FromBody] Article incArticle, string  region)
     {
-        title = title ?? "";
-        content = content ?? "";
-        author = author ?? "";
         
-        var article = new Article(title, content, author);
+        
+
+        var article = new Article(incArticle.Title, incArticle.Content, incArticle.Author);
         var db = _dbContextFactory.CreateDbContext(["region", region]);
-        db.Articles.Add(article);
+        await db.Articles.AddAsync(article);
         await db.SaveChangesAsync();
-        return Accepted();
+        return Accepted(article);
     }
 
     [HttpPatch]
-    public async Task<IActionResult> UpdateArticle(string region, int id, string? title, string? content, string? author)
+    public async Task<IActionResult> UpdateArticle(string region, int id, string? title, string? content,
+        string? author)
     {
         var db = _dbContextFactory.CreateDbContext(["region", region]);
         var article = await db.Articles.FindAsync(id);
@@ -44,9 +44,10 @@ public class ArticleController : Controller
         {
             article.Title = title ?? article.Title;
             article.Content = content ?? article.Content;
-            article.Author = author ?? article.Author;;
+            article.Author = author ?? article.Author;
+            ;
         }
-        
+
         await db.SaveChangesAsync();
         return Accepted();
     }
@@ -59,8 +60,9 @@ public class ArticleController : Controller
         {
             db.Articles.Remove(article);
             await db.SaveChangesAsync();
-            return Accepted();
-        } else
+            return Accepted(article);
+        }
+        else
         {
             return NotFound();
         }

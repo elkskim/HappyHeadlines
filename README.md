@@ -37,7 +37,7 @@ været distræt hist og her.
 Det rammer nok de fleste punkter. Jeg får det opdateret løbende, 
 så det i hvert fald kører forståeligt.
 
-Håber du har en god dag,
+Håber du har en god dag,   
 Mikkel
 
 

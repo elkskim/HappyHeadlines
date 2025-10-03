@@ -9,7 +9,7 @@ public interface IResilienceService
     Task<ResilienceService.ProfanityCheckResult>
         CheckForProfanity(Comment comment, CancellationToken cancellationToken);
 
-    Task<ActionResult<Comment>?> PostComment(string region, [FromBody] Comment comment,
+    Task<ActionResult<Comment>?> PostComment([FromBody] Comment comment,
         CancellationToken cancellationToken);
     Task<IEnumerable<Profanity>> GetProfanities(CancellationToken cancellationToken);
     Task<IEnumerable<Comment>> GetComments(string region, int articleId, CancellationToken cancellationToken);

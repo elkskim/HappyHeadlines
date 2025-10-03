@@ -91,7 +91,7 @@ public class ResilienceService : IResilienceService
         });
     }
 
-    public async Task<ActionResult<Comment>?> PostComment(string region, [FromBody] Comment comment,
+    public async Task<ActionResult<Comment>?> PostComment([FromBody] Comment comment,
         CancellationToken cancellationToken)
     {
         await _commentDbContext.Comments.AddAsync(comment, cancellationToken);

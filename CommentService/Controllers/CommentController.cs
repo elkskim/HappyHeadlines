@@ -41,7 +41,7 @@ public class CommentController : Controller
 
     [HttpPost]
     //TODO I SWEAR TO FUCKING GOD
-    public async Task<IActionResult> PostComment([FromBody] string region, Comment? comment, CancellationToken cancellationToken)
+    public async Task<IActionResult> PostComment([FromBody]Comment? comment, CancellationToken cancellationToken)
     {
         if (comment == null) return BadRequest("Comment is empty, idiot");
 
@@ -50,7 +50,7 @@ public class CommentController : Controller
         if (judgement.isProfane) return BadRequest("The comment contains profanity. You're out.");
 
         //TODO THIS SEEMS TO CAUSE A FUCKING ISSUE
-        var confirmedComment = await _resilienceService.PostComment(region, comment, cancellationToken);
+        var confirmedComment = await _resilienceService.PostComment(comment, cancellationToken);
 
         return CreatedAtAction(
             nameof(GetCommentById),

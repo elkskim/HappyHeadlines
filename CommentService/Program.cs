@@ -12,7 +12,6 @@ builder.Services.AddDbContext<CommentDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Comment")));
 builder.Services.AddTransient<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IResilienceService, ResilienceService>();
-builder.Services.AddHostedService<CommentCacheCommander>();
 
 builder.WebHost.ConfigureKestrel(options => options.ListenAnyIP(80));
 

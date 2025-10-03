@@ -13,7 +13,7 @@ kommer til at finde her, som kan virke lidt forvirrende.
 
 Efterhånden som jeg kom længere og længere med opgaven, begyndte jeg
 at blive mere og mere opmærksom på hvad jeg havde gang i.
-Det betød, at jeg fik noget mere abstraktion op banen,
+Det betød, at jeg fik noget mere abstraktion på banen,
 og fandt bedre måder at håndtere dependency injection på.
 Det betyder til gengæld også, at article- og commentservice
 først var skrevet meget simplistisk og uden nogen som helst lag

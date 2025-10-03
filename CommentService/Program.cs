@@ -1,7 +1,6 @@
 using CommentDatabase.Models;
 using CommentService.Services;
 using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -9,10 +8,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
-builder.Services.AddDbContext<CommentDbContext>(options => 
+builder.Services.AddDbContext<CommentDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Comment")));
 builder.Services.AddTransient<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IResilienceService, ResilienceService>();
+builder.Services.AddHostedService<CommentCacheCommander>();
 
 builder.WebHost.ConfigureKestrel(options => options.ListenAnyIP(80));
 
@@ -43,4 +43,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-

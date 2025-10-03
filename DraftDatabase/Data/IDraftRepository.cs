@@ -4,5 +4,4 @@ namespace DraftDatabase.Data;
 
 public interface IDraftRepository : IRepository<Draft>
 {
-    
 }

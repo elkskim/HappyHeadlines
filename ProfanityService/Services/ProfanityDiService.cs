@@ -11,7 +11,7 @@ public class ProfanityDiService : IProfanityDiService
     {
         _profanityDbContext = profanityDbContext ?? throw new ArgumentNullException(nameof(profanityDbContext));
     }
-    
+
     public async Task<List<Profanity>> GetProfanityListAsync()
     {
         return await _profanityDbContext.Profanities.ToListAsync();
@@ -22,6 +22,5 @@ public class ProfanityDiService : IProfanityDiService
         var ratifiedProfanity = _profanityDbContext.Profanities.Add(profanity);
         await _profanityDbContext.SaveChangesAsync();
         return await _profanityDbContext.Profanities.FindAsync(ratifiedProfanity.Entity.Id);
-
     }
 }

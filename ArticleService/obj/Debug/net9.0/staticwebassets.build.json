@@ -1,1 +1,12 @@
-{"Version":1,"Hash":"zc3IiOwoQqI9BI28iLYhcLOUttFLoQXZKCECSI8fW+k=","Source":"ArticleService","BasePath":"_content/ArticleService","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}
+{
+  "Version": 1,
+  "Hash": "zc3IiOwoQqI9BI28iLYhcLOUttFLoQXZKCECSI8fW+k=",
+  "Source": "ArticleService",
+  "BasePath": "_content/ArticleService",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

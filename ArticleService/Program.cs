@@ -1,22 +1,30 @@
-using ArticleDatabase;
 using ArticleDatabase.Models;
-using Microsoft.AspNetCore;
-using Microsoft.Data.SqlClient;
+using ArticleService.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Monitoring;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Load configuration
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+builder.Configuration.AddJsonFile("appsettings.json", false, true);
 
 // Register services
 builder.Services.AddDbContext<ArticleDbContext>();
 builder.Services.AddSingleton<DbContextFactory>();
 builder.Services.AddScoped<DesignTimeDbContextFactory>();
 builder.WebHost.ConfigureKestrel(options => options.ListenAnyIP(80));
+builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
+builder.Services.AddScoped<IArticleDiService, ArticleDiService>();
+builder.Services.AddHostedService<ArticleCacheCommander>();
+
 builder.Services.AddControllers();
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = "redis:6379"; // docker compose alias
+    options.InstanceName = "happyheadlines:";
+});
 
 // Define regions and their container hostnames/ports
 var regions = new Dictionary<string, string>
@@ -36,14 +44,11 @@ var app = builder.Build();
 // Ensure databases exist & apply migrations
 using (var scope = app.Services.CreateScope())
 {
-    
     var factory = scope.ServiceProvider.GetRequiredService<DbContextFactory>();
-    
+
     using var activity = MonitorService.ActivitySource.StartActivity();
 
     foreach (var region in regions.Keys)
-    {
-        
         try
         {
             Thread.Sleep(1000);
@@ -56,7 +61,6 @@ using (var scope = app.Services.CreateScope())
             Thread.Sleep(1000);
             MonitorService.Log.Debug("❌ Failed to migrate {Region}: {ExMessage}", region, ex.Message);
         }
-    }
 }
 
 app.UseAuthorization();

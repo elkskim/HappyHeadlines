@@ -12,14 +12,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
-builder.Services.AddDbContext<ProfanityDbContext>(options => 
+builder.Services.AddDbContext<ProfanityDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Profanity")));
 builder.Services.AddTransient<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IProfanityDiService, ProfanityDiService>();
 
 builder.WebHost.ConfigureKestrel(options => options.ListenAnyIP(80));
-
-
 
 
 var app = builder.Build();

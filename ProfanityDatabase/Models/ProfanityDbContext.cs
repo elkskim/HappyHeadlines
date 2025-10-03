@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions;
-using Microsoft.Extensions.Configuration;
 
 namespace ProfanityDatabase.Models;
 
@@ -8,11 +6,10 @@ public class ProfanityDbContext : DbContext
 {
     public ProfanityDbContext(DbContextOptions<ProfanityDbContext> options) : base(options)
     {
-        
     }
-    
+
     public DbSet<Profanity> Profanities { get; set; }
-    
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         /*

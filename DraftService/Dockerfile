@@ -4,20 +4,21 @@ WORKDIR /src
 
 # Copy csproj and restore
 COPY ["DraftService/DraftService.csproj", "DraftService/"]
-COPY ["DraftDatabase/DraftDatabase.csproj", "DraftDatabase/"]
+COPY ["../DraftDatabase/DraftDatabase.csproj", "DraftDatabase/"]
 RUN dotnet restore "DraftService/DraftService.csproj"
 
 # Copy everything else and build
 COPY . .
+COPY ../DraftDatabase ../DraftDatabase
 WORKDIR "/src/DraftService"
 RUN dotnet build "DraftService.csproj" -c Release -o /app/build
 
 # Publish stage
-FROM build AS publish
 RUN dotnet publish "DraftService.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Generate runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "DraftService.dll"]
+COPY --from=build /app/publish .
+COPY DraftService/appsettings.json ./appsettings.json
+ENTRYPOINT ["dotnet", "DraftService.dll", "migrate"]

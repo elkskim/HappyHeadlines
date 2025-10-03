@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# Pass the migration name as first arg
+# first arg is migration name PLEASE
 MIGRATION_NAME=$1
 
 if [ -z "$MIGRATION_NAME" ]; then

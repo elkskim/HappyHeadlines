@@ -199,11 +199,11 @@ services:
       context: .
       dockerfile: ProfanityService/Dockerfile
     depends_on:
-        profanitydb:
-          condition: service_healthy
+      profanitydb:
+        condition: service_healthy
     ports:
       - 8003:80
-    environment: 
+    environment:
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__Profanity=Server=profanity-db,1433;Database=Profanity;User Id=SA;Password=Pazzw0rd2025;TrustServerCertificate=True;
   
@@ -212,11 +212,11 @@ services:
       context: .
       dockerfile: CommentService/Dockerfile
     depends_on:
-        commentdb:
-          condition: service_healthy
+      commentdb:
+        condition: service_healthy
     ports:
       - 8004:80
-    environment: 
+    environment:
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__Comment=Server=comment-db,1433;Database=Comment;User Id=SA;Password=Pazzw0rd2025;TrustServerCertificate=True;
   
@@ -227,11 +227,30 @@ services:
     depends_on:
       draftdb:
         condition: service_healthy
+      rabbitmq:
+        condition: service_started
     ports:
       - 8005:80
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__Draft=Server=draft-db,1433;Database=Draft;User Id=SA;Password=Pazzw0rd2025;TrustServerCertificate=True;
+
+  publisherservice:
+    build:
+      context: .
+      dockerfile: PublisherService/Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_started
+        
+      
+  newsletterservice:
+    build:
+      context: .
+      dockerfile: NewsletterService/Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_started
   
   
   article-service:
@@ -239,22 +258,24 @@ services:
       context: .
       dockerfile: ArticleService/Dockerfile
     depends_on:
-        global-article-db:
-          condition: service_healthy
-        africa-article-db:
-          condition: service_healthy
-        asia-article-db:
-          condition: service_healthy
-        europe-article-db:
-          condition: service_healthy
-        northamerica-article-db:
-          condition: service_healthy
-        southamerica-article-db:
-          condition: service_healthy
-        oceania-article-db:
-          condition: service_healthy
-        antarctica-article-db:
-          condition: service_healthy
+      global-article-db:
+        condition: service_healthy
+      africa-article-db:
+        condition: service_healthy
+      asia-article-db:
+        condition: service_healthy
+      europe-article-db:
+        condition: service_healthy
+      northamerica-article-db:
+        condition: service_healthy
+      southamerica-article-db:
+        condition: service_healthy
+      oceania-article-db:
+        condition: service_healthy
+      antarctica-article-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
     deploy:
       replicas: 3
     ports:
@@ -299,7 +320,20 @@ services:
       - "3306:3306"
     volumes:
       - zipkin_data:/mysql/data
-    
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  
+  redis: 
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+
 
 volumes:
   mssql-global:
@@ -315,3 +349,6 @@ volumes:
   mssql-draft:
   rps_seq_data:
   zipkin_data:
+  
+  
+

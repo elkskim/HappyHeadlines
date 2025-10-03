@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ProfanityDatabase.Models;
 using ProfanityService.Services;
-using System.Linq;
-using Microsoft.IdentityModel.Tokens;
 
 namespace ProfanityService.Controllers;
 
@@ -16,7 +15,7 @@ public class ProfanityController : Controller
     {
         _profanityDiService = profanityDiService;
     }
-    
+
     [HttpGet]
     public async Task<List<Profanity>> GetProfanities()
     {
@@ -30,9 +29,7 @@ public class ProfanityController : Controller
         if (string.IsNullOrWhiteSpace(profanity.Word))
             return BadRequest("What did you think? Empty Space won't work at all!");
         if (!(await GetProfanities()).Where(p => p.Word.ToLower() == profanity.Word).IsNullOrEmpty())
-        {
             return BadRequest($"Profanity database already contains {profanity.Word}");
-        }
         return Ok(await _profanityDiService.AddProfanityAsync(profanity));
     }
 }

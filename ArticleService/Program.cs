@@ -3,6 +3,7 @@ using ArticleService.Services;
 using Microsoft.EntityFrameworkCore;
 using Monitoring;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ builder.Services.AddScoped<DesignTimeDbContextFactory>();
 builder.WebHost.ConfigureKestrel(options => options.ListenAnyIP(80));
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IArticleDiService, ArticleDiService>();
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+    ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")));
 builder.Services.AddHostedService<ArticleCacheCommander>();
 
 builder.Services.AddControllers();

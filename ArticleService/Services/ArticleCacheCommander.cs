@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Caching.Distributed;
 using Monitoring;
+using StackExchange.Redis;
 
 namespace ArticleService.Services;
 

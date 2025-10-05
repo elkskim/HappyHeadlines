@@ -251,6 +251,19 @@ services:
     depends_on:
       rabbitmq:
         condition: service_started
+        
+  monitoringservice:
+    build:
+      context: .
+      dockerfile: NewsletterService/Dockerfile
+    ports:
+      - "8085:80"
+    depends_on:
+      - redis
+      - seq
+      - zipkin
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
   
   
   article-service:

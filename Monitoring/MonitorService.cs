@@ -4,6 +4,7 @@ using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Serilog;
+using ILogger = Serilog.ILogger;
 
 namespace Monitoring;
 
@@ -17,7 +18,7 @@ public static class MonitorService
     {
         TracerProvider = Sdk.CreateTracerProviderBuilder()
             .AddConsoleExporter()
-            .AddZipkinExporter(o => o.Endpoint = new Uri("http://localhost:9411/api/v2/spans"))
+            .AddZipkinExporter(o => o.Endpoint = new Uri("http://zipkin:9411/api/v2/spans"))
             .AddSource(ActivitySource.Name)
             .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(ServiceName))
             .Build();

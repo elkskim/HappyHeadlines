@@ -10,7 +10,8 @@ public class CommentCacheCommander
 {
     private readonly IResilienceService _service;
     private readonly IDistributedCache _cache;
-    private readonly IDatabase _redis; // StackExchange.Redis
+    private readonly IDatabase _redis;
+    private readonly CacheMetrics _metrics;
 
     public CommentCacheCommander(
         IResilienceService service,
@@ -22,7 +23,8 @@ public class CommentCacheCommander
         _service = service;
         _cache = cache;
         _redis = redis.GetDatabase();
-    }
+        _metrics = new CacheMetrics(redis, "commentcache");
+}
 
 
 public async Task<IEnumerable<Comment>> GetCommentsAsync(int articleId, string region, CancellationToken ct)
@@ -33,16 +35,18 @@ public async Task<IEnumerable<Comment>> GetCommentsAsync(int articleId, string r
         var cached = await _cache.GetStringAsync(key, ct);
         if (!string.IsNullOrEmpty(cached))
         {
+            await _metrics.RecordHitAsync();
             MonitorService.Log.Information("Cache hit for article {ArticleId} ({Region})", articleId, region);
-
+            
             // Tried cache already
             await TouchRecentAsync(articleId, region);
 
             return JsonSerializer.Deserialize<IEnumerable<Comment>>(cached)!;
         }
-
+        
+        await _metrics.RecordMissAsync();
         MonitorService.Log.Information("Cache miss for article {ArticleId} ({Region}), loading from DB", articleId, region);
-
+        
         // Cache miss - load from DB
 
         var comments = _service.GetComments(region, articleId, ct);

@@ -42,3 +42,15 @@ Mikkel
 
 
 ps: det kører på docker compose up, men det ved du helt sikkert i forvejen.
+
+
+### Patch notes october 5th
+- 1.0 release did not include mandatory cache dashboard. This update does, however functional.
+- Several services collided on docker compose up because several appsettings.json files
+to publish. This has been fixed by simply ignoring the error and hoping for the best.
+- Because of changes made earlier to the MonitorService, 
+logs and traces have mysteriously gone missing. The issue is currently under great scrutiny.
+- ArticleService previously went down on checking cache. Issue seems to have been
+a null-reference in the ConnectionMultiplexer as the used connectionstring was
+not present in the appsettings file.
+- other miscellaneous changes.

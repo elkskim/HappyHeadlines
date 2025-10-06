@@ -199,6 +199,9 @@ services:
     image: publisher-service:latest
     environment:
       - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "8006:80"  
+      
   
   newsletter-service:
     networks:

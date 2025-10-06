@@ -5,6 +5,25 @@
  Det her er en refaktorering per den 6. oktober.
 Gransk tidligere commits for den fuldstændige velkomst.
 
+### Patch notes october 6th.. again?
+*Let me share with you the terrible wonders I have come to know...*  
+
+Why this? new issues and old fixes.
+- Logging and tracing seems amicable to viewing now.
+- ```localhost:8085/api/cachemetrics/cache``` will now show a top of the line
+ASCII cache dashboard, revealing hits and hits/miss-ratio on caches.
+- Sometimes the draftservice will fail on startup, but instead of retrying
+connection to draft-db, it will crash and a new draftservice container is spun up.
+It then works, surprisingly. (note: this goes for commentservice as well)
+- The Monitoring-Service container will now write to its own console when
+ArticleCacheMetrics and CommentCacheMetrics classes are initialized, and
+write total hits and misses when the cache endpoint is called.
+This is for debugging purposes, and because I can't seem to register 
+MonitorService as a dependency inside MonitorService.
+- The C4 diagram has been added to application top layer, and is as good as it gets.
+
+
+
 ### Patch notes october 6th part deux
 Because of a lack of a stable build, these two updates hit simultaneously.
 

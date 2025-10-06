@@ -12,7 +12,7 @@ public class CommentCacheCommander : ICommentCacheCommander
     private readonly CommentDbContext _commentDbContext;
     private readonly IDistributedCache _cache;
     private readonly IDatabase _redis;
-    private readonly CacheMetrics _metrics;
+    private readonly CacheMetrics.CommentCacheMetrics _metrics;
 
     public CommentCacheCommander(
         CommentDbContext commentDbContext,
@@ -24,7 +24,7 @@ public class CommentCacheCommander : ICommentCacheCommander
         _commentDbContext = commentDbContext;
         _cache = cache;
         _redis = redis.GetDatabase();
-        _metrics = new CacheMetrics(redis, "commentcache");
+        _metrics = new CacheMetrics.CommentCacheMetrics(redis);
 }
 
 

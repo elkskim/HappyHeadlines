@@ -15,12 +15,12 @@ public class CacheMetrics
 
     public async Task RecordHitAsync()
     {
-        await _redis.StringIncrementAsync($"{_prefix}_hit");
+        await _redis.StringIncrementAsync($"{_prefix}:hits");
     }
 
     public async Task RecordMissAsync()
     {
-        await _redis.StringIncrementAsync($"{_prefix}_miss");
+        await _redis.StringIncrementAsync($"{_prefix}:misses");
     }
 
     public async Task<long> GetHitsAsync()
@@ -35,8 +35,9 @@ public class CacheMetrics
 
     public async Task<double> GetHitRatio()
     {
-        var hits = (double)await _redis.StringGetAsync($"{_prefix}:hits");
-        var misses = (double)await _redis.StringGetAsync($"{_prefix}:misses");
+        var hits = (double)await GetHitsAsync();
+        var misses = (double)await GetMissesAsync();
+        Console.WriteLine($"Hits: {hits}, Misses: {misses}");
         var total = hits + misses;
         return total == 0 ? 0 : hits / total;
     }
@@ -45,6 +46,7 @@ public class CacheMetrics
     {
         public ArticleCacheMetrics(IConnectionMultiplexer redis) : base(redis, "articlecache")
         {
+            Console.WriteLine("An ArticleCacheMetrics service has been initialized.");
         }
     }
 
@@ -52,6 +54,7 @@ public class CacheMetrics
     {
         public CommentCacheMetrics(IConnectionMultiplexer redis) : base(redis, "commentcache")
         {
+            Console.WriteLine("An CommentCacheMetrics service has been initialized.");
         }
     }
 }

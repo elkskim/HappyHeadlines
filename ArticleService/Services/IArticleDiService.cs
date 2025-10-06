@@ -21,13 +21,13 @@ public class ArticleDiService : IArticleDiService
 {
     private readonly IArticleRepository _repo;
     private readonly IDistributedCache _cache;
-    private readonly CacheMetrics _metrics;
+    private readonly CacheMetrics.ArticleCacheMetrics _metrics;
 
     public ArticleDiService(IArticleRepository repo, IDistributedCache cache, IConnectionMultiplexer redis)
     {
         _repo = repo;
         _cache = cache;
-        _metrics = new CacheMetrics(redis, "articlecache");
+        _metrics = new CacheMetrics.ArticleCacheMetrics(redis);
     }
     
 
@@ -43,6 +43,7 @@ public class ArticleDiService : IArticleDiService
 
     public Task<ActionResult> UpdateArticle()
     {
+        //Don't
         throw new NotImplementedException();
     }
 

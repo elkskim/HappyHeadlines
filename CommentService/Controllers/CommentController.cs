@@ -33,7 +33,7 @@ public class CommentController : Controller
     }
 
     [HttpPost("/profanitycheck")]
-    public async Task<ActionResult<bool>> CheckForProfanity([FromBody] Comment comment,
+    public ActionResult CheckForProfanity([FromBody] Comment comment,
         CancellationToken cancellationToken)
     {
         return StatusCode(500,

@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 {
     var redisConnection = builder.Configuration.GetConnectionString("Redis") ?? "redis:6379";

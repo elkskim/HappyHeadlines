@@ -12,6 +12,7 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     return ConnectionMultiplexer.Connect(redisConnection);
 });
 //These two will absolutely not work on the first go
+builder.Services.AddSingleton<CacheMetrics>();
 builder.Services.AddSingleton<CacheMetrics.ArticleCacheMetrics>();
 builder.Services.AddSingleton<CacheMetrics.CommentCacheMetrics>();
 

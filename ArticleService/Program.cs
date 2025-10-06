@@ -2,10 +2,20 @@ using ArticleDatabase.Models;
 using ArticleService.Services;
 using Microsoft.EntityFrameworkCore;
 using Monitoring;
+using Serilog;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var serviceName = "ArticleService";
+
+MonitorService.Initialize(serviceName);
+
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    MonitorService.ConfigureSerilog(context, services, configuration, serviceName);
+});
 
 // Load configuration
 builder.Configuration.AddJsonFile("appsettings.json", false, true);
@@ -21,12 +31,19 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")));
 builder.Services.AddHostedService<ArticleCacheCommander>();
 
+
 builder.Services.AddControllers();
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = "redis:6379"; // docker compose alias
     options.InstanceName = "happyheadlines:";
+});
+
+builder.Services.AddHttpClient("CommentsService", client =>
+{
+    client.BaseAddress = new Uri("http://comment-service:80/");
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
 // Define regions and their container hostnames/ports
@@ -43,8 +60,11 @@ var regions = new Dictionary<string, string>
 };
 
 var app = builder.Build();
+MonitorService.Log.Information("Starting up {ServiceName}", serviceName);
+MonitorService.Log.Information("Sleeping for 100 seconds because the retry policy wouldn't believe how many dbs this service can fit");
 
-// Ensure databases exist & apply migrations
+Thread.Sleep(10000);
+// Ensure databases exist and apply migrations
 using (var scope = app.Services.CreateScope())
 {
     var factory = scope.ServiceProvider.GetRequiredService<DbContextFactory>();

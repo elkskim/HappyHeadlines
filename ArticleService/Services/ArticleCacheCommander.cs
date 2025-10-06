@@ -18,6 +18,7 @@ public class ArticleCacheCommander : BackgroundService
         _regions = config.GetSection("ConnectionStrings")
             .GetChildren()
             .Select(cs => cs.Key)
+            .Where(region => !region.Contains("Redis") && !region.Contains("Host"))
             .ToList();
     }
 

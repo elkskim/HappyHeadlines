@@ -1,12 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "r3yQDURrWf3H3t1B3+Z6989VdoAnVtXoIzfrerTwnTE=",
-  "Source": "ProfanityService",
-  "BasePath": "_content/ProfanityService",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
-}
+{"Version":1,"Hash":"MaQRMqXwHZ/aifIys3Lcb0opHHFioHr3ZDrwtLeVWE8=","Source":"ProfanityService","BasePath":"_content/ProfanityService","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[{"Identity":"C:\\Users\\elksk\\Documents\\rimeligt legit skolesager\\Programmeringsprojekter\\DLS\\Project\\Week36 - implement ArticleService, ArticleDatabase\\HappyHeadlines\\Monitoring\\Monitoring.csproj","Version":2,"Source":"Monitoring","GetPublishAssetsTargets":"ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems","AdditionalPublishProperties":"Configuration=Debug;Platform=AnyCPU","AdditionalPublishPropertiesToRemove":"WebPublishProfileFile;TargetFramework","GetBuildAssetsTargets":"GetCurrentProjectBuildStaticWebAssetItems","AdditionalBuildProperties":"Configuration=Debug;Platform=AnyCPU","AdditionalBuildPropertiesToRemove":"WebPublishProfileFile;TargetFramework"}],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

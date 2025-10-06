@@ -1,48 +1,46 @@
 # Hey Thomas
 
-### Velkommen til mit projekt
+## Velkommen til mit projekt
 
-Jeg ville ønske vi kunne mødes under bedre forhold,
-men jeg blev lidt stresset, og derfor ser her ud som der gør!
+ Det her er en refaktorering per den 6. oktober.
+Gransk tidligere commits for den fuldstændige velkomst.
 
-Anyways, på den lyse side er der også noget fedt at se, 
-men jeg vil lige starte med at liste nogle af de ting du
-kommer til at finde her, som kan virke lidt forvirrende.
+### Patch notes october 6th part deux
+Because of a lack of a stable build, these two updates hit simultaneously.
 
-### 1. Arkitekturen er lidt skiftende
+What's new and old since this morning?
+- Release turns out to be relatively stable.
+- Seq log available at ```localhost:5342```
+- Zipkin traces at ```localhost:9411```
+- Some classes have had redundancies removed. *Some*.
+- C4 diagram has been recognised as a requirement for the project.
+It will be sorely missed.
+- Services still print their own logs to console in container.
+This is intentional, as the Seq sink is a busy place.
+- Loadbalancing fixed an issue where replicated articleservice services 
+would fight for the right to make preliminary checks/migrations to all articledatabases.
 
-Efterhånden som jeg kom længere og længere med opgaven, begyndte jeg
-at blive mere og mere opmærksom på hvad jeg havde gang i.
-Det betød, at jeg fik noget mere abstraktion op banen,
-og fandt bedre måder at håndtere dependency injection på.
-Det betyder til gengæld også, at article- og commentservice
-først var skrevet meget simplistisk og uden nogen som helst lag
-mellem databasen og api-controller (i know), og derfor
-gennemgik en meget, meget hurtig refaktorering for ca. en halv time siden.
-Med koffein og dødelige mængder nikotin i blodet, 
-er det ikke til at sige om det fungerer, men i det mindste lod
-EF mig migrate.
+### Patch notes october 6th
+*I have no swarm but I must loadbalance*
 
-### 2. Hvor er mine logs/traces?
-De skulle gerne blive printet i seq, men også der
-var en farlig refaktorering, så det skal måske fikses.
-
-### 3. Redundans er en (redun)dans på roser
-Flere steder har jeg i panik indført enten regisrering af services
-der er unødvendige, og i samme omgang ofte fjernet registreringer
-der var. Mens jeg konceptuelt har forstået mine opgaver, 
-så har der lige været nogle skavanker fordi jeg lige har
-været distræt hist og her.
-
-Det rammer nok de fleste punkter. Jeg får det opdateret løbende, 
-så det i hvert fald kører forståeligt.
-
-Håber du har en god dag,
-Mikkel
-
-
-ps: det kører på docker compose up, men det ved du helt sikkert i forvejen.
-
+- Loadbalancing er kommet til Zarnath. Det har selvfølgelig rykket docker-compose.yml 
+fuldstændigt i stykker, og vi kan ikke længere vente på conditions som "status_healthy",
+så det ses gerne at man venter 1-2 minutter fra startup før man benytter app'en.
+Om det er rimeligt eller om det her er et unoptimized rod vides ikke før mere data er
+indsamlet.
+- Projektet startes nu ordenligt med ```docker stack deploy -c docker-compose.yml happyheadlines```
+og smadres med ```docker stack rm happyheadlines ```
+- Massive ændringer til logging/tracing for at finde ud af, hvorfor de ikke er skrevet 
+verbost i seq. Uhensigtsmæssigt som det er, så er den nu registreret i de apps der bruger dem,
+samt tilføjet til images. Meget tung løsning, klart forringelse af buildtime.
+- Tilføjelse af metoder der kan finde comments til en given article i en given region
+- Tilføjelse af shell script til at bygge samtlige dockerfiler i repo.
+Kan aktiveres ved at bash ```./DockerBuildAll.sh```
+- ```./AddMigrations.sh``` fungerer igen, da hardcoded region er fjernet fra
+designtime-venlig dbcontextfactory i articledatabase
+- CommentDto tilføjet til ArticleService, men det er noget vås. ignore.
+- Tilføjet sleep til ArticleService, så den i hvert fald bliver liggende i 100 sekunder
+- Logs virker omkring kl 18 i aften
 
 ### Patch notes october 5th
 - 1.0 release did not include mandatory cache dashboard. This update does, however functional.

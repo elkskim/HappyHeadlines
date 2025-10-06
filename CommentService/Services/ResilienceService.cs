@@ -11,20 +11,20 @@ public class ResilienceService : IResilienceService
 {
     private readonly CommentDbContext _commentDbContext;
     private readonly HttpClient _httpClient;
-    private readonly ILogger<ResilienceService> _logger;
     private readonly IAsyncPolicy<ProfanityCheckResult> _policy;
-
+    private readonly ICommentCacheCommander _commentCacheCommander;
     public ResilienceService
     (
         CommentDbContext commentDbContext,
         IHttpClientFactory httpClientFactory,
-        ILoggerFactory iLoggerFactory
+        ICommentCacheCommander commentCacheCommander
     )
     {
         _commentDbContext = commentDbContext;
-        _httpClient = httpClientFactory.CreateClient();
-        _logger = iLoggerFactory.CreateLogger<ResilienceService>();
-
+        _httpClient = httpClientFactory.CreateClient("profanity");
+        _commentCacheCommander = commentCacheCommander;
+        
+        //TODO we still dont trip the breaker at any point
         var circuitbreak = Policy
             .Handle<HttpRequestException>()
             .Or<BrokenCircuitException>()
@@ -56,7 +56,8 @@ public class ResilienceService : IResilienceService
 
     public async Task<IEnumerable<Comment>> GetComments(string region, int articleId, CancellationToken cancellationToken)
     {
-        return await _commentDbContext.Comments.Where(c => c.Region == region && c.ArticleId == articleId).ToListAsync(cancellationToken);
+       // return await _commentDbContext.Comments.Where(c => c.Region == region && c.ArticleId == articleId).ToListAsync(cancellationToken);
+       return await _commentCacheCommander.GetCommentsAsync(articleId, region, cancellationToken);
     }
 
     public async Task<Comment?> GetCommentById(int articleId, string region, int commentId, CancellationToken cancellationToken)
@@ -82,7 +83,8 @@ public class ResilienceService : IResilienceService
         {
             var response =
                 await _httpClient.GetAsync("http://profanity-service:80/api/Profanity", cancellationToken);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+                return new ProfanityCheckResult(false, serviceUnavailable: true);
             var profanities = await response.Content.ReadFromJsonAsync<List<Profanity>>(cancellationToken);
 
             var containsProfanity =
@@ -96,6 +98,9 @@ public class ResilienceService : IResilienceService
     {
         await _commentDbContext.Comments.AddAsync(comment, cancellationToken);
         await _commentDbContext.SaveChangesAsync(cancellationToken);
+        
+        //This should get the cache out and back again
+        await _commentCacheCommander.InvalidateCommentsCacheAsync(comment.ArticleId, comment.Region, cancellationToken);
         return comment;
     }
 

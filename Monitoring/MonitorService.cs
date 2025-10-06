@@ -10,24 +10,37 @@ namespace Monitoring;
 
 public static class MonitorService
 {
-    public static readonly string ServiceName = Assembly.GetCallingAssembly().GetName().Name ?? "Unknown";
-    public static TracerProvider TracerProvider;
-    public static ActivitySource ActivitySource = new(ServiceName);
+    
+        public static TracerProvider? TracerProvider;
+        public static ActivitySource? ActivitySource;
+        public static ILogger Log => Serilog.Log.Logger;
 
-    static MonitorService()
-    {
-        TracerProvider = Sdk.CreateTracerProviderBuilder()
-            .AddConsoleExporter()
-            .AddZipkinExporter(o => o.Endpoint = new Uri("http://zipkin:9411/api/v2/spans"))
-            .AddSource(ActivitySource.Name)
-            .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(ServiceName))
-            .Build();
+        public static void Initialize(string serviceName)
+        {
+            ActivitySource = new ActivitySource(serviceName);
 
-        Serilog.Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Verbose()
-            .WriteTo.Seq("http://seq:5341")
-            .CreateLogger();
-    }
+            TracerProvider = Sdk.CreateTracerProviderBuilder()
+                .AddZipkinExporter(o => o.Endpoint = new Uri("http://zipkin:9411/api/v2/spans"))
+                .AddConsoleExporter()
+                .AddSource(serviceName)
+                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName))
+                .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
+                .Build();
 
-    public static ILogger Log => Serilog.Log.Logger;
+            Log.Information("Tracer provider initialized for {ServiceName}", serviceName);
+        }
+
+        public static void ConfigureSerilog(HostBuilderContext context, IServiceProvider services, LoggerConfiguration config, string serviceName)
+        {
+            config
+                .MinimumLevel.Verbose()
+                .Enrich.FromLogContext()
+                .Enrich.WithProperty("ServiceName", serviceName)
+                .WriteTo.Seq("http://seq:80")
+                .WriteTo.Console();
+        }
+    
+
+    
 }

@@ -1,6 +1,7 @@
 using CommentDatabase.Models;
 using CommentService.Services;
 using Microsoft.AspNetCore.Mvc;
+using Monitoring;
 
 namespace CommentService.Controllers;
 
@@ -40,18 +41,26 @@ public class CommentController : Controller
     }
 
     [HttpPost]
-    //TODO I SWEAR TO FUCKING GOD
     public async Task<IActionResult> PostComment([FromBody]Comment? comment, CancellationToken cancellationToken)
     {
+        MonitorService.Log.Information("Requesting postcomment");
         if (comment == null) return BadRequest("Comment is empty, idiot");
 
         var judgement = await _resilienceService.CheckForProfanity(comment, cancellationToken);
-        if (judgement.serviceUnavailable) return StatusCode(503, "Profanity service currently unavailable");
-        if (judgement.isProfane) return BadRequest("The comment contains profanity. You're out.");
+        if (judgement.serviceUnavailable)
+        {
+            MonitorService.Log.Error("Profanity service cannot be reached.");
+            return StatusCode(503, "Profanity service currently unavailable");
+        }
 
-        //TODO THIS SEEMS TO CAUSE A FUCKING ISSUE
+        if (judgement.isProfane)
+        {
+            MonitorService.Log.Warning("Comment contained profanity. You have been denied.");
+            return BadRequest("The comment contains profanity. You're out.");
+        }
+
         var confirmedComment = await _resilienceService.PostComment(comment, cancellationToken);
-
+        MonitorService.Log.Information("Commented posted succesfully.");
         return CreatedAtAction(
             nameof(GetCommentById),
             new { id = comment.Id },

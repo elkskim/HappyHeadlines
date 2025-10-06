@@ -17,18 +17,18 @@ public class ProfanityController : Controller
     }
 
     [HttpGet]
-    public async Task<List<Profanity>> GetProfanities()
+    public async Task<List<Profanity>> GetProfanities(CancellationToken cancellationToken)
     {
-        return await _profanityDiService.GetProfanityListAsync();
+        return await _profanityDiService.GetProfanityListAsync(cancellationToken);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Profanity>> CreateProfanity([FromBody] Profanity profanity)
+    public async Task<ActionResult<Profanity>> CreateProfanity([FromBody] Profanity profanity, CancellationToken cancellationToken)
     {
         profanity.Word = profanity.Word.ToLower();
         if (string.IsNullOrWhiteSpace(profanity.Word))
             return BadRequest("What did you think? Empty Space won't work at all!");
-        if (!(await GetProfanities()).Where(p => p.Word.ToLower() == profanity.Word).IsNullOrEmpty())
+        if (!(await GetProfanities(cancellationToken)).Where(p => p.Word.ToLower() == profanity.Word).IsNullOrEmpty())
             return BadRequest($"Profanity database already contains {profanity.Word}");
         return Ok(await _profanityDiService.AddProfanityAsync(profanity));
     }

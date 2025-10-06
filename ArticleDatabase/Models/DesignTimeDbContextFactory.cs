@@ -11,7 +11,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ArticleDbC
         var optionsBuilder = new DbContextOptionsBuilder<ArticleDbContext>();
 
         // for fucks sake
-        var region = "Global";
+        var region = args.Length > 0 ? args[0] : "Global";
 
         var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -26,7 +26,6 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ArticleDbC
             sqlOptions.EnableRetryOnFailure()
         );
         var context = new ArticleDbContext(optionsBuilder.Options);
-        context.Database.EnsureCreated();
         return context;
     }
 }

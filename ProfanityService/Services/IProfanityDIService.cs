@@ -4,6 +4,6 @@ namespace ProfanityService.Services;
 
 public interface IProfanityDiService
 {
-    Task<List<Profanity>> GetProfanityListAsync();
+    Task<List<Profanity>> GetProfanityListAsync(CancellationToken cancellationToken);
     Task<Profanity> AddProfanityAsync(Profanity profanity);
 }

@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using ArticleDatabase.Models;
 using Monitoring;
+using NewsletterService.Controllers;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -22,7 +23,7 @@ public class NewsletterConsumer
 
         _channel.ExchangeDeclareAsync("articles.exchange", ExchangeType.Fanout, true)
             .GetAwaiter().GetResult();
-        _channel.QueueDeclareAsync("article.newsletter.queue", true, false, false)
+        _channel.QueueDeclareAsync("articles.newsletter.queue", true, false, false)
             .GetAwaiter().GetResult();
         _channel.QueueBindAsync("articles.newsletter.queue", "articles.exchange", "")
             .GetAwaiter().GetResult();
@@ -45,6 +46,7 @@ public class NewsletterConsumer
         };
 
         _channel.BasicConsumeAsync("article.newsletter.queue", true, consumer);
+        //this is probably where i would send a mail through the controller or something i guess
     }
 
     public async ValueTask DisposeAsync()

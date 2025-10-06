@@ -13,9 +13,11 @@ public class PublisherController : Controller
     [HttpPost]
     public async Task<IActionResult> Post(Article article)
     {
+        var publisher = await PublisherMessaging.CreateAsync();
+        
         if (article == null) return BadRequest();
 
-        var result = await _publisherMessaging.PublishArticle(article);
+        var result = await publisher.PublishArticle(article);
         return Ok(result);
     }
 }

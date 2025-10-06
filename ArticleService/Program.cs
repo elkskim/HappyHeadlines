@@ -1,4 +1,5 @@
 using ArticleDatabase.Models;
+using ArticleService.Messaging;
 using ArticleService.Services;
 using Microsoft.EntityFrameworkCore;
 using Monitoring;
@@ -31,12 +32,15 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")));
 builder.Services.AddHostedService<ArticleCacheCommander>();
 
+builder.Services.AddSingleton<ArticleConsumer>();
+builder.Services.AddHostedService<ArticleConsumerHostedService>();
+
 
 builder.Services.AddControllers();
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = "redis:6379"; // docker compose alias
+    options.Configuration = "redis:6379"; 
     options.InstanceName = "happyheadlines:";
 });
 
@@ -46,7 +50,6 @@ builder.Services.AddHttpClient("CommentsService", client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
-// Define regions and their container hostnames/ports
 var regions = new Dictionary<string, string>
 {
     ["Global"] = "global-article-db,1433",
@@ -85,7 +88,7 @@ using (var scope = app.Services.CreateScope())
             MonitorService.Log.Debug("❌ Failed to migrate {Region}: {ExMessage}", region, ex.Message);
         }
 }
-
+//TODO come on man this is a fucking mess
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

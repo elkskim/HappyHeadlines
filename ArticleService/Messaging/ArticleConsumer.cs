@@ -7,28 +7,34 @@ using RabbitMQ.Client.Events;
 
 namespace ArticleService.Messaging;
 
-public class ArticleConsumer
+public class ArticleConsumer : IAsyncDisposable
 {
     private readonly ArticleDbContext _articleDbContext;
-    private readonly IChannel _channel;
-    private readonly IConnection _connection;
+    private IChannel? _channel;
+    private IConnection? _connection;
 
-    public ArticleConsumer()
+    public ArticleConsumer(ArticleDbContext articleDbContext)
     {
+        _articleDbContext = articleDbContext;
+        
+    }
+
+    public async Task Consume()
+    {
+        MonitorService.Log.Information("It is time. The ArticleConsumer Rises to Devour.");
+        //God grant me strength
         var factory = new ConnectionFactory { HostName = "rabbitmq" };
         _connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
-        _channel = _connection.CreateChannelAsync().GetAwaiter().GetResult();
+       _channel = _connection.CreateChannelAsync().GetAwaiter().GetResult();
 
         _channel.ExchangeDeclareAsync("articles.exchange", ExchangeType.Fanout, true)
             .GetAwaiter().GetResult();
-        _channel.QueueDeclareAsync("articles.queue", true, false, false)
+        _channel.QueueDeclareAsync("articles.persist.queue", true, false, false)
             .GetAwaiter().GetResult();
-        _channel.QueueBindAsync("article.persist.queue", "articles.exchange", "")
+        _channel.QueueBindAsync("articles.persist.queue", "articles.exchange", "")
             .GetAwaiter().GetResult();
-    }
-
-    public void Consume()
-    {
+        
+        
         var consumer = new AsyncEventingBasicConsumer(_channel);
 
         consumer.ReceivedAsync += async (sender, ea) =>
@@ -40,11 +46,18 @@ public class ArticleConsumer
 
             MonitorService.Log.Information("ArticleService Received Article: {article?.Title}", article?.Title);
 
+            //congratulatuiiasns, here is the article. Let us hope it's not null
             await _articleDbContext.Articles.AddAsync(article);
             await _articleDbContext.SaveChangesAsync();
             await Task.CompletedTask;
         };
 
-        _channel.BasicConsumeAsync("article.persist.queue", true, consumer);
+        await _channel.BasicConsumeAsync("articles.persist.queue", true, consumer);
+    }
+    
+    public async ValueTask DisposeAsync()
+    {
+        if (_channel != null) await _channel.DisposeAsync();
+        if (_connection != null) await _connection.DisposeAsync();
     }
 }

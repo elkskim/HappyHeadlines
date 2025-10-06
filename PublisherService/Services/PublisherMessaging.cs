@@ -11,25 +11,38 @@ public class PublisherMessaging
     private readonly IChannel _channel;
     private readonly IConnection _connection;
 
-    public PublisherMessaging()
+    public PublisherMessaging(IConnection connection, IChannel channel)
     {
-        using var activity = MonitorService.ActivitySource.StartActivity("PublishArticle");
-        MonitorService.Log.Information("Publishing Article");
-        var factory = new ConnectionFactory { HostName = "rabbitmq" };
-        _connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
-        _channel = _connection.CreateChannelAsync().GetAwaiter().GetResult();
+        _connection = connection;
+        _channel = channel;
+    }
 
-        _channel.ExchangeDeclareAsync("articles.exchange", ExchangeType.Fanout, true).GetAwaiter().GetResult();
+    public async static Task<PublisherMessaging> CreateAsync()
+    {
+        
+        
+        var factory = new ConnectionFactory { HostName = "rabbitmq" };
+        var connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
+        var channel = connection.CreateChannelAsync().GetAwaiter().GetResult();
+
+        channel.ExchangeDeclareAsync("articles.exchange", ExchangeType.Fanout, true).GetAwaiter().GetResult();
+        
+        return new PublisherMessaging(connection, channel);
     }
 
     public async Task<Article> PublishArticle(Article article)
     {
+        using var activity = MonitorService.ActivitySource.StartActivity("PublishArticle");
+        MonitorService.Log.Information("Publishing article");
+        
         var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(article));
         var properties = new BasicProperties
         {
             ContentType = "application/json",
             DeliveryMode = DeliveryModes.Persistent
         };
+        
+        if (_channel == null) throw new ArgumentNullException(nameof(_channel));
 
         await _channel.BasicPublishAsync(
             "articles.exchange",

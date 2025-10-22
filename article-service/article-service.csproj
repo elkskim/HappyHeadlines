@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <AssemblyName>ArticleService</AssemblyName>
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <!-- maybe ignoring errors was the real debugging all along? -->
         <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <PackageId>article-service</PackageId>
+        <RootNamespace>ArticleService</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

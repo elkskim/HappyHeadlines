@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArticleDatabase", "ArticleDatabase\ArticleDatabase.csproj", "{0D20F8B4-0113-4B48-B126-0A8FA90EE223}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArticleService", "ArticleService\ArticleService.csproj", "{16362C44-AF29-4715-AE01-7C214224D267}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "article-service", "article-service\article-service.csproj", "{16362C44-AF29-4715-AE01-7C214224D267}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommentService", "CommentService\CommentService.csproj", "{9F4DB56B-DEAC-4B11-B434-994F80E94BC8}"
 EndProject

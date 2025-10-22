@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2DhkeK3aRuM=",
+  "dgSpecHash": "0yyYrNjgKXc=",
   "success": true,
-  "projectFilePath": "C:\\Users\\elksk\\Documents\\rimeligt legit skolesager\\Programmeringsprojekter\\DLS\\Project\\Week36 - implement ArticleService, ArticleDatabase\\HappyHeadlines\\ArticleService\\ArticleService.csproj",
+  "projectFilePath": "C:\\Users\\elksk\\Documents\\rimeligt legit skolesager\\Programmeringsprojekter\\DLS\\Project\\Week36 - implement ArticleService, ArticleDatabase\\HappyHeadlines\\article-service\\article-service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\elksk\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\elksk\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

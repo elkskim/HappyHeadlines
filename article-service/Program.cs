@@ -9,7 +9,7 @@ using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var serviceName = "ArticleService";
+var serviceName = "article-service";
 
 MonitorService.Initialize(serviceName);
 

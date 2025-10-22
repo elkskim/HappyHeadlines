@@ -8,7 +8,7 @@
       "version": "1.0.0",
       "restore": {
         "projectUniqueName": "C:\\Users\\elksk\\Documents\\rimeligt legit skolesager\\Programmeringsprojekter\\DLS\\Project\\Week36 - implement ArticleService, ArticleDatabase\\HappyHeadlines\\article-service\\article-service.csproj",
-        "projectName": "ArticleService",
+        "projectName": "article-service",
         "projectPath": "C:\\Users\\elksk\\Documents\\rimeligt legit skolesager\\Programmeringsprojekter\\DLS\\Project\\Week36 - implement ArticleService, ArticleDatabase\\HappyHeadlines\\article-service\\article-service.csproj",
         "packagesPath": "C:\\Users\\elksk\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\elksk\\Documents\\rimeligt legit skolesager\\Programmeringsprojekter\\DLS\\Project\\Week36 - implement ArticleService, ArticleDatabase\\HappyHeadlines\\article-service\\obj\\",

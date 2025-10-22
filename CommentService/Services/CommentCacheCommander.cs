@@ -40,7 +40,7 @@ public async Task<IEnumerable<Comment>> GetCommentsAsync(int articleId, string r
             MonitorService.Log.Information("Cache hit for article {ArticleId} ({Region})", articleId, region);
             MonitorService.Log.Information("The actual eggs in cache: {ArticleId} ({Region}): {Cached}", articleId, region, cached);
             
-            // Tried cache already
+            
             await TouchRecentAsync(articleId, region);
 
             var result = JsonSerializer.Deserialize<IEnumerable<Comment>>(cached)!;
@@ -71,10 +71,8 @@ public async Task<IEnumerable<Comment>> GetCommentsAsync(int articleId, string r
     {
         var zsetKey = $"comments:recent:{region}";
 
-        // Add or update with timestamp
         await _redis.SortedSetAddAsync(zsetKey, articleId.ToString(), DateTimeOffset.UtcNow.ToUnixTimeSeconds());
 
-        // Trim down to last 30
         var count = await _redis.SortedSetLengthAsync(zsetKey);
         if (count > 30)
         {

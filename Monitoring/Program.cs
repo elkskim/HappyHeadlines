@@ -23,7 +23,7 @@ var app = builder.Build();
 app.MapControllers();
 app.MapGet("/", () =>
 {
-    MonitorService.Log.Information("MonitoringService heartbeat received");
+    MonitorService.Log.Information("MonitoringService heartbeat received - This is just a fun thing i'm writing");
     return Results.Ok("✅ MonitoringService is running and logging");
 });
 

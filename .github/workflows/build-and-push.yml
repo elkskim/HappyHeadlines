@@ -34,7 +34,7 @@ jobs:
             ["ProfanityService"]="profanity-service"
             ["PublisherService"]="publisher-service"
             ["NewsletterService"]="newsletter-service"
-            ["MonitoringService"]="monitoring-service"
+            ["Monitoring"]="monitoring-service"
           )
 
           OWNER=${{ github.repository_owner }}

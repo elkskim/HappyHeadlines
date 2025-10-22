@@ -29,7 +29,7 @@ jobs:
         run: |
           # List of your own services that have Dockerfiles
           SERVICES=(
-            "article-service"
+            "ArticleService"
             "comment-service"
             "draft-service"
             "profanity-service"

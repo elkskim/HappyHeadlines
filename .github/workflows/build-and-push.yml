@@ -27,22 +27,22 @@ jobs:
 
       - name: Build and push HappyHeadlines service images
         run: |
-          # List of your own services that have Dockerfiles
-          SERVICES=(
-            "article-service"
-            "comment-service"
-            "draft-service"
-            "profanity-service"
-            "publisher-service"
-            "newsletter-service"
-            "monitoring-service"
+          declare -A MAP=(
+            ["ArticleService"]="article-service"
+            ["CommentService"]="comment-service"
+            ["DraftService"]="draft-service"
+            ["ProfanityService"]="profanity-service"
+            ["PublisherService"]="publisher-service"
+            ["NewsletterService"]="newsletter-service"
+            ["MonitoringService"]="monitoring-service"
           )
 
           OWNER=${{ github.repository_owner }}
 
-          for SERVICE in "${SERVICES[@]}"; do
-            IMAGE_NAME="ghcr.io/${OWNER}/${SERVICE}:latest"
-            echo "🚀 Building and pushing $SERVICE -> $IMAGE_NAME"
-            docker build -t "$IMAGE_NAME" "./$SERVICE"
+          for DIR in "${!MAP[@]}"; do
+            IMAGE="${MAP[$DIR]}"
+            IMAGE_NAME="ghcr.io/${OWNER}/${IMAGE}:latest"
+            echo "🚀 Building $DIR → $IMAGE_NAME"
+            docker build -t "$IMAGE_NAME" "./$DIR"
             docker push "$IMAGE_NAME"
           done

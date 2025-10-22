@@ -7,7 +7,7 @@
         <!-- maybe ignoring errors was the real debugging all along? -->
         <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <PackageId>article-service</PackageId>
+        <PackageId>ArticleService</PackageId>
         <RootNamespace>ArticleService</RootNamespace>
     </PropertyGroup>
 

@@ -44,7 +44,7 @@ public class ArticleConsumer : IAsyncDisposable
             var json = Encoding.UTF8.GetString(ea.Body.ToArray());
             var article = JsonSerializer.Deserialize<Article>(json);
 
-            MonitorService.Log.Information("article-service Received Article: {article?.Title}", article?.Title);
+            MonitorService.Log.Information("ArticleService Received Article: {article?.Title}", article?.Title);
 
             //congratulatuiiasns, here is the article. Let us hope it's not null
             await _articleDbContext.Articles.AddAsync(article);

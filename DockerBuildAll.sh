@@ -7,7 +7,7 @@ declare -A SERVICES=(
   ["publisher-service"]="PublisherService/Dockerfile"
   ["newsletter-service"]="NewsletterService/Dockerfile"
   ["monitoring-service"]="Monitoring/Dockerfile"
-  ["article-service"]="ArticleService/Dockerfile1"
+  ["article-service"]="ArticleService/Dockerfile"
   ["profanity-service"]="ProfanityService/Dockerfile"
   ["comment-service"]="CommentService/Dockerfile"
 )

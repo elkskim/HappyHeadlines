@@ -43,6 +43,6 @@ jobs:
             IMAGE="${MAP[$DIR]}"
             IMAGE_NAME="ghcr.io/${OWNER}/${IMAGE}:latest"
             echo "🚀 Building $DIR → $IMAGE_NAME"
-            docker build -t "$IMAGE_NAME" "./$DIR"
+            docker build -f "./$DIR/Dockerfile" -t "$IMAGE_NAME" .
             docker push "$IMAGE_NAME"
           done

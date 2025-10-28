@@ -14,6 +14,7 @@ volumes:
   mssql-profanity:
   mssql-comment:
   mssql-draft:
+  mssql-subscriber:
   rps_seq_data:
   zipkin_data:
 
@@ -161,8 +162,21 @@ services:
       - "1443:1433"
     volumes:
       - mssql-draft:/var/opt/mssql
+        
+  subscriber-db:
+    networks:
+      - HHL
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    environment:
+      SA_PASSWORD: "Pazzw0rd2025"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Express
+    ports:
+      - "1444:1433"
+    volumes:
+      - mssql-subscriber:/var/opt/mssql
 
-  
+  #Services
   profanity-service:
     networks:
       - HHL
@@ -202,7 +216,6 @@ services:
     ports:
       - "8006:80"  
       
-  
   newsletter-service:
     networks:
       - HHL
@@ -218,6 +231,20 @@ services:
       - "8085:80"
     environment:
       - ASPNETCORE_URLS=http://+:80
+        
+  subscriber-service:
+    networks:
+      - HHL
+    image: subscriber-service:latest
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__Subscriber=Server=subscriber-db,1433;Database=Subscriber;User Id=SA;Password=Pazzw0rd2025;TrustServerCertificate=True;
+    ports:
+      - "8007:80"
+    depends_on:
+      - subscriber-db
+      - seq
+      - zipkin
 
   article-service:
     networks:

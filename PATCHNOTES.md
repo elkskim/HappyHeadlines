@@ -1,4 +1,13 @@
-### Patch notes spooky midnight
+# These are global patchnotes until I make proper releases and notes.
+
+## Patch v.0.5.0
+### SubscriberService and -Database.
+
+This is the implementation for Week 43 - The Subscribers.
+First of all, it creates SubscriberService, SubscriberDatabase, and the
+SubscriberQueue.
+
+## Patch notes spooky midnight October 6th/7th - v0.4.3
 
 Finally the application is functional.
 By that I mean that the queues, caches, and sometimes the rest of the services

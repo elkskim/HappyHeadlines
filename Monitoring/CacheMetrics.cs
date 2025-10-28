@@ -54,7 +54,7 @@ public class CacheMetrics
     {
         public CommentCacheMetrics(IConnectionMultiplexer redis) : base(redis, "commentcache")
         {
-            Console.WriteLine("An CommentCacheMetrics service has been initialized.");
+            Console.WriteLine("A CommentCacheMetrics service has been initialized.");
         }
     }
 }

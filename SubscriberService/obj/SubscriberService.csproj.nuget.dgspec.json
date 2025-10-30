@@ -243,6 +243,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "FeatureHub.SDK": {
+              "target": "Package",
+              "version": "[2.5.1, )"
+            },
             "Microsoft.AspNetCore.Mvc.Core": {
               "target": "Package",
               "version": "[2.3.0, )"
@@ -250,6 +254,10 @@
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[9.0.10, )"
+            },
+            "RabbitMQ.Client": {
+              "target": "Package",
+              "version": "[7.1.2, )"
             },
             "Swashbuckle.AspNetCore.Swagger": {
               "target": "Package",

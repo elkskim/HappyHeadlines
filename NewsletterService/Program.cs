@@ -1,4 +1,5 @@
 using Monitoring;
+using NewsletterService.Features;
 using NewsletterService.Messaging;
 using Serilog;
 
@@ -13,12 +14,19 @@ builder.Host.UseSerilog((context, services, configuration) =>
     MonitorService.ConfigureSerilog(context, services, configuration, serviceName);
 });
 
+builder.Services.AddSingleton<IFeatureToggleService, FeatureToggleService>();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddSingleton<NewsletterConsumer>();
-builder.Services.AddHostedService<NewsletterConsumerHostedService>();
+
+// We now have two consumers. The Copilot refuses to let me write swear words in comments.
+builder.Services.AddSingleton<NewsletterArticleConsumer>();
+builder.Services.AddHostedService<NewsletterArticleConsumerHostedService>();
+
+builder.Services.AddSingleton<NewsletterSubscriberConsumer>();
+builder.Services.AddHostedService<NewsletterSubscriberConsumerHostedService>();
+
 builder.Services.AddControllers();
 
 

@@ -1,30 +1,30 @@
 using Monitoring;
 using NewsletterService.Messaging;
 
-public class NewsletterConsumerHostedService : IHostedService, IAsyncDisposable
+public class NewsletterArticleConsumerHostedService : IHostedService, IAsyncDisposable
 {
-    private readonly NewsletterConsumer _consumer;
+    private readonly NewsletterArticleConsumer _articleConsumer;
 
-    public NewsletterConsumerHostedService(NewsletterConsumer consumer)
+    public NewsletterArticleConsumerHostedService(NewsletterArticleConsumer articleConsumer)
     {
-        _consumer = consumer;
+        _articleConsumer = articleConsumer;
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        MonitorService.Log.Information("Starting NewsletterConsumerHostedService...");
-        _consumer.StartConsuming();
+        MonitorService.Log.Information("Starting NewsletterArticleConsumerHostedService...");
+        _articleConsumer.StartConsuming();
         return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        MonitorService.Log.Information("Stopping NewsletterConsumerHostedService...");
+        MonitorService.Log.Information("Stopping NewsletterArticleConsumerHostedService...");
         return Task.CompletedTask;
     }
 
     public async ValueTask DisposeAsync()
     {
-        await _consumer.DisposeAsync();
+        await _articleConsumer.DisposeAsync();
     }
 }

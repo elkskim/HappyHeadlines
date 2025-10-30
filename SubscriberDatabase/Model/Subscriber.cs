@@ -6,5 +6,5 @@ public class Subscriber
     public int UserId { get; set; }
     public string Email { get; set; }
     public string Region { get; set; }
-    public DateTime SubscribedOn { get; set; }
+    public DateTime SubscribedOn { get; set; } =  DateTime.Now;
 }

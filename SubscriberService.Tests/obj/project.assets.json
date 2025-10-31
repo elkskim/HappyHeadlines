@@ -4147,7 +4147,10 @@
         },
         "runtime": {
           "bin/placeholder/SubscriberService.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },

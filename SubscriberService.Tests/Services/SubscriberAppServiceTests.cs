@@ -3,6 +3,7 @@ using SubscriberDatabase.Data;
 using SubscriberDatabase.Model;
 using SubscriberService.Messaging;
 using SubscriberService.Models.DTO;
+using SubscriberService.Models.Events;
 using SubscriberService.Services;
 using Xunit;
 
@@ -18,14 +19,14 @@ namespace SubscriberService.Tests.Services;
 public class SubscriberAppServiceTests
 {
     private readonly Mock<ISubscriberRepository> _mockRepository;
-    private readonly Mock<SubscriberPublisher> _mockPublisher;
+    private readonly Mock<ISubscriberPublisher> _mockPublisher;
     private readonly SubscriberAppService _service;
 
     public SubscriberAppServiceTests()
     {
         // We prepare our mocks, our test doubles, our stand-ins for reality.
         _mockRepository = new Mock<ISubscriberRepository>();
-        _mockPublisher = new Mock<SubscriberPublisher>();
+        _mockPublisher = new Mock<ISubscriberPublisher>();
         _service = new SubscriberAppService(_mockRepository.Object, _mockPublisher.Object);
     }
 
@@ -67,7 +68,7 @@ public class SubscriberAppServiceTests
         
         // Verify the publisher was called; the message sent into the void.
         _mockPublisher.Verify(
-            p => p.PublishSubscriberAdded(It.IsAny<SubscriberService.Models.Events.SubscriberAddedEvent>()),
+            p => p.PublishSubscriberAdded(It.IsAny<SubscriberAddedEvent>()),
             Times.Once,
             "The event must be published, even if no one listens.");
     }
@@ -155,7 +156,7 @@ public class SubscriberAppServiceTests
         // Assert: Truth emerges from the transformation.
         Assert.NotNull(result);
         _mockPublisher.Verify(
-            p => p.PublishSubscriberUpdated(It.IsAny<SubscriberService.Models.Events.SubscriberUpdatedEvent>()),
+            p => p.PublishSubscriberUpdated(It.IsAny<SubscriberUpdatedEvent>()),
             Times.Once,
             "The update must be broadcast, for those who care to listen.");
     }
@@ -184,7 +185,7 @@ public class SubscriberAppServiceTests
         // Assert
         Assert.Null(result);
         _mockPublisher.Verify(
-            p => p.PublishSubscriberUpdated(It.IsAny<SubscriberService.Models.Events.SubscriberUpdatedEvent>()),
+            p => p.PublishSubscriberUpdated(It.IsAny<SubscriberUpdatedEvent>()),
             Times.Never,
             "No event for the phantom update.");
     }
@@ -220,7 +221,7 @@ public class SubscriberAppServiceTests
         // Assert
         Assert.True(result);
         _mockPublisher.Verify(
-            p => p.PublishSubscriberRemoved(It.IsAny<SubscriberService.Models.Events.SubscriberRemovedEvent>()),
+            p => p.PublishSubscriberRemoved(It.IsAny<SubscriberRemovedEvent>()),
             Times.Once,
             "The removal must be announced. The subscriber is gone, but the message persists.");
     }
@@ -243,7 +244,7 @@ public class SubscriberAppServiceTests
         // Assert: "The void cannot be deleted, for it is already nothing."
         Assert.False(result);
         _mockPublisher.Verify(
-            p => p.PublishSubscriberRemoved(It.IsAny<SubscriberService.Models.Events.SubscriberRemovedEvent>()),
+            p => p.PublishSubscriberRemoved(It.IsAny<SubscriberRemovedEvent>()),
             Times.Never,
             "No event is published for that which never was.");
     }
@@ -279,9 +280,8 @@ public class SubscriberAppServiceTests
         // Assert
         Assert.False(result);
         _mockPublisher.Verify(
-            p => p.PublishSubscriberRemoved(It.IsAny<SubscriberService.Models.Events.SubscriberRemovedEvent>()),
+            p => p.PublishSubscriberRemoved(It.IsAny<SubscriberRemovedEvent>()),
             Times.Never,
             "The subscriber survives. No event is sent.");
     }
 }
-

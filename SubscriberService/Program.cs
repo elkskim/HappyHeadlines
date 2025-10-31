@@ -53,7 +53,12 @@ public class Program
                 return connection.CreateChannelAsync().GetAwaiter().GetResult();
             });
             
-            builder.Services.AddSingleton<SubscriberPublisher>();
+            // Register publisher as its interface so tests can mock ISubscriberPublisher
+            builder.Services.AddSingleton<ISubscriberPublisher>(sp =>
+            {
+                var channel = sp.GetRequiredService<IChannel>();
+                return new SubscriberPublisher(channel);
+            });
             
             builder.Services.AddScoped<ISubscriberAppService, SubscriberAppService>();
             builder.Services.AddControllers();

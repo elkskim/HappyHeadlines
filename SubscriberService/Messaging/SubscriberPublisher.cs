@@ -6,7 +6,7 @@ using SubscriberService.Models.Events;
 
 namespace SubscriberService.Messaging;
 
-public class SubscriberPublisher : IAsyncDisposable
+public class SubscriberPublisher : ISubscriberPublisher
 {
     private readonly IChannel _channel;
     private const string ExchangeName = "subscribers.exchange";

@@ -22,17 +22,20 @@ public class SubscriberPublisherTests
     {
         _mockChannel = new Mock<IChannel>();
         
-        // Mock exchange declaration to prevent actual RabbitMQ calls
+        // NOTE: Do not attempt to Setup extension methods (ExchangeDeclareAsync) with Moq;
+        // Moq cannot setup extension methods. We rely on the extension method to operate
+        // against the mocked IChannel at runtime. Instead we setup the method we verify below.
+
+        // Setup BasicPublishAsync to complete successfully when invoked.
         _mockChannel
-            .Setup(c => c.ExchangeDeclareAsync(
+            .Setup(c => c.BasicPublishAsync(
                 It.IsAny<string>(),
                 It.IsAny<string>(),
                 It.IsAny<bool>(),
-                It.IsAny<bool>(),
-                It.IsAny<IDictionary<string, object>>(),
-                It.IsAny<bool>(),
+                It.IsAny<BasicProperties>(),
+                It.IsAny<ReadOnlyMemory<byte>>(),
                 It.IsAny<CancellationToken>()))
-            .Returns(Task.CompletedTask);
+            .Returns(ValueTask.CompletedTask);
 
         _publisher = new SubscriberPublisher(_mockChannel.Object);
     }

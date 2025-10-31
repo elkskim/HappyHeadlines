@@ -12,9 +12,9 @@ namespace SubscriberService.Services;
 public class SubscriberAppService : ISubscriberAppService
 {
     private readonly ISubscriberRepository _subscriberRepository;
-    private readonly SubscriberPublisher _subscriberPublisher;
+    private readonly ISubscriberPublisher _subscriberPublisher;
 
-    public SubscriberAppService(ISubscriberRepository subscriberRepository,  SubscriberPublisher subscriberPublisher)
+    public SubscriberAppService(ISubscriberRepository subscriberRepository,  ISubscriberPublisher subscriberPublisher)
     {
         _subscriberRepository = subscriberRepository;
         _subscriberPublisher = subscriberPublisher;

@@ -12,12 +12,14 @@ public static class MonitorService
 {
     
         public static TracerProvider? TracerProvider;
-        public static ActivitySource? ActivitySource;
-        public static ILogger Log => Serilog.Log.Logger;
+        private static ActivitySource? _activitySource;
+        public static ActivitySource ActivitySource => _activitySource ??= new ActivitySource("monitor-default");
+        private static ILogger? _logger;
+        public static ILogger Log => _logger ??= Serilog.Log.Logger;
 
         public static void Initialize(string serviceName)
         {
-            ActivitySource = new ActivitySource(serviceName);
+            _activitySource = new ActivitySource(serviceName);
 
             TracerProvider = Sdk.CreateTracerProviderBuilder()
                 .AddZipkinExporter(o => o.Endpoint = new Uri("http://zipkin:9411/api/v2/spans"))

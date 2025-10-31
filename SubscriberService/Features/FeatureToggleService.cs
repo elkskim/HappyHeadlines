@@ -1,4 +1,3 @@
-using FeatureHubSDK;
 using Microsoft.Extensions.Configuration;
 
 namespace SubscriberService.Features;
@@ -12,7 +11,14 @@ public class FeatureToggleService : IFeatureToggleService
         _configuration = configuration;
     }
 
-    public bool IsSubscriberServiceEnabled() =>
-        _configuration.GetValue<bool>("Features:EnableSubscriberService", true);
+    public bool IsSubscriberServiceEnabled()
+    {
+        // read config with indexer for the f/"(#ing tests to work
+        var raw = _configuration["Features:EnableSubscriberService"];
+        if (bool.TryParse(raw, out var parsed)) return parsed;
+
+        // fallback to true when missing or unparsable
+        return true;
+    }
     
 }

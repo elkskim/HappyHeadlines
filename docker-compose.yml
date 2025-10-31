@@ -1,6 +1,9 @@
+#BEWARE - New implementation of docker swarm. Read comments in ArticleService section.
+#This is to support the use of docker-compose in local env, and docker swarm in production.
+
 networks:
   HHL:
-    driver: overlay
+    driver: bridge
 
 volumes:
   mssql-global:
@@ -238,6 +241,7 @@ services:
     image: subscriber-service:latest
     environment:
       - ASPNETCORE_URLS=http://+:80
+      - Features__EnableSubscriberService=true
       - ConnectionStrings__Subscriber=Server=subscriber-db,1433;Database=Subscriber;User Id=SA;Password=Pazzw0rd2025;TrustServerCertificate=True;
     ports:
       - "8007:80"
@@ -250,11 +254,13 @@ services:
     networks:
       - HHL
     image: article-service:latest
-    deploy:
-      replicas: 3
-      endpoint_mode: vip
+    # For docker-compose: Use `docker-compose up --scale article-service=3`
+    # For docker swarm: Uncomment deploy section below
+    # deploy:
+    #   replicas: 3
+    #   endpoint_mode: vip
     ports:
-      - "8000:80"
+      - "8000-8002:80"  # Range for scaling
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__Global=Server=global-article-db,1433;Database=GlobalDb;User Id=SA;Password=Pazzw0rd2025;TrustServerCertificate=True;

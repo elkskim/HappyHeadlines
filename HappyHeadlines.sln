@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscriberService", "Subscr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscriberDatabase", "SubscriberDatabase\SubscriberDatabase.csproj", "{3802D9F7-DB74-4922-AC3A-009627178D5A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscriberService.Tests", "SubscriberService.Tests\SubscriberService.Tests.csproj", "{E32243B0-DDAE-49B1-BD9E-39E21FC4FFDC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -195,6 +197,18 @@ Global
 		{3802D9F7-DB74-4922-AC3A-009627178D5A}.Release|x64.Build.0 = Release|Any CPU
 		{3802D9F7-DB74-4922-AC3A-009627178D5A}.Release|x86.ActiveCfg = Release|Any CPU
 		{3802D9F7-DB74-4922-AC3A-009627178D5A}.Release|x86.Build.0 = Release|Any CPU
+		{E32243B0-DDAE-49B1-BD9E-39E21FC4FFDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E32243B0-DDAE-49B1-BD9E-39E21FC4FFDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E32243B0-DDAE-49B1-BD9E-39E21FC4FFDC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E32243B0-DDAE-49B1-BD9E-39E21FC4FFDC}.Debug|x64.Build.0 = Debug|Any CPU
+		{E32243B0-DDAE-49B1-BD9E-39E21FC4FFDC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E32243B0-DDAE-49B1-BD9E-39E21FC4FFDC}.Debug|x86.Build.0 = Debug|Any CPU
+		{E32243B0-DDAE-49B1-BD9E-39E21FC4FFDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E32243B0-DDAE-49B1-BD9E-39E21FC4FFDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E32243B0-DDAE-49B1-BD9E-39E21FC4FFDC}.Release|x64.ActiveCfg = Release|Any CPU
+		{E32243B0-DDAE-49B1-BD9E-39E21FC4FFDC}.Release|x64.Build.0 = Release|Any CPU
+		{E32243B0-DDAE-49B1-BD9E-39E21FC4FFDC}.Release|x86.ActiveCfg = Release|Any CPU
+		{E32243B0-DDAE-49B1-BD9E-39E21FC4FFDC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

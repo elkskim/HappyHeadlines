@@ -1,0 +1,20 @@
+# Docker Swarm override file
+# Use this for deployment with: docker stack deploy -c docker-compose.yml -c docker-compose.swarm.yml happy-headlines
+# Specifically, this is for production, so I can use Docker-Compose locally. hell yeah!
+version: '3.8'
+
+networks:
+  HHL:
+    driver: overlay
+
+services:
+  article-service:
+    deploy:
+      replicas: 3
+      endpoint_mode: vip
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+

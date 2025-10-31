@@ -30,6 +30,8 @@
     <ItemGroup>
         <ProjectReference Include="..\ArticleDatabase\ArticleDatabase.csproj"/>
         <ProjectReference Include="..\Monitoring\Monitoring.csproj"/>
+        <ProjectReference Include="..\SubscriberDatabase\SubscriberDatabase.csproj" />
+        <ProjectReference Include="..\SubscriberService\SubscriberService.csproj" />
     </ItemGroup>
 
 </Project>

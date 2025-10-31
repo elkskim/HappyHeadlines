@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.6.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+      <!-- Moq is for Mocking the services. Remember this for future test projects so you dont try to connect the actual service please -->
+    <PackageReference Include="Moq" Version="4.20.70" />
+      <!-- These are for integration testing with WebApplicationFactory, because we need to test HTTP as well you fool-->
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
+      <!-- Remember this is for in-memory database testing so you dont mess up the actual database please -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SubscriberService\SubscriberService.csproj" />
+    <ProjectReference Include="..\SubscriberDatabase\SubscriberDatabase.csproj" />
+  </ItemGroup>
+
+</Project>
+

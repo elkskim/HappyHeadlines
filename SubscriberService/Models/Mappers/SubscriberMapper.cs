@@ -29,6 +29,7 @@ public static class SubscriberMapper
         return new SubscriberReadDto
         {
             Id = entity.Id,
+            UserId = entity.UserId,
             Email = entity.Email,
             Region = entity.Region,
             SubscribedOn = entity.SubscribedOn

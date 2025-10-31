@@ -10,6 +10,7 @@ declare -A SERVICES=(
   ["article-service"]="ArticleService/Dockerfile"
   ["profanity-service"]="ProfanityService/Dockerfile"
   ["comment-service"]="CommentService/Dockerfile"
+  ["subscriber-service"]="SubscriberService/Dockerfile"
 )
 
 for SERVICE in "${!SERVICES[@]}"; do

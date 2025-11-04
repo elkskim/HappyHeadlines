@@ -199,3 +199,5 @@ C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\P
 C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleService\obj\Debug\net9.0\ArticleService.pdb
 C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleService\obj\Debug\net9.0\ArticleService.genruntimeconfig.cache
 C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleService\obj\Debug\net9.0\ref\ArticleService.dll
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleService\bin\Debug\net9.0\Polly.dll
+C:\Users\elksk\Documents\rimeligt legit skolesager\Programmeringsprojekter\DLS\Project\Week36 - implement ArticleService, ArticleDatabase\HappyHeadlines\ArticleService\bin\Debug\net9.0\Polly.Core.dll

@@ -5,8 +5,6 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <!-- time to do some dumb shit -->
-        <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
     </PropertyGroup>
 
     <ItemGroup>
@@ -29,6 +27,15 @@
     <ItemGroup>
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+
+    <!-- Prevent appsettings.json from being copied to consuming services -->
+    <!-- This fixes the NETSDK1152 duplicate publish output files error -->
+    <!-- Each service should use its own appsettings.json, not Monitoring's -->
+    <ItemGroup>
+      <Content Update="appsettings.json">
+        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
       </Content>
     </ItemGroup>
 

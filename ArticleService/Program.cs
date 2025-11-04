@@ -19,6 +19,11 @@ builder.Host.UseSerilog((context, services, configuration) =>
     MonitorService.ConfigureSerilog(context, services, configuration, serviceName);
 });
 
+builder.Services.AddMemoryCache(options =>
+{
+    options.SizeLimit = 100; // Limit to 100 articles in memory
+});
+
 // Load configuration
 builder.Configuration.AddJsonFile("appsettings.json", false, true);
 

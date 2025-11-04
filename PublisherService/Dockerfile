@@ -8,8 +8,12 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["PublisherService/PublisherService.csproj", "PublisherService/"]
+COPY ["ArticleDatabase/ArticleDatabase.csproj", "ArticleDatabase/"]
+COPY ["Monitoring/Monitoring.csproj", "Monitoring/"]
 RUN dotnet restore "PublisherService/PublisherService.csproj"
-COPY . .
+COPY ["PublisherService/", "PublisherService/"]
+COPY ["ArticleDatabase/", "ArticleDatabase/"]
+COPY ["Monitoring/", "Monitoring/"]
 WORKDIR "/src/PublisherService"
 RUN dotnet build "./PublisherService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

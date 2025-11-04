@@ -1,6 +1,7 @@
 using CommentDatabase.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Monitoring;
 using Polly;
 using Polly.CircuitBreaker;
 using ProfanityDatabase.Models;
@@ -24,7 +25,10 @@ public class ResilienceService : IResilienceService
         _httpClient = httpClientFactory.CreateClient("profanity");
         _commentCacheCommander = commentCacheCommander;
         
-        //TODO we still dont trip the breaker at any point
+        // Circuit breaker configuration: Breaks after 3 consecutive HttpRequestExceptions
+        // EnsureSuccessStatusCode() throws HttpRequestException on non-success responses (404, 500, etc.)
+        // After 3 consecutive failures, circuit opens for 30 seconds and fast-fails without HTTP calls
+        // This prevents cascading failures when ProfanityService is down or overloaded
         var circuitbreak = Policy
             .Handle<HttpRequestException>()
             .Or<BrokenCircuitException>()
@@ -33,19 +37,19 @@ public class ResilienceService : IResilienceService
                 TimeSpan.FromSeconds(30), // stay open for 30s
                 (ex, breakDelay) =>
                 {
-                    Console.WriteLine($"Circuit opened for {breakDelay.TotalSeconds}s due to: {ex.Message}");
+                    MonitorService.Log.Error(ex, "Circuit breaker OPENED for {Delay}s - ProfanityService failing", breakDelay.TotalSeconds);
                 },
-                () => Console.WriteLine("Circuit closed again."),
-                () => Console.WriteLine("Circuit in half-open state, i don't exactly know what it does, but testing...")
+                () => MonitorService.Log.Information("Circuit breaker CLOSED - ProfanityService recovered"),
+                () => MonitorService.Log.Warning("Circuit breaker HALF-OPEN - Testing ProfanityService recovery")
             );
         var fallback = Policy<ProfanityCheckResult>
             .Handle<HttpRequestException>()
             .Or<BrokenCircuitException>()
             .FallbackAsync(
-                new ProfanityCheckResult(true, true),
+                new ProfanityCheckResult(true, true), // Fail closed: treat as profane when service unavailable
                 e =>
                 {
-                    Console.WriteLine($"Profanity Service unavailable - Fallback triggered {e.Exception.Message}");
+                    MonitorService.Log.Warning(e.Exception, "Fallback triggered - ProfanityService unavailable, blocking comment");
                     return Task.CompletedTask;
                 });
         _policy = fallback.WrapAsync(circuitbreak);
@@ -83,8 +87,11 @@ public class ResilienceService : IResilienceService
         {
             var response =
                 await _httpClient.GetAsync("http://profanity-service:80/api/Profanity", cancellationToken);
-            if (!response.IsSuccessStatusCode)
-                return new ProfanityCheckResult(false, serviceUnavailable: true);
+            
+            // Throw exception on non-success status codes so circuit breaker can count failures
+            // After 3 consecutive failures, circuit opens and fast-fails without HTTP call
+            response.EnsureSuccessStatusCode();
+            
             var profanities = await response.Content.ReadFromJsonAsync<List<Profanity>>(cancellationToken);
 
             var containsProfanity =

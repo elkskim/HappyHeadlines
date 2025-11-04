@@ -1,6 +1,7 @@
 using System.Text.Json;
 using ArticleDatabase.Models;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 using Monitoring;
 using StackExchange.Redis;
 
@@ -22,12 +23,14 @@ public class ArticleDiService : IArticleDiService
     private readonly IArticleRepository _repo;
     private readonly IDistributedCache _cache;
     private readonly CacheMetrics.ArticleCacheMetrics _metrics;
+    private readonly IMemoryCache _memoryCache;
 
-    public ArticleDiService(IArticleRepository repo, IDistributedCache cache, IConnectionMultiplexer redis)
+    public ArticleDiService(IArticleRepository repo, IDistributedCache cache, IConnectionMultiplexer redis, IMemoryCache memoryCache)
     {
         _repo = repo;
         _cache = cache;
         _metrics = new CacheMetrics.ArticleCacheMetrics(redis);
+        _memoryCache = memoryCache;
     }
     
 
@@ -40,30 +43,56 @@ public class ArticleDiService : IArticleDiService
     public async Task<Article?> GetArticleAsync(int id, string region, CancellationToken ct = default)
     {
         MonitorService.Log.Information("Getting article with ID {Id}", id);
-        
+
         var key = $"article:{region}:{id}";
-        var cached = await _cache.GetStringAsync(key, ct);
 
-        if (cached != null)
+        // Trying to make one of em local caches
+        if (_memoryCache.TryGetValue(key, out Article? cachedArticle))
         {
-            MonitorService.Log.Information("Getting article with ID {Id} from cache", id);
+            MonitorService.Log.Information("Article with ID {Id} found in local memory cache", id);
             await _metrics.RecordHitAsync();
-            return JsonSerializer.Deserialize<Article>(cached);
+            return cachedArticle;
         }
-        MonitorService.Log.Information("Getting article with ID {Id} from repository", id);
 
-        var article = await _repo.GetArticleById(id, region, ct);
-        if (article == null) return article;
-        await _metrics.RecordMissAsync();
-        await _cache.SetStringAsync(
-            key, JsonSerializer.Serialize(article),
-            new DistributedCacheEntryOptions
+        // Check Redis cache
+        var redisCached = await _cache.GetStringAsync(key, ct);
+        if (redisCached != null)
+        {
+            var article = JsonSerializer.Deserialize<Article>(redisCached);
+            if (article != null)
             {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(14)
-            }, ct
-        );
+                // Stick this fella in local cache too
+                _memoryCache.Set(key, article, new MemoryCacheEntryOptions
+                {
+                    Size = 1,
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+                });
 
-        return article;
+                MonitorService.Log.Information("Article with ID {Id} found in Redis cache", id);
+                await _metrics.RecordHitAsync();
+                
+                return article;
+            }
+        }
+        
+        // Cache miss; fetch from repository
+        MonitorService.Log.Information("Cache miss for article with ID {Id}; fetching from repository", id);
+        await _metrics.RecordMissAsync();
+        
+        var fetchedArticle =  await _repo.GetArticleById(id, region, ct);
+        if (fetchedArticle != null)
+        {
+            // Warm up those caches, from where they were missed dearly
+            var json = JsonSerializer.Serialize(fetchedArticle);
+            await _cache.SetStringAsync(key, json, ct);
+            _memoryCache.Set(key, fetchedArticle, new MemoryCacheEntryOptions
+            {
+                Size = 1,
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+            });
+        }
+        
+        return fetchedArticle;
     }
 
     public async Task<List<Article>> GetRecentArticlesAsync(string region, CancellationToken ct = default)
@@ -89,14 +118,11 @@ public class ArticleDiService : IArticleDiService
 
     public async Task<bool> DeleteArticleAsync(int id, string region, CancellationToken ct = default)
     {
-        // Invalidate cache if present
+        // Invalidate both cache layers (memory + Redis)
         var key = $"article:{region}:{id}";
-        var cached = await _cache.GetStringAsync(key, ct);
-        if (cached != null)
-        {
-            await _cache.RemoveAsync(key, ct);
-            MonitorService.Log.Information("Invalidated cache for article {Id}", id);
-        }
+        _memoryCache.Remove(key);
+        await _cache.RemoveAsync(key, ct);
+        MonitorService.Log.Information("Invalidated Inmem/Redis cache for article {Id}", id);
         
         // Delegate to repository (which already checks existence)
         var deleted = await _repo.DeleteArticleAsync(id, region, ct);
@@ -120,10 +146,11 @@ public class ArticleDiService : IArticleDiService
         
         if (updated != null)
         {
-            // Invalidate cache so next read fetches fresh data
+            // Invalidate both cache layers (memory + Redis)
             var key = $"article:{region}:{id}";
+            _memoryCache.Remove(key);
             await _cache.RemoveAsync(key, ct);
-            MonitorService.Log.Information("Invalidated cache for updated article {Id}", id);
+            MonitorService.Log.Information("Invalidated Redis/inMemory cache for updated article {Id}", id);
         }
         else
         {

@@ -20,7 +20,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddSingleton<PublisherMessaging>();
 builder.Services.AddControllers();
 
-//TODO we have already been over this
 
 var app = builder.Build();
 

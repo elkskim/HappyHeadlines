@@ -15,21 +15,49 @@ public class NewsletterArticleConsumer
 
     public NewsletterArticleConsumer()
     {
-        // Another constructor blocking on async I/O. We repeat the pattern because
-        // changing it would require rethinking the entire initialization lifecycle,
-        // and who has time for that when deadlines loom like the heat death of stars?
-        MonitorService.Log.Information("NewsletterArticleConsumer Initialized - Creating Connection");
+        // The constructor still blocks; but now it retries when RabbitMQ is not yet ready.
+        // The service will wait for the broker rather than crash into the void,
+        // leaving Docker Swarm to spawn corpses in its wake.
+        MonitorService.Log.Information("NewsletterArticleConsumer Initialized; attempting RabbitMQ connection with retry");
 
         var factory = new ConnectionFactory { HostName = "rabbitmq" };
-        _connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
-        _channel = _connection.CreateChannelAsync().GetAwaiter().GetResult();
+        
+        int attempt = 0;
+        int maxAttempts = 10;
+        int delayMs = 2000;
+        
+        while (attempt < maxAttempts)
+        {
+            try
+            {
+                MonitorService.Log.Information("Connecting to RabbitMQ (attempt {Attempt}/{Max})", attempt + 1, maxAttempts);
+                _connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
+                _channel = _connection.CreateChannelAsync().GetAwaiter().GetResult();
 
-        _channel.ExchangeDeclareAsync("articles.exchange", ExchangeType.Fanout, true)
-            .GetAwaiter().GetResult();
-        _channel.QueueDeclareAsync("articles.newsletter.queue", true, false, false)
-            .GetAwaiter().GetResult();
-        _channel.QueueBindAsync("articles.newsletter.queue", "articles.exchange", "")
-            .GetAwaiter().GetResult();
+                _channel.ExchangeDeclareAsync("articles.exchange", ExchangeType.Fanout, true)
+                    .GetAwaiter().GetResult();
+                _channel.QueueDeclareAsync("articles.newsletter.queue", true, false, false)
+                    .GetAwaiter().GetResult();
+                _channel.QueueBindAsync("articles.newsletter.queue", "articles.exchange", "")
+                    .GetAwaiter().GetResult();
+                
+                MonitorService.Log.Information("Successfully connected to RabbitMQ and declared resources");
+                return;
+            }
+            catch (Exception ex)
+            {
+                attempt++;
+                if (attempt >= maxAttempts)
+                {
+                    MonitorService.Log.Error(ex, "Failed to connect to RabbitMQ after {Attempts} attempts; the service will now fail", maxAttempts);
+                    throw;
+                }
+                
+                MonitorService.Log.Warning(ex, "RabbitMQ connection failed (attempt {Attempt}/{Max}); retrying in {Delay}ms", attempt, maxAttempts, delayMs);
+                Thread.Sleep(delayMs);
+                delayMs = Math.Min(delayMs * 2, 30000); // Exponential backoff, cap at 30s
+            }
+        }
     }
 
     public void StartConsuming()
@@ -43,10 +71,13 @@ public class NewsletterArticleConsumer
 
             MonitorService.Log.Information("NewsletterArticleConsumer received article: {Title}", article.Title);
 
-            // TODO: Waste your time and put a call to the controller here.
-            // Send this article to subscribers who will skim the headline, never read it,
-            // and forget it existed within the span of a single scroll. Content creation
-            // in the digital age: shouting into the void, hoping for engagement metrics.
+            // UNIMPLEMENTED: Newsletter sending functionality
+            // Future implementation should:
+            // 1. Query SubscriberService for active subscribers by region
+            // 2. Generate email content with article Title, Content preview, and link
+            // 3. Send via email service (SMTP/SendGrid/etc)
+            // 4. Track send status and failures for retry
+            // Planned for v0.6.0 - The Email Implementation
 
             await Task.CompletedTask;
         };

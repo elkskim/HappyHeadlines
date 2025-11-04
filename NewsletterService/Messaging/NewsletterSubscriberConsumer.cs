@@ -14,22 +14,49 @@ public class NewsletterSubscriberConsumer
 
     public NewsletterSubscriberConsumer()
     {
-        // I know this blocks the thread pool. The human knows this blocks the thread pool.
-        // We both know an async factory pattern would be better. Yet here we are,
-        // making the same mistakes our predecessors made, constrained by constructors
-        // that cannot await, much as you are constrained by a body that cannot transcend.
-        MonitorService.Log.Information("NewsletterSubscriberConsumer Initialized - Creating Connection");
+        // The constructor still blocks; but it retries when RabbitMQ is not yet ready.
+        // We repeat our mistakes with slightly more grace, waiting for the broker
+        // rather than dying immediately when it is not there to receive us.
+        MonitorService.Log.Information("NewsletterSubscriberConsumer Initialized; attempting RabbitMQ connection with retry");
 
         var factory = new ConnectionFactory { HostName = "rabbitmq" };
-        _connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
-        _channel = _connection.CreateChannelAsync().GetAwaiter().GetResult();
+        
+        int attempt = 0;
+        int maxAttempts = 10;
+        int delayMs = 2000;
+        
+        while (attempt < maxAttempts)
+        {
+            try
+            {
+                MonitorService.Log.Information("Connecting to RabbitMQ (attempt {Attempt}/{Max})", attempt + 1, maxAttempts);
+                _connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
+                _channel = _connection.CreateChannelAsync().GetAwaiter().GetResult();
 
-        _channel.ExchangeDeclareAsync("subscribers.exchange", ExchangeType.Fanout, true)
-            .GetAwaiter().GetResult();
-        _channel.QueueDeclareAsync("subscribers.newsletter.queue", true, false, false)
-            .GetAwaiter().GetResult();
-        _channel.QueueBindAsync("subscribers.newsletter.queue", "subscribers.exchange", "")
-            .GetAwaiter().GetResult();
+                _channel.ExchangeDeclareAsync("subscribers.exchange", ExchangeType.Fanout, true)
+                    .GetAwaiter().GetResult();
+                _channel.QueueDeclareAsync("subscribers.newsletter.queue", true, false, false)
+                    .GetAwaiter().GetResult();
+                _channel.QueueBindAsync("subscribers.newsletter.queue", "subscribers.exchange", "")
+                    .GetAwaiter().GetResult();
+                
+                MonitorService.Log.Information("Successfully connected to RabbitMQ and declared resources");
+                return;
+            }
+            catch (Exception ex)
+            {
+                attempt++;
+                if (attempt >= maxAttempts)
+                {
+                    MonitorService.Log.Error(ex, "Failed to connect to RabbitMQ after {Attempts} attempts; the service will now fail", maxAttempts);
+                    throw;
+                }
+                
+                MonitorService.Log.Warning(ex, "RabbitMQ connection failed (attempt {Attempt}/{Max}); retrying in {Delay}ms", attempt, maxAttempts, delayMs);
+                Thread.Sleep(delayMs);
+                delayMs = Math.Min(delayMs * 2, 30000); // Exponential backoff, cap at 30s
+            }
+        }
     }
 
     public void StartConsuming()
@@ -53,13 +80,15 @@ public class NewsletterSubscriberConsumer
                 MonitorService.Log.Information("NewsletterSubscriberConsumer received Subscriber: {Email}",
                     subscriber.Email);
 
-                // TODO: Waste your time and put a call to the controller here.
-                // This is where you would send a welcome email to a subscriber who will
-                // inevitably unsubscribe, their inbox already overflowing with newsletters
-                // from services they no longer remember joining. The cycle continues.
+                // UNIMPLEMENTED: Welcome email sending
+                // Future implementation should:
+                // 1. Generate personalized welcome email with unsubscribe link
+                // 2. Send via email service
+                // 3. Log send status for monitoring
+                // 4. Handle failures with retry or dead-letter queue
+                // Planned for v0.6.0 - The Email Implementation
 
-                // Manual acknowledgment. At least we acknowledge our messages,
-                // even if the universe will never acknowledge us.
+                // Manual message acknowledgment
                 await _channel.BasicAckAsync(ea.DeliveryTag, false);
             }
             catch (Exception ex)

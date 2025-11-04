@@ -5,10 +5,13 @@ WORKDIR /src
 # Copy csproj and restore
 COPY ["ProfanityService/ProfanityService.csproj", "ProfanityService/"]
 COPY ["ProfanityDatabase/ProfanityDatabase.csproj", "ProfanityDatabase/"]
+COPY ["Monitoring/Monitoring.csproj", "Monitoring/"]
 RUN dotnet restore "ProfanityService/ProfanityService.csproj"
 
-# Copy everything else and build
-COPY . .
+# Copy only required projects
+COPY ["ProfanityService/", "ProfanityService/"]
+COPY ["ProfanityDatabase/", "ProfanityDatabase/"]
+COPY ["Monitoring/", "Monitoring/"]
 WORKDIR "/src/ProfanityService"
 RUN dotnet build "ProfanityService.csproj" -c Release -o /app/build
 

@@ -11,7 +11,9 @@ COPY ["SubscriberService/SubscriberService.csproj", "SubscriberService/"]
 COPY ["SubscriberDatabase/SubscriberDatabase.csproj", "SubscriberDatabase/"]
 COPY ["Monitoring/Monitoring.csproj", "Monitoring/"]
 RUN dotnet restore "SubscriberService/SubscriberService.csproj"
-COPY . .
+COPY ["SubscriberService/", "SubscriberService/"]
+COPY ["SubscriberDatabase/", "SubscriberDatabase/"]
+COPY ["Monitoring/", "Monitoring/"]
 WORKDIR "/src/SubscriberService"
 RUN dotnet build "SubscriberService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

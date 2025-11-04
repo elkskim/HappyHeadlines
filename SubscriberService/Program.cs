@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -46,11 +46,41 @@ public class Program
             builder.Services.AddScoped<ISubscriberRepository, SubscriberRepository>();
             
             // Register RabbitMQ channel here to enable the DI-shenanigans
+            // Now with retry logic, so the service does not crash when RabbitMQ is not ready
             builder.Services.AddSingleton<IChannel>(sp =>
             {
                 var factory = new ConnectionFactory { HostName = "rabbitmq" };
-                var connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
-                return connection.CreateChannelAsync().GetAwaiter().GetResult();
+                
+                int attempt = 0;
+                int maxAttempts = 10;
+                int delayMs = 2000;
+                
+                while (attempt < maxAttempts)
+                {
+                    try
+                    {
+                        MonitorService.Log.Information("Connecting to RabbitMQ (attempt {Attempt}/{Max})", attempt + 1, maxAttempts);
+                        var connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
+                        var channel = connection.CreateChannelAsync().GetAwaiter().GetResult();
+                        MonitorService.Log.Information("Successfully connected to RabbitMQ");
+                        return channel;
+                    }
+                    catch (Exception ex)
+                    {
+                        attempt++;
+                        if (attempt >= maxAttempts)
+                        {
+                            MonitorService.Log.Error(ex, "Failed to connect to RabbitMQ after {Attempts} attempts", maxAttempts);
+                            throw;
+                        }
+                        
+                        MonitorService.Log.Warning(ex, "RabbitMQ connection failed (attempt {Attempt}/{Max}); retrying in {Delay}ms", attempt, maxAttempts, delayMs);
+                        Thread.Sleep(delayMs);
+                        delayMs = Math.Min(delayMs * 2, 30000);
+                    }
+                }
+                
+                throw new InvalidOperationException("Failed to connect to RabbitMQ; retry loop exhausted without success");
             });
             
             // Register publisher as its interface so tests can mock ISubscriberPublisher
@@ -73,6 +103,26 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
+
+        // Initialize database (create and migrate if needed)
+        if (enabled)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<SubscriberDbContext>();
+                try
+                {
+                    MonitorService.Log.Information("Ensuring SubscriberDatabase is created and migrated...");
+                    db.Database.Migrate();
+                    MonitorService.Log.Information("SubscriberDatabase ready");
+                }
+                catch (Exception ex)
+                {
+                    MonitorService.Log.Error(ex, "Failed to migrate SubscriberDatabase");
+                    throw;
+                }
+            }
+        }
 
         app.UseMiddleware<ServiceToggleMiddleware>();
         

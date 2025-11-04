@@ -9,9 +9,11 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["DraftService/DraftService.csproj", "DraftService/"]
 COPY ["DraftDatabase/DraftDatabase.csproj", "DraftDatabase/"]
-COPY ["./Monitoring/Monitoring.csproj", "Monitoring/"]
+COPY ["Monitoring/Monitoring.csproj", "Monitoring/"]
 RUN dotnet restore "DraftService/DraftService.csproj"
-COPY . .
+COPY ["DraftService/", "DraftService/"]
+COPY ["DraftDatabase/", "DraftDatabase/"]
+COPY ["Monitoring/", "Monitoring/"]
 WORKDIR "/src/DraftService"
 RUN dotnet build "./DraftService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

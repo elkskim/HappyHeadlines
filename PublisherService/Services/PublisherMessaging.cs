@@ -19,15 +19,41 @@ public class PublisherMessaging
 
     public async static Task<PublisherMessaging> CreateAsync()
     {
-        
-        
         var factory = new ConnectionFactory { HostName = "rabbitmq" };
-        var connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
-        var channel = connection.CreateChannelAsync().GetAwaiter().GetResult();
-
-        channel.ExchangeDeclareAsync("articles.exchange", ExchangeType.Fanout, true).GetAwaiter().GetResult();
         
-        return new PublisherMessaging(connection, channel);
+        int attempt = 0;
+        int maxAttempts = 10;
+        int delayMs = 2000;
+        
+        while (attempt < maxAttempts)
+        {
+            try
+            {
+                MonitorService.Log.Information("Connecting to RabbitMQ (attempt {Attempt}/{Max})", attempt + 1, maxAttempts);
+                var connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
+                var channel = connection.CreateChannelAsync().GetAwaiter().GetResult();
+
+                channel.ExchangeDeclareAsync("articles.exchange", ExchangeType.Fanout, true).GetAwaiter().GetResult();
+                
+                MonitorService.Log.Information("Successfully connected to RabbitMQ and declared exchange");
+                return new PublisherMessaging(connection, channel);
+            }
+            catch (Exception ex)
+            {
+                attempt++;
+                if (attempt >= maxAttempts)
+                {
+                    MonitorService.Log.Error(ex, "Failed to connect to RabbitMQ after {Attempts} attempts", maxAttempts);
+                    throw;
+                }
+                
+                MonitorService.Log.Warning(ex, "RabbitMQ connection failed (attempt {Attempt}/{Max}); retrying in {Delay}ms", attempt, maxAttempts, delayMs);
+                Thread.Sleep(delayMs);
+                delayMs = Math.Min(delayMs * 2, 30000);
+            }
+        }
+        
+        throw new InvalidOperationException("Failed to connect to RabbitMQ; retry loop exhausted without success");
     }
 
     public async Task<Article> PublishArticle(Article article)

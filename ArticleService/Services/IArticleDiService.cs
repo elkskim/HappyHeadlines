@@ -1,6 +1,5 @@
 using System.Text.Json;
 using ArticleDatabase.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Monitoring;
 using StackExchange.Redis;
@@ -10,11 +9,12 @@ namespace ArticleService.Services;
 public interface IArticleDiService
 {
     Task<IEnumerable<Article>> GetArticles(string region, CancellationToken ct);
-    Task<ActionResult> DeleteArticle();
-    Task<ActionResult> UpdateArticle();
     Task<Article?> GetArticleAsync(int id, string region, CancellationToken ct = default);
     Task<List<Article>> GetRecentArticlesAsync(string region, CancellationToken ct = default);
     Task<Article> CreateArticleAsync(Article article, string region, CancellationToken ct = default);
+    
+     Task<bool> DeleteArticleAsync(int id, string region, CancellationToken ct = default);
+     Task<Article?> UpdateArticleAsync(int id, Article updates, string region, CancellationToken ct = default);
 }
 
 public class ArticleDiService : IArticleDiService
@@ -36,16 +36,6 @@ public class ArticleDiService : IArticleDiService
         return await _repo.GetAllArticles(region, ct);
     }
 
-    public Task<ActionResult> DeleteArticle()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<ActionResult> UpdateArticle()
-    {
-        //Don't
-        throw new NotImplementedException();
-    }
 
     public async Task<Article?> GetArticleAsync(int id, string region, CancellationToken ct = default)
     {
@@ -95,5 +85,51 @@ public class ArticleDiService : IArticleDiService
             }, ct);
 
         return article;
+    }
+
+    public async Task<bool> DeleteArticleAsync(int id, string region, CancellationToken ct = default)
+    {
+        // Invalidate cache if present
+        var key = $"article:{region}:{id}";
+        var cached = await _cache.GetStringAsync(key, ct);
+        if (cached != null)
+        {
+            await _cache.RemoveAsync(key, ct);
+            MonitorService.Log.Information("Invalidated cache for article {Id}", id);
+        }
+        
+        // Delegate to repository (which already checks existence)
+        var deleted = await _repo.DeleteArticleAsync(id, region, ct);
+        if (deleted)
+        {
+            MonitorService.Log.Information("Deleted article {Id} from repository", id);
+        }
+        else
+        {
+            MonitorService.Log.Information("Article {Id} not found in repository", id);
+        }
+        
+        return deleted;
+    }
+
+    public async Task<Article?> UpdateArticleAsync(int id, Article updates, string region, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(updates);
+        
+        var updated = await _repo.UpdateArticleAsync(id, updates, region, ct);
+        
+        if (updated != null)
+        {
+            // Invalidate cache so next read fetches fresh data
+            var key = $"article:{region}:{id}";
+            await _cache.RemoveAsync(key, ct);
+            MonitorService.Log.Information("Invalidated cache for updated article {Id}", id);
+        }
+        else
+        {
+            MonitorService.Log.Information("Article {Id} not found for update", id);
+        }
+        
+        return updated;
     }
 }

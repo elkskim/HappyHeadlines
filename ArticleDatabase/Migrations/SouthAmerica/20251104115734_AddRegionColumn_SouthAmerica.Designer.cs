@@ -4,16 +4,19 @@ using ArticleDatabase.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ArticleDatabase.Migrations.Global
+namespace ArticleDatabase.Migrations.SouthAmerica
 {
     [DbContext(typeof(ArticleDbContext))]
-    partial class ArticleDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251104115734_AddRegionColumn_SouthAmerica")]
+    partial class AddRegionColumn_SouthAmerica
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

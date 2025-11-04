@@ -20,7 +20,7 @@ public class ArticleController : Controller {
     }
 
     [HttpGet("{id}/comments")]
-    public async Task<IActionResult> GetArticleComments(string region, int id)
+    public async Task<IActionResult> GetArticleComments(int id, [FromQuery] string region)
     {
         var client = _httpClientFactory.CreateClient("CommentsService");
 
@@ -55,42 +55,37 @@ public class ArticleController : Controller {
     }
     
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(string region, int id, CancellationToken ct)
+    public async Task<IActionResult> Get(int id, [FromQuery] string region, CancellationToken ct)
     {
-        var article = await _articleDiService.GetArticleAsync(id,region, ct);
+        var article = await _articleDiService.GetArticleAsync(id, region, ct);
         return article is null ? NotFound() : Ok(article);
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Article>> ReadArticles(string region, int id, CancellationToken ct)
+    public async Task<IEnumerable<Article>> ReadArticles([FromQuery] string region, CancellationToken ct)
     {
         return await _articleDiService.GetArticles(region, ct);
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateArticle([FromBody] Article incArticle, string region)
+    public async Task<IActionResult> CreateArticle([FromBody] Article incArticle, [FromQuery] string region)
     {
         var article = new Article(incArticle.Title, incArticle.Content, incArticle.Author);
-        var db = await _articleDiService.CreateArticleAsync(article, region);
+        await _articleDiService.CreateArticleAsync(article, region);
         return Accepted(article);
     }
 
-    [HttpPatch]
-    public async Task<IActionResult> UpdateArticle(string region, int id, string? title, string? content,
-        string? author)
-    {
-        var db = _articleDiService.UpdateArticle();
-        return Accepted();
+     [HttpPatch("{id}")]
+     public async Task<IActionResult> UpdateArticle(int id, [FromQuery] string region, [FromBody] Article updates, CancellationToken ct)
+     {
+         var updatedArticle = await _articleDiService.UpdateArticleAsync(id, updates, region, ct); 
+         return updatedArticle is null ? NotFound() : Ok(updatedArticle);
     }
-
-    [HttpDelete]
-    public async Task<IActionResult> DeleteArticle(string region, int id)
+    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteArticle(int id, [FromQuery] string region, CancellationToken ct)
     {
-        var db = await _articleDiService.DeleteArticle();
-        if (await _articleDiService.GetArticleAsync(id, region) is not { } article) return NotFound();
-        _articleDiService.DeleteArticle();
-        
-        return Accepted(article);
-
+        var deleted = await _articleDiService.DeleteArticleAsync(id, region, ct);
+        return deleted ? NoContent() : NotFound();
     }
 }

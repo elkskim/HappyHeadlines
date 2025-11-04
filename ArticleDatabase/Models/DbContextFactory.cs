@@ -27,8 +27,7 @@ public class DbContextFactory
         ; //, sqlOptions => sqlOptions.EnableRetryOnFailure()
         optionsBuilder.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
         var context = new ArticleDbContext(optionsBuilder.Options);
-        context.Database.Migrate();
+        // DO NOT migrate here; migrations are handled in Program.cs with proper async retry logic
         return context;
-        ;
     }
 }

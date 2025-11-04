@@ -4,12 +4,14 @@ WORKDIR /src
 
 # Copy csproj and restore
 COPY ["ArticleService/ArticleService.csproj", "ArticleService/"]
-COPY ["../ArticleDatabase/ArticleDatabase.csproj", "../ArticleDatabase/"]
+COPY ["ArticleDatabase/ArticleDatabase.csproj", "ArticleDatabase/"]
+COPY ["Monitoring/Monitoring.csproj", "Monitoring/"]
 RUN dotnet restore "ArticleService/ArticleService.csproj"
 
-# Copy everything else and build
-COPY . .
-COPY ../ArticleDatabase ../ArticleDatabase
+# Copy only required projects
+COPY ["ArticleService/", "ArticleService/"]
+COPY ["ArticleDatabase/", "ArticleDatabase/"]
+COPY ["Monitoring/", "Monitoring/"]
 WORKDIR "/src/ArticleService"
 RUN dotnet build "ArticleService.csproj" -c Release -o /app/build
 
@@ -20,5 +22,4 @@ RUN dotnet publish "ArticleService.csproj" -c Release -o /app/publish /p:UseAppH
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 COPY --from=build /app/publish .
-COPY ArticleService/appsettings.json ./appsettings.json
 ENTRYPOINT ["dotnet", "ArticleService.dll", "migrate"]

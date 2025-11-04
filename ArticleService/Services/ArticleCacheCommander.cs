@@ -8,9 +8,9 @@ public class ArticleCacheCommander : BackgroundService
 {
     private readonly IDistributedCache _cache;
     private readonly IEnumerable<string> _regions;
-    private readonly IArticleDiService _service;
+    private readonly IArticleAppService _service;
 
-    public ArticleCacheCommander(IArticleDiService service, IDistributedCache cache, IConfiguration config)
+    public ArticleCacheCommander(IArticleAppService service, IDistributedCache cache, IConfiguration config)
     {
         _service = service;
         _cache = cache;

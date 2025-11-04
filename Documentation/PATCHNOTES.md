@@ -9,6 +9,18 @@ The way is lit. The path is clear. We require only the strength to follow it.
 
 ---
 
+## v0.7.2 - The Separation (November 4, 2025)
+### *"Interface from implementation. Naming from chaos."*
+
+**Refactoring:**
+- Split `IArticleDiService.cs` into `IArticleAppService.cs` + `ArticleAppService.cs`
+- Renamed for consistency with SubscriberService
+- Added documentation that take up just about 90% of the interface. Hilarious.
+
+**Impact:** Non-breaking.
+
+---
+
 ## v0.7.1 - The Green Foundation (November 4, 2025)
 ### *"Fetch data from proximity; let the cache stand between compute and the wire."*
 
@@ -728,10 +740,10 @@ Each version is a waypoint on the descent. You may retreat to previous states, b
 
 *End of Patch Notes*
 
-**Current Version**: v0.7.1  
+**Current Version**: v0.7.2  
 **Next Planned Release**: v0.8.0 - The Email Implementation (*when newsletters actually send*)  
 **Last Updated**: November 4, 2025  
-**Status**: Functional, with green foundation laid  
+**Status**: Functional, refactored, green  
 **Versioning History**: v0.6.0 skipped due to v0.5.3 versioning error (documented above)
 
 *"More dust, more ashes, more disappointment."*

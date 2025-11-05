@@ -80,6 +80,6 @@ public class SubscriberRepository : ISubscriberRepository
         }
 
         MonitorService.Log.Information("Subscriber at ID {id} deleted", entity.Id);
-        return await _context.Subscribers.FindAsync(entity.Id) == null;
+        return true;
     }
 }

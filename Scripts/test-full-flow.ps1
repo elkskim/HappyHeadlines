@@ -403,44 +403,33 @@ $TEMP_SUBSCRIBER_JSON = @{
 
 try {
     $tempSubResponse = Invoke-RestMethod -Uri ($BASE_URL + ":8007/api/Subscriber") -Method Post -Body $TEMP_SUBSCRIBER_JSON -ContentType "application/json"
-    Start-Sleep -Seconds 2
     
-    # Find the temporary subscriber
-    $allSubs = Invoke-RestMethod -Uri ($BASE_URL + ":8007/api/Subscriber?region=$REGION") -Method Get
-    $tempSub = if ($allSubs -is [Array]) {
-        $allSubs | Where-Object { $_.email -eq "temp.deletion.test@void.com" } | Select-Object -First 1
-    } elseif ($allSubs.email -eq "temp.deletion.test@void.com") {
-        $allSubs
-    } else {
-        $null
-    }
+    # Use ID directly from POST response instead of querying all subscribers
+    $TEMP_SUB_ID = $tempSubResponse.id
+    Write-Host "Temporary subscriber created with ID: $TEMP_SUB_ID"
     
-    if ($tempSub) {
-        $TEMP_SUB_ID = $tempSub.id
-        Write-Host "Temporary subscriber created with ID: $TEMP_SUB_ID"
+    # Wait for database write and event propagation (increased to handle async writes)
+    Start-Sleep -Seconds 5
+    
+    # Delete the subscriber
+    try {
+        Invoke-RestMethod -Uri ($BASE_URL + ":8007/api/Subscriber/${TEMP_SUB_ID}") -Method Delete
+        Print-Success "Subscriber deleted successfully"
         
-        # Delete it
+        # Verify deletion
+        Start-Sleep -Seconds 1
         try {
-            Invoke-RestMethod -Uri ($BASE_URL + ":8007/api/Subscriber/${TEMP_SUB_ID}?region=$REGION") -Method Delete
-            Print-Success "Subscriber deleted (returned 204 NoContent)"
-            
-            # Verify deletion
-            Start-Sleep -Seconds 1
-            try {
-                $deletedSubCheck = Invoke-RestMethod -Uri ($BASE_URL + ":8007/api/Subscriber/${TEMP_SUB_ID}?region=$REGION") -Method Get
-                Print-Warning "Deleted subscriber still retrievable"
-            } catch {
-                if ($_.Exception.Response.StatusCode -eq 404) {
-                    Print-Success "Subscriber deletion verified (404 Not Found)"
-                } else {
-                    Print-Warning "Unexpected response verifying deletion: $($_.Exception.Response.StatusCode)"
-                }
-            }
+            $deletedSubCheck = Invoke-RestMethod -Uri ($BASE_URL + ":8007/api/Subscriber/${TEMP_SUB_ID}") -Method Get
+            Print-Warning "Deleted subscriber still retrievable"
         } catch {
-            Print-Warning "Could not delete subscriber: $_"
+            if ($_.Exception.Response.StatusCode -eq 404) {
+                Print-Success "Subscriber deletion verified (404 Not Found)"
+            } else {
+                Print-Warning "Unexpected response verifying deletion: $($_.Exception.Response.StatusCode)"
+            }
         }
-    } else {
-        Print-Warning "Could not find temporary subscriber for deletion test"
+    } catch {
+        Print-Warning "Could not delete subscriber: $_"
     }
 } catch {
     Print-Warning "Could not complete subscriber DELETE test: $_"

@@ -20,14 +20,16 @@ public class ArticleAppService : IArticleAppService
     private readonly IDistributedCache _cache;
     private readonly CacheMetrics.ArticleCacheMetrics _metrics;
     private readonly IMemoryCache _memoryCache;
+    private readonly ICompressionService _compression;
 
     public ArticleAppService(IArticleRepository repo, IDistributedCache cache, 
-        IConnectionMultiplexer redis, IMemoryCache memoryCache)
+        IConnectionMultiplexer redis, IMemoryCache memoryCache, ICompressionService compression)
     {
         _repo = repo;
         _cache = cache;
         _metrics = new CacheMetrics.ArticleCacheMetrics(redis);
         _memoryCache = memoryCache;
+        _compression = compression;
     }
 
     public async Task<IEnumerable<Article>> GetArticles(string region, CancellationToken ct = default)
@@ -49,11 +51,12 @@ public class ArticleAppService : IArticleAppService
             return cachedArticle;
         }
 
-        // L2: Redis cache check (fast, network hop)
-        var redisCached = await _cache.GetStringAsync(key, ct);
-        if (redisCached != null)
+        // L2: Redis cache check (fast, network hop, compressed payload)
+        var compressedBytes = await _cache.GetAsync(key, ct);
+        if (compressedBytes != null && compressedBytes.Length > 0)
         {
-            var article = JsonSerializer.Deserialize<Article>(redisCached);
+            var decompressedJson = _compression.Decompress(compressedBytes);
+            var article = JsonSerializer.Deserialize<Article>(decompressedJson);
             if (article != null)
             {
                 // Warm L1 cache for subsequent requests
@@ -63,7 +66,9 @@ public class ArticleAppService : IArticleAppService
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
                 });
 
-                MonitorService.Log.Information("L2 cache hit for article {Id} (Redis)", id);
+                MonitorService.Log.Information(
+                    "L2 cache hit for article {Id} (Redis, compressed: {CompressedSize} bytes)", 
+                    id, compressedBytes.Length);
                 await _metrics.RecordHitAsync();
                 
                 return article;
@@ -77,14 +82,26 @@ public class ArticleAppService : IArticleAppService
         var fetchedArticle = await _repo.GetArticleById(id, region, ct);
         if (fetchedArticle != null)
         {
-            // Warm both cache layers
+            // Warm both cache layers (L2 with compression)
             var json = JsonSerializer.Serialize(fetchedArticle);
-            await _cache.SetStringAsync(key, json, ct);
+            var originalSize = System.Text.Encoding.UTF8.GetByteCount(json);
+            var compressedPayload = _compression.Compress(json);
+            var ratio = _compression.CalculateCompressionRatio(originalSize, compressedPayload.Length);
+            
+            await _cache.SetAsync(key, compressedPayload, new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(14)
+            }, ct);
+            
             _memoryCache.Set(key, fetchedArticle, new MemoryCacheEntryOptions
             {
                 Size = 1,
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
             });
+            
+            MonitorService.Log.Information(
+                "Cached article {Id}: {OriginalSize} bytes → {CompressedSize} bytes (ratio: {Ratio:F2}x)",
+                id, originalSize, compressedPayload.Length, ratio);
         }
         
         return fetchedArticle;
@@ -100,13 +117,15 @@ public class ArticleAppService : IArticleAppService
     {
         await _repo.AddArticleAsync(article, region, ct);
 
-        // Cache newly created article in Redis (skip memory cache; likely won't be immediately re-read)
+        // Cache newly created article in Redis with compression (skip memory cache; likely won't be immediately re-read)
         var key = $"article:{region}:{article.Id}";
-        await _cache.SetStringAsync(key, JsonSerializer.Serialize(article),
-            new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(14)
-            }, ct);
+        var json = JsonSerializer.Serialize(article);
+        var compressedBytes = _compression.Compress(json);
+        
+        await _cache.SetAsync(key, compressedBytes, new DistributedCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(14)
+        }, ct);
 
         return article;
     }

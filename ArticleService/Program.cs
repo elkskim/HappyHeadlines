@@ -34,6 +34,7 @@ builder.Services.AddScoped<DesignTimeDbContextFactory>();
 builder.WebHost.ConfigureKestrel(options => options.ListenAnyIP(80));
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IArticleAppService, ArticleAppService>();
+builder.Services.AddSingleton<ICompressionService, CompressionService>();
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 {
     var redisConnectionString = builder.Configuration.GetConnectionString("Redis") + ",abortConnect=false";

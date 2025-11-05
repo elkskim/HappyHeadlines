@@ -305,6 +305,12 @@ services:
       - "3306:3306"
     volumes:
       - zipkin_data:/mysql/data
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "zipkin", "-pzipkin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   rabbitmq:
     networks:

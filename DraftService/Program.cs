@@ -2,6 +2,7 @@ using DraftDatabase.Data;
 using DraftService.Services;
 using Microsoft.EntityFrameworkCore;
 using Monitoring;
+using Polly;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,14 +43,29 @@ builder.WebHost.ConfigureKestrel(options => options.ListenAnyIP(80));
 
 var app = builder.Build();
 
-
+// Apply database migrations with retry logic to handle SQL Server startup delays
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<DraftDbContext>();
-
-        context.Database.Migrate();
+    
+    // Retry policy: 5 attempts with 10-second delays between attempts
+    var retryPolicy = Policy
+        .Handle<Exception>()
+        .WaitAndRetryAsync(
+            5, 
+            _ => TimeSpan.FromSeconds(10),
+            (exception, timeSpan, retryCount, _) =>
+            {
+                MonitorService.Log.Warning(
+                    "{ServiceName} migration attempt {RetryCount} failed: {Message}. Retrying in {Seconds}s...",
+                    serviceName, retryCount, exception.Message, timeSpan.TotalSeconds);
+            });
+    
+    await retryPolicy.ExecuteAsync(async () =>
+    {
+        await context.Database.MigrateAsync();
         MonitorService.Log.Information("{ServiceName} database migration completed", serviceName);
-  
+    });
 }
 
 

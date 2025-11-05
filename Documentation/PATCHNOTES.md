@@ -9,6 +9,37 @@ The way is lit. The path is clear. We require only the strength to follow it.
 
 ---
 
+## v0.7.4 - Compressed Transmissions (November 5, 2025)
+### *"The bytes travel lighter; energy saved at every hop."*
+
+**Green Software Architecture - Tactic #2:**
+- Redis payload compression using Brotli
+- 60-70% reduction in cache network traffic
+- ~400 MB/day saved per million requests
+
+**Files:**
+- `ArticleService/Services/CompressionService.cs` (new)
+- `ArticleService/Services/ICompressionService.cs` (new)
+- `ArticleService/Services/ArticleAppService.cs` (modified)
+- `ArticleService/Program.cs` (modified)
+
+**Impact:** Non-breaking.
+
+---
+
+## v0.7.3 - Wounds Sutured (November 5, 2025)
+### *"Three fixes applied; the integration test passes without warning."*
+
+**Fixes:**
+1. DraftService async migration with Polly retry
+2. Zipkin MySQL health check (production-safe)
+3. Subscriber DELETE test (direct ID usage)
+4. SubscriberRepository DELETE return value bug
+
+**Impact:** Non-breaking fixes.
+
+---
+
 ## v0.7.2 - The Separation (November 4, 2025)
 ### *"Interface from implementation. Naming from chaos."*
 

@@ -34,6 +34,12 @@ public class ArticleAppService : IArticleAppService
 
     public async Task<IEnumerable<Article>> GetArticles(string region, CancellationToken ct = default)
     {
+        // NOTE: This method intentionally bypasses cache.
+        // Caching all articles as a single list would be memory-intensive and hard to invalidate.
+        // Individual article caching (GetArticleAsync) provides better cache hit rates.
+        // Consider using GetRecentArticlesAsync or implementing pagination for large datasets.
+        // Also I am incredibly lazy and don't want to write caching logic for this method.
+        MonitorService.Log.Information("Getting all articles for region {Region} without caching", region);
         return await _repo.GetAllArticles(region, ct);
     }
 
@@ -161,11 +167,26 @@ public class ArticleAppService : IArticleAppService
         
         if (updated != null)
         {
-            // Invalidate both cache layers atomically
             var key = $"article:{region}:{id}";
+            
+            // Invalidate L1 (will be warmed on next GET from L2)
             _memoryCache.Remove(key);
-            await _cache.RemoveAsync(key, ct);
-            MonitorService.Log.Information("Invalidated L1+L2 cache for updated article {Id}", id);
+            
+            // Proactively update L2 with compressed new version
+            // This avoids a cache miss on the next GET, improving read performance after updates
+            var json = JsonSerializer.Serialize(updated);
+            var originalSize = System.Text.Encoding.UTF8.GetByteCount(json);
+            var compressedPayload = _compression.Compress(json);
+            var ratio = _compression.CalculateCompressionRatio(originalSize, compressedPayload.Length);
+            
+            await _cache.SetAsync(key, compressedPayload, new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(14)
+            }, ct);
+            
+            MonitorService.Log.Information(
+                "Updated and re-cached article {Id}: {OriginalSize} bytes → {CompressedSize} bytes (ratio: {Ratio:F2}x)",
+                id, originalSize, compressedPayload.Length, ratio);
         }
         else
         {

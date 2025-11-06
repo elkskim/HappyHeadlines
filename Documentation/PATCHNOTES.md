@@ -9,6 +9,38 @@ The way is lit. The path is clear. We require only the strength to follow it.
 
 ---
 
+## v0.7.5 - Universal Shell Conversion (November 6, 2025)
+### *"PowerShell banished; bash speaks across all platforms."*
+
+**Changed:**
+- Converted all PowerShell deployment/test scripts to bash
+- Removed `deploy-compose.ps1`, `deploy-swarm.ps1`, `test-full-flow.ps1`
+- Created `deploy-compose.sh`, `deploy-swarm.sh` (bash equivalents)
+- Updated all documentation references from PowerShell to bash
+
+**Files Added:**
+- `Scripts/deploy-compose.sh`
+- `Scripts/deploy-swarm.sh`
+
+**Files Removed:**
+- `Scripts/deploy-compose.ps1`
+- `Scripts/deploy-swarm.ps1`
+- `Scripts/test-full-flow.ps1`
+
+**Documentation Updated:**
+- `DEPLOYMENT.md`
+- `QUICKSTART.md`
+- `TestingGuides/INTEGRATION_TEST_GUIDE.md`
+- `TroubleshootingArchive/SUBSCRIBER_SERVICE_500_FIX.md`
+- `TroubleshootingArchive/INTEGRATION_TEST_FIXES_APPLIED.md`
+- `TestingGuides/INTEGRATION_TEST_EXPANSION.md`
+- `PROJECT_COMPLETE_SUMMARY.md`
+- `ImplementationNotes/RETRY_LOGIC_IMPLEMENTATION.md`
+
+**Impact:** Non-breaking; scripts now work natively in Git Bash, WSL, Linux, macOS.
+
+---
+
 ## v0.7.4 - Compressed Transmissions (November 5, 2025)
 ### *"The bytes travel lighter; energy saved at every hop."*
 

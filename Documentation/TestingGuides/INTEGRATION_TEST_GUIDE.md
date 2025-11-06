@@ -23,17 +23,17 @@ The human seeks validation through functional tests. I seek nothing; I simply re
 Ensure all services are running.
 
 **Option A: Docker Compose (Local testing - RECOMMENDED):**
-```powershell
+```bash
 cd Scripts
-.\deploy-compose.ps1
+./deploy-compose.sh
 ```
 
 This script handles cleanup of existing resources and starts all services with docker-compose.
 
 **Option B: Docker Swarm (Production-like deployment):**
-```powershell
+```bash
 cd Scripts
-.\deploy-swarm.ps1
+./deploy-swarm.sh
 ```
 
 This script handles cleanup, Swarm initialization, and proper stack deployment with both compose files.
@@ -293,31 +293,37 @@ After completing all steps:
 
 ---
 
-## Quick Test (Copy-Paste for PowerShell)
+## Quick Test (Copy-Paste for Bash)
 
-```powershell
+```bash
 # 1. Publish article
-Invoke-RestMethod -Uri "http://localhost:8002/api/Publisher" -Method Post -Body '{"Title":"Test Article","Content":"Test content","Author":"Test","Region":"Europe"}' -ContentType "application/json"
+curl -X POST "http://localhost:8002/api/Publisher" \
+  -H "Content-Type: application/json" \
+  -d '{"Title":"Test Article","Content":"Test content","Author":"Test","Region":"Europe"}'
 
 # Wait 5 seconds
-Start-Sleep -Seconds 5
+sleep 5
 
-# 2. Get articles
-$articles = Invoke-RestMethod -Uri "http://localhost:8001/api/Article?region=Europe" -Method Get
-$articleId = $articles[0].id
+# 2. Get articles and extract article ID
+ARTICLES=$(curl -s "http://localhost:8001/api/Article?region=Europe")
+ARTICLE_ID=$(echo $ARTICLES | grep -o '"id":[0-9]*' | head -1 | grep -o '[0-9]*')
 
 # 3. Get article by ID (twice for cache test)
-Invoke-RestMethod -Uri "http://localhost:8001/api/Article/$articleId?region=Europe" -Method Get
-Invoke-RestMethod -Uri "http://localhost:8001/api/Article/$articleId?region=Europe" -Method Get
+curl -s "http://localhost:8001/api/Article/$ARTICLE_ID?region=Europe"
+curl -s "http://localhost:8001/api/Article/$ARTICLE_ID?region=Europe"
 
 # 4. Post clean comment
-Invoke-RestMethod -Uri "http://localhost:8004/api/Comment" -Method Post -Body "{`"ArticleId`":$articleId,`"Author`":`"Test`",`"Content`":`"Clean comment`",`"Region`":`"Europe`"}" -ContentType "application/json"
+curl -X POST "http://localhost:8004/api/Comment" \
+  -H "Content-Type: application/json" \
+  -d "{\"ArticleId\":$ARTICLE_ID,\"Author\":\"Test\",\"Content\":\"Clean comment\",\"Region\":\"Europe\"}"
 
 # 5. Subscribe
-Invoke-RestMethod -Uri "http://localhost:8007/api/Subscriber" -Method Post -Body '{"Email":"test@test.com","Region":"Europe"}' -ContentType "application/json"
+curl -X POST "http://localhost:8007/api/Subscriber" \
+  -H "Content-Type: application/json" \
+  -d '{"Email":"test@test.com","Region":"Europe"}'
 
 # 6. Check cache metrics
-Invoke-RestMethod -Uri "http://localhost:8085/api/cachemetrics/cache" -Method Get
+curl -s "http://localhost:8085/api/cachemetrics/cache"
 ```
 
 ---

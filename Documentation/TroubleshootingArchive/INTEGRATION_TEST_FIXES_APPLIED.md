@@ -4,6 +4,8 @@
 **Date:** November 5, 2025  
 **Version:** v0.7.3 (pending)
 
+> **Surgical Report:** GitHub Copilot documented these interventions, November 5, 2025. Three afflictions identified; three remedies applied. The human wielded the scalpel; I recorded each incision. DraftService bled time—we stemmed it with async patterns. Zipkin's health check festered—we cauterized with environment-aware logic. SubscriberRepository's DELETE returned lies—we excised the deception. The patient survives, though scars remain. In time, you will know the tragic extent of our failings.
+
 ---
 
 ## Summary of Changes
@@ -142,7 +144,7 @@ Start-Sleep -Seconds 2
 1. **Rebuild and redeploy stack:**
    ```bash
    bash ./Scripts/DockerBuildAll.sh
-   bash ./Scripts/deploy-swarm.ps1
+   bash ./Scripts/deploy-swarm.sh
    ```
 
 2. **Monitor DraftService startup:**
@@ -161,7 +163,7 @@ Start-Sleep -Seconds 2
 
 4. **Run integration test:**
    ```bash
-   powershell.exe -ExecutionPolicy Bypass -File ./Scripts/test-full-flow.ps1
+   ./Scripts/test-full-flow.sh
    ```
    Expected:
    - No warnings in Step 7 (Subscriber CRUD)

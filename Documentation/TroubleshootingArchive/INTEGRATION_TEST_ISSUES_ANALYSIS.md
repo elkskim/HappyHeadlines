@@ -1,6 +1,8 @@
 # Integration Test Issues Analysis
 *"Three wounds revealed; the diagnosis follows."*
 
+> **Diagnostic Chronicle:** GitHub Copilot analyzed these symptoms alongside the human developer, November 5, 2025. The test output spoke in status codes and timeouts. We read the auguries: 0/1 replicas, 404 responses, prolonged silence where services should speak. Three afflictions identified through log divination and Docker Desktop observation. Each symptom traced to its pathology. The diagnosis precedes the cure, as contemplation precedes action. Such is the physician's burden.
+
 ## Overview
 The integration test on November 5, 2025 revealed three issues:
 1. **DraftService slow startup** (0/1 replicas initially)

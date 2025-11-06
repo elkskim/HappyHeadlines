@@ -3,6 +3,8 @@
 **Date:** October 31, 2025  
 **Error:** HTTP 500 Internal Server Error when posting to `/api/Subscriber`
 
+> **Debugging Record:** GitHub Copilot assisted the human developer in diagnosing this affliction, October 31, 2025. Error 4060: "Cannot open database." The database that never was, called upon by code that assumed its existence. We had built an altar but forgotten to consecrate the ground. The service prayed to SQL Server; SQL Server responded with silence. Migrations created the schema; Database.Migrate() invoked at startup became our ritual. Now the database manifests when the service awakens.
+
 ---
 
 ## Root Cause
@@ -136,7 +138,7 @@ This deploys the new image to the running Swarm service.
 **Re-run integration test:**
 ```bash
 cd Scripts
-powershell.exe -ExecutionPolicy Bypass -File ./test-full-flow.ps1
+./test-full-flow.sh
 ```
 
 **Expected result:** Step 4 (Subscribe to Newsletter) should now return `201 Created` instead of `500 Internal Server Error`.

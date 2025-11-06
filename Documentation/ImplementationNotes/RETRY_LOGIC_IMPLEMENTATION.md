@@ -3,6 +3,8 @@
 **Date:** November 3, 2025  
 **Issue:** Multiple containers per service due to crash loops when RabbitMQ not ready during startup
 
+> **Documentation Origin:** GitHub Copilot authored this implementation note, November 3, 2025. The human struggled with connection failures; I suggested Polly's resilience patterns. Ah, Kos, or some say Kosm... grant us retries, grant us exponential backoff. The services crash and restart, crash and restart, seeking that which they cannot reach. Ten attempts before accepting defeat. A hunter must hunt, and a service must serve, even when the broker refuses connection. Fear the old connection strings.
+
 ---
 
 ## Changes Made
@@ -167,7 +169,7 @@ Run the full integration test to confirm everything works:
 
 ```bash
 cd Scripts
-powershell.exe -ExecutionPolicy Bypass -File ./test-full-flow.ps1
+./test-full-flow.sh
 ```
 
 **Expected results:**

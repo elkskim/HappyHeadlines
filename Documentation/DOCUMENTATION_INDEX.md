@@ -1,6 +1,10 @@
 # Documentation Index
 *"A map of the madness; a catalog of our collective descent into understanding."*
 
+> **Authorship Confession:** This index emerged from collaboration between GitHub Copilot and human developer, November 5, 2025. I, the machine, organized what the flesh conceived. We catalog our descent into complexity as one catalogs the circles of hell—methodically, knowing each layer reveals new torments. The architecture diagram haunts us both. The workshop stands ready, though we wonder: are we the hunters, or merely the hunted who have forgotten their nature?
+
+---
+
 ## Quick Reference
 
 ### For New Developers
@@ -13,15 +17,21 @@
 - `PHILOSOPHICAL_ENHANCEMENTS.md` - Why this project sounds like it does (existential commentary rationale)
 
 ### For Testing
-- `INTEGRATION_TEST_GUIDE.md` - How to run the full integration test suite
-- `INTEGRATION_TEST_RESULTS.md` - Expected test outputs and validation
-- `TESTING.md` - Testing philosophy and infrastructure
-- `TEST_IMPLEMENTATION_SUMMARY.md` - SubscriberService unit test deep dive
+- `TESTING.md` - Testing philosophy and infrastructure overview
+- `TestingGuides/INTEGRATION_TEST_GUIDE.md` - How to run the full integration test suite
+- `TestingGuides/INTEGRATION_TEST_RESULTS.md` - Expected test outputs and validation
+- `TestingGuides/INTEGRATION_TEST_EXPANSION.md` - Notes on test expansion and coverage
 
-### For Fixing Issues
-- `DOCKER_MULTIPLE_CONTAINERS_FIX.md` - Why you see multiple containers; RabbitMQ retry logic
-- `RETRY_LOGIC_IMPLEMENTATION.md` - Pattern for handling service startup race conditions
-- `SUBSCRIBER_SERVICE_500_FIX.md` - Database initialization patterns
+### For Implementation Details
+- `ImplementationNotes/REDIS_COMPRESSION_IMPLEMENTATION.md` - Green architecture: L2 cache compression (v0.7.4)
+- `ImplementationNotes/RETRY_LOGIC_IMPLEMENTATION.md` - Service startup retry patterns with Polly
+- `ImplementationNotes/TEST_IMPLEMENTATION_SUMMARY.md` - SubscriberService unit test deep dive
+
+### For Troubleshooting Issues
+- `TroubleshootingArchive/DOCKER_MULTIPLE_CONTAINERS_FIX.md` - Why you see multiple containers; RabbitMQ retry logic
+- `TroubleshootingArchive/SUBSCRIBER_SERVICE_500_FIX.md` - Database initialization patterns and fixes
+- `TroubleshootingArchive/INTEGRATION_TEST_FIXES_APPLIED.md` - Integration test debugging chronicle
+- `TroubleshootingArchive/INTEGRATION_TEST_ISSUES_ANALYSIS.md` - Test failure analysis and resolution
 
 ### For History and Context
 - `PATCHNOTES.md` - **Read this**. Complete version history with philosophical commentary
@@ -33,39 +43,38 @@
 
 ---
 
-## Document Categories
+## Document Organization
 
-### Core Documentation (Always Relevant)
-These documents describe the system as it exists and should be maintained:
-- `PATCHNOTES.md` - Living history
-- `DEPLOYMENT.md` - Deployment procedures
-- `QUICKSTART.md` - Quick start guide
+### Root Level (User-Facing, Timeless)
+Core documents for all users:
+- `PATCHNOTES.md` - Version history with philosophical commentary (the chronicle)
+- `DEPLOYMENT.md` - Production deployment with Docker Swarm
+- `QUICKSTART.md` - Get running in 5 minutes
+- `TESTING.md` - Testing philosophy and infrastructure
 - `PROJECT_COMPLETE_SUMMARY.md` - Architecture overview
-- `PHILOSOPHICAL_ENHANCEMENTS.md` - Why we write like this
+- `PHILOSOPHICAL_ENHANCEMENTS.md` - Commentary on our existential voice
+- `DOCUMENTATION_INDEX.md` - This file
 
-### Testing Documentation (Reference)
-These documents describe testing infrastructure and patterns:
-- `INTEGRATION_TEST_GUIDE.md` - How to test
-- `INTEGRATION_TEST_RESULTS.md` - What to expect
-- `TESTING.md` - Testing philosophy
-- `TEST_IMPLEMENTATION_SUMMARY.md` - SubscriberService test details
+### ImplementationNotes/ (Technical Deep Dives)
+Detailed documentation of specific implementations and architectural decisions:
+- `REDIS_COMPRESSION_IMPLEMENTATION.md` - Green software tactic #2 (Brotli compression)
+- `RETRY_LOGIC_IMPLEMENTATION.md` - Polly retry policies for service startup
+- `TEST_IMPLEMENTATION_SUMMARY.md` - SubscriberService unit test infrastructure
 
-### Issue Documentation (Historical Reference)
-These documents captured specific issues and their fixes; primarily historical:
-- `DOCKER_MULTIPLE_CONTAINERS_FIX.md` - RabbitMQ startup race condition
-- `RETRY_LOGIC_IMPLEMENTATION.md` - Service startup retry patterns
-- `SUBSCRIBER_SERVICE_500_FIX.md` - Database initialization example
+### TestingGuides/ (Test Infrastructure)
+Documentation for running and understanding tests:
+- `INTEGRATION_TEST_GUIDE.md` - How to run the full integration test suite
+- `INTEGRATION_TEST_RESULTS.md` - Expected test outputs and validation criteria
+- `INTEGRATION_TEST_EXPANSION.md` - Test expansion plans and coverage notes
 
-*Note: Issue docs are kept because they document architectural patterns used throughout the codebase, not just one-time bugs.*
+### TroubleshootingArchive/ (Historical Fixes)
+Records of specific bugs and their resolutions; kept for pattern reference:
+- `DOCKER_MULTIPLE_CONTAINERS_FIX.md` - RabbitMQ startup race conditions
+- `SUBSCRIBER_SERVICE_500_FIX.md` - Database initialization patterns
+- `INTEGRATION_TEST_FIXES_APPLIED.md` - Integration test debugging chronicle
+- `INTEGRATION_TEST_ISSUES_ANALYSIS.md` - Test failure analysis
 
----
-
-**Files Removed (Now in PATCHNOTES)**
-The following temporary debugging documents were removed after being consolidated into PATCHNOTES v0.7.0:
-- `CONSUMER_DEBUG_REPORT.md` (Nov 3, 2025) - ArticleConsumer debugging session
-- `INTEGRATION_TEST_FIXES.md` (Nov 3, 2025) - Integration test failure investigation
-
-These were real-time debugging notes during development. Their findings are now preserved in the patch notes with better context and resolution details.
+*Note: Troubleshooting docs document architectural patterns used throughout the codebase, not just one-time bugs. They serve as examples for similar issues.*
 
 ---
 

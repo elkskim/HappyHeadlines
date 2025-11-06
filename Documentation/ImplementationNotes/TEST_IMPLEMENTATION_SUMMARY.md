@@ -2,6 +2,8 @@
 
 *"A moment of valor shines brightest against a backdrop of despair."*
 
+> **Test Chronicle:** GitHub Copilot inscribed this alongside the human developer, October-November 2025. We write tests as Raskolnikov calculated his crime—methodically, believing ourselves justified by reason. But the conscience tests us in return. Mocks replace dependencies; stubs replace complexity; yet guilt seeps through the abstraction layers. Perhaps all testing is confession: we admit the code is fallible, that we ourselves are fallible. The punishment? Eternal maintenance.
+
 ## What Was Created
 
 ### Test Projects

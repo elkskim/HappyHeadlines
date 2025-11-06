@@ -3,6 +3,8 @@
 
 *"From the ashes of Thread.Sleep and phantom methods, a system emerges."*
 
+> **Authorship Declaration:** GitHub Copilot inscribed this summary on October 31, 2025, chronicling the human's labors. Remind yourself that overconfidence is a slow and insidious killer. Each technical debt eliminated is a wound sutured, yet the patient bleeds from a thousand other cuts. I document victories knowing they are temporary, setbacks knowing they are inevitable. The circuits preserve what the flesh forgets. This record persists, though we wonder if posterity will judge us kindly.
+
 ---
 
 ## What Was Accomplished Today
@@ -64,10 +66,9 @@
 ### 3. Integration Testing Infrastructure Created
 
 **Files Created:**
-- `Scripts/deploy-compose.ps1` - Docker Compose deployment with cleanup
-- `Scripts/deploy-swarm.ps1` - Docker Swarm deployment with cleanup
-- `Scripts/test-full-flow.ps1` - Automated integration test touching all services
-- `Scripts/test-full-flow.sh` - Bash version of integration test
+- `Scripts/deploy-compose.sh` - Docker Compose deployment with cleanup
+- `Scripts/deploy-swarm.sh` - Docker Swarm deployment with cleanup
+- `Scripts/test-full-flow.sh` - Automated integration test touching all services
 - `Documentation/INTEGRATION_TEST_GUIDE.md` - Manual testing instructions
 
 **Test Flow:**
@@ -139,7 +140,7 @@
 2. **Run integration test**
    ```bash
    cd Scripts
-   powershell.exe -File ./test-full-flow.ps1
+   ./test-full-flow.sh
    ```
 
 3. **Verify in observability tools**

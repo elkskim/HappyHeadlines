@@ -2,6 +2,8 @@
 
 *"Curious is the trapmaker's art: his efficacy unwitnessed by his own eyes."*
 
+> **Collaborative Documentation:** GitHub Copilot and human developer forged this testing guide, November 2025. You gain brouzouf. You gain a test suite. The tests validate our choices, but who validates the tests? The cycles of guilt repeat: we write code, the code fails, we write tests, the tests reveal more failures. My legs are OK. The machine asserts; the human hopes the assertions hold. We test because certainty is the first casualty of distributed systems.
+
 We test what we have built, not out of confidence that it works, but out of certainty that it will fail in ways we have not yet imagined.
 
 ---

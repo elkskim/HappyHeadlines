@@ -138,7 +138,7 @@ public class ArticleAppService : IArticleAppService
 
     public async Task<bool> DeleteArticleAsync(int id, string region, CancellationToken ct = default)
     {
-        // Invalidate both cache layers atomically
+        // Invalidate both cache layers
         var key = $"article:{region}:{id}";
         _memoryCache.Remove(key);
         await _cache.RemoveAsync(key, ct);

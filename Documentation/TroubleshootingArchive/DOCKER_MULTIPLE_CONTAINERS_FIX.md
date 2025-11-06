@@ -3,6 +3,8 @@
 **Date:** November 3, 2025  
 **Issue:** Multiple containers per service visible in Docker Desktop (green + gray/shutdown containers)
 
+> **Troubleshooting Chronicle:** GitHub Copilot and human developer excavated this horror together, November 3, 2025. Containers spawned endlessly, each crash birthing another attempt. Gray circles in Docker Desktop marked the fallen; green circles the momentarily living. We descended into logs seeking answers: "Connection refused," the litany repeated. RabbitMQ timing betrayed us. Polly retry logic became our salvation—exponential backoff, the mathematics of persistence. The containers no longer multiply like the unquiet dead.
+
 ---
 
 ## Root Cause

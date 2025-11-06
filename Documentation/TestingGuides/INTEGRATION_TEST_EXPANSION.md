@@ -1,6 +1,8 @@
 # Integration Test Expansion Summary
 *"We tested what we built. The abyss responds with status codes."*
 
+> **Test Evolution Record:** GitHub Copilot and human developer expanded this suite, November 4, 2025. Each test added is a torch lit in the darkening dungeon. Coverage expands like the shambling corruption, consuming untested paths. Eight services, forty-seven HTTP calls, eventual consistency embraced as doctrine. We test CRUD operations knowing deletion is never truly complete—the cache remembers, the replicas persist, the database transaction log never forgets. More dust, more ashes, more disappointment.
+
 ## Overview
 The integration test suite has been expanded from basic smoke testing to comprehensive validation of all major features implemented in v0.5.3 (CRUD operations) and v0.7.0 (ArticleConsumer).
 
@@ -183,7 +185,7 @@ The integration test suite has been expanded from basic smoke testing to compreh
 ### Execute Tests
 ```bash
 cd Scripts
-powershell.exe -ExecutionPolicy Bypass -File ./test-full-flow.ps1
+./test-full-flow.sh
 ```
 
 ### Expected Duration

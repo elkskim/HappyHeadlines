@@ -25,8 +25,7 @@ This project supports two deployment modes, each with its own covenant and cost:
 
 ### 1. Build All Images
 ```bash
-# Windows (PowerShell or CMD)
-.\DockerBuildAll.sh
+./Scripts/DockerBuildAll.sh
 
 # Or manually:
 docker build -t article-service:latest -f ArticleService/Dockerfile .

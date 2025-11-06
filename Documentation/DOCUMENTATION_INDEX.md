@@ -18,11 +18,14 @@
 
 ### For Testing
 - `TESTING.md` - Testing philosophy and infrastructure overview
+- `TestingGuides/FEATURE_TOGGLE_TESTING.md` - Feature toggle validation (unit + integration, with/without restart)
 - `TestingGuides/INTEGRATION_TEST_GUIDE.md` - How to run the full integration test suite
 - `TestingGuides/INTEGRATION_TEST_RESULTS.md` - Expected test outputs and validation
 - `TestingGuides/INTEGRATION_TEST_EXPANSION.md` - Notes on test expansion and coverage
+- `Reports/TEST_COVERAGE.md` - Current test coverage report (55 tests across 3 projects)
 
 ### For Implementation Details
+- `ImplementationNotes/ADMIN_ENDPOINTS.md` - Runtime feature toggle control without restart
 - `ImplementationNotes/REDIS_COMPRESSION_IMPLEMENTATION.md` - Green architecture: L2 cache compression (v0.7.4)
 - `ImplementationNotes/RETRY_LOGIC_IMPLEMENTATION.md` - Service startup retry patterns with Polly
 - `ImplementationNotes/TEST_IMPLEMENTATION_SUMMARY.md` - SubscriberService unit test deep dive
@@ -57,15 +60,21 @@ Core documents for all users:
 
 ### ImplementationNotes/ (Technical Deep Dives)
 Detailed documentation of specific implementations and architectural decisions:
+- `ADMIN_ENDPOINTS.md` - Runtime feature toggle control via HTTP endpoints (no restart)
 - `REDIS_COMPRESSION_IMPLEMENTATION.md` - Green software tactic #2 (Brotli compression)
 - `RETRY_LOGIC_IMPLEMENTATION.md` - Polly retry policies for service startup
 - `TEST_IMPLEMENTATION_SUMMARY.md` - SubscriberService unit test infrastructure
 
 ### TestingGuides/ (Test Infrastructure)
 Documentation for running and understanding tests:
+- `FEATURE_TOGGLE_TESTING.md` - Comprehensive feature toggle validation strategy
 - `INTEGRATION_TEST_GUIDE.md` - How to run the full integration test suite
 - `INTEGRATION_TEST_RESULTS.md` - Expected test outputs and validation criteria
 - `INTEGRATION_TEST_EXPANSION.md` - Test expansion plans and coverage notes
+
+### Reports/ (Generated Reports and Metrics)
+Current status reports and metrics:
+- `TEST_COVERAGE.md` - Test coverage summary (55 tests, 100% passing)
 
 ### TroubleshootingArchive/ (Historical Fixes)
 Records of specific bugs and their resolutions; kept for pattern reference:

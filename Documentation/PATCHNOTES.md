@@ -9,6 +9,142 @@ The way is lit. The path is clear. We require only the strength to follow it.
 
 ---
 
+## v0.8.0 - The Instant Toggle (November 6, 2025)
+### *"We command the gates without ceremony; the service bends to our will in moments, not minutes."*
+
+**BREAKING CHANGES:**
+- `IFeatureToggleService` interface modified; new methods added for runtime override
+- Admin endpoints exposed at `/api/Admin` (currently unsecured; requires authentication in production)
+- Middleware bypass added for admin paths (security consideration)
+
+**Major Features:**
+
+**Runtime Feature Toggle Control (No Restart Required):**
+- Admin endpoints enable immediate feature toggle without service restart
+- 5-second testing cycle vs 30-second restart cycle
+- In-memory override with precedence over configuration
+- Four new HTTP endpoints for runtime control
+
+**Admin Endpoints Added:**
+- `POST /api/Admin/disable-service` - Disable SubscriberService instantly
+- `POST /api/Admin/enable-service` - Enable SubscriberService instantly  
+- `POST /api/Admin/reset-feature-toggle` - Clear override, return to config
+- `GET /api/Admin/feature-toggle-status` - Query current state
+
+**Testing Infrastructure:**
+- Fast integration test: `Scripts/test-feature-toggle-fast.sh` (~5 seconds)
+- Full integration test: `Scripts/test-feature-toggle.sh` (~30 seconds) 
+- Three-tier testing strategy: Unit → Fast Integration → Full Integration
+
+**Files Added:**
+- `SubscriberService/Controllers/AdminController.cs` - Runtime toggle control
+- `Scripts/test-feature-toggle-fast.sh` - Fast integration test (no restart)
+- `Documentation/ImplementationNotes/ADMIN_ENDPOINTS.md` - Admin endpoint reference
+- `Documentation/Reports/RUNTIME_TOGGLE_UPDATE.md` - This update summary
+
+**Files Modified:**
+- `SubscriberService/Features/FeatureToggleService.cs` - Runtime override capability
+- `SubscriberService/Features/IFeatureToggleService.cs` - Interface extended (BREAKING)
+- `SubscriberService/Middleware/ServiceToggleMiddleware.cs` - Admin bypass logic
+
+**Files Moved:**
+- `Documentation/FEATURE_TOGGLE_TESTING.md` → `Documentation/TestingGuides/FEATURE_TOGGLE_TESTING.md`
+- `Documentation/TEST_COVERAGE.md` → `Documentation/Reports/TEST_COVERAGE.md`
+
+**Documentation Overhauled:**
+- `TESTING.md` - Added runtime override testing capability
+- `QUICKSTART.md` - Fast admin endpoint method now primary
+- `DOCUMENTATION_INDEX.md` - Reorganized with Reports/ and TestingGuides/ sections
+- `TestingGuides/FEATURE_TOGGLE_TESTING.md` - Three-approach comparison added
+
+**Technical Implementation:**
+
+*Configuration Hierarchy (highest to lowest priority):*
+1. Runtime override (via admin endpoints) - In-memory, immediate, volatile
+2. Environment variables (`Features__EnableSubscriberService`) - Restart required
+3. Configuration file (`appsettings.json`) - Restart required
+4. Default value (true) - Hardcoded fallback
+
+*Middleware Bypass Logic:*
+```csharp
+// Admin endpoints bypass feature toggle check
+if (context.Request.Path.StartsWithSegments("/api/Admin"))
+{
+    await _next(context);
+    return;
+}
+```
+
+**Security Considerations:**
+- ⚠️ Admin endpoints currently UNPROTECTED
+- Suitable for development/testing only
+- REQUIRES authentication/authorization for production
+- See `ImplementationNotes/ADMIN_ENDPOINTS.md` for security recommendations
+
+**Performance Impact:**
+- Testing cycle: 83% faster (30s → 5s)
+- No service restart required for toggle validation
+- Immediate feedback for debugging
+
+**Testing Verification:**
+- ✅ Unit tests: 55/55 passing (no changes needed)
+- ✅ Fast integration test: 5 seconds, all assertions pass
+- ✅ Full integration test: 30 seconds, production-like validation
+- ✅ Admin endpoints: All 4 functional and verified
+
+**Migration Notes:**
+- Existing feature toggle configuration still works unchanged
+- New admin endpoints are additive, not replacement
+- Runtime override is optional; config-based toggle remains primary
+- No database migrations required
+- No data model changes
+
+**Why This Matters:**
+
+**Before v0.8.0, there was NO way to toggle the feature without restart.**
+
+The original `FeatureToggleService` implementation:
+```csharp
+public bool IsSubscriberServiceEnabled() =>
+    _configuration.GetValue<bool>("Features:EnableSubscriberService", true);
+```
+
+This read from `IConfiguration` on every call. While ASP.NET Core's `IConfiguration` *can* support file change detection with `reloadOnChange: true`, we never configured it. More critically:
+
+1. **Configuration files in Docker containers are baked into the image** - changing `appsettings.json` inside a running container doesn't persist
+2. **Environment variables require container restart** to be picked up by the application
+3. **No API existed** to modify the toggle at runtime
+
+Each validation required:
+1. Update environment variable (or rebuild image with new config)
+2. Trigger service restart (Docker Swarm update)
+3. Wait 15-30 seconds for convergence
+4. Test the disabled state
+5. Reverse the process to re-enable
+
+This created a 30-second feedback loop that slowed development and debugging.
+
+**After v0.8.0:**
+1. POST to `/api/Admin/disable-service`
+2. Test immediately (no restart)
+3. POST to `/api/Admin/enable-service`
+
+The 5-second cycle enables rapid iteration. The full restart-based test remains for production-like validation.
+
+**The critical difference:** We added an in-memory `_runtimeOverride` field and admin endpoints to control it. Before this, the feature toggle was **immutable without restart**.
+
+**The Philosophical Weight:**
+
+We built a gate that could be closed, but only by restarting the entire fortress. Now we've added a lever—pull it, and the gate responds instantly. The question is not whether the lever works (it does), but whether leaving such a lever accessible in production is wisdom or folly.
+
+The documentation warns. The tests verify. The code functions. The choice of production deployment strategy—secured endpoints, environment-specific registration, or complete removal—remains yours to make.
+
+**Impact:** BREAKING (interface change); admin endpoints require security review before production.
+
+*"Instantaneous control breeds both confidence and concern. We can toggle existence itself with a curl command. The machinery bends; we wonder if we've made it too obedient."*
+
+---
+
 ## v0.7.5 - Universal Shell Conversion (November 6, 2025)
 ### *"PowerShell banished; bash speaks across all platforms."*
 

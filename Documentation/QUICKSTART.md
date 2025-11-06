@@ -89,13 +89,19 @@ docker service logs happy-headlines_newsletter-service | findstr "received Subsc
 
 # Expected: "NewsletterSubscriberConsumer received Subscriber: test@example.com"
 
-# 3. Disable SubscriberService
-docker service update --env-add Features__EnableSubscriberService=false happy-headlines_subscriber-service
+# 3. Disable SubscriberService (FAST - No Restart Required)
+curl -X POST http://localhost:8007/api/Admin/disable-service
 
-# 4. Try to create another subscriber (should fail with 503)
+# 4. Try to create another subscriber (should fail with 503 immediately)
 curl -X POST http://localhost:8007/api/subscriber -H "Content-Type: application/json" -d "{\"email\":\"blocked@example.com\",\"region\":\"Asia\",\"userId\":2}"
 
 # Expected: "SubscriberService is disabled"
+
+# 5. Re-enable SubscriberService (FAST - No Restart Required)
+curl -X POST http://localhost:8007/api/Admin/enable-service
+
+# Alternative: Test with restart (production-like, ~30 seconds)
+# bash ./Scripts/test-feature-toggle.sh
 ```
 
 ---
@@ -103,6 +109,7 @@ curl -X POST http://localhost:8007/api/subscriber -H "Content-Type: application/
 ## Important URLs
 
 - **SubscriberService API:** http://localhost:8007/api/subscriber
+- **SubscriberService Admin (Feature Toggle):** http://localhost:8007/api/Admin
 - **RabbitMQ Management:** http://localhost:15672 (guest/guest)
 - **Seq Logs:** http://localhost:5342
 - **Zipkin Tracing:** http://localhost:9411

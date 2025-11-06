@@ -28,47 +28,56 @@ made this mess.
 ## Quick Start
 
 ### Prerequisites
-- Docker Desktop with Swarm mode enabled
-- Windows (PowerShell/CMD) or Linux/Mac (Bash)
+- Docker Desktop with Swarm mode
+- Bash shell (Git Bash on Windows, native on Linux/Mac)
 
 ### Build and Deploy
 ```bash
 # Build all Docker images
-.\DockerBuildAll.sh
+./Scripts/DockerBuildAll.sh
 
-# Initialize Swarm (first time only)
-docker swarm init
+# Deploy using automated script (handles Swarm init and cleanup)
+./Scripts/deploy-swarm.sh
 
-# Deploy the stack
-docker stack deploy -c docker-compose.yml -c docker-compose.swarm.yml happy-headlines
+# Or manually:
+docker swarm init  # First time only
+docker stack deploy -c docker-compose.yml -c docker-compose.swarm.yml happyheadlines
 
 # Verify services are running
 docker service ls
 ```
 
 ### Access Points
-- **SubscriberService**: http://localhost:8007/api/subscriber
-- **ArticleService**: http://localhost:8000
+- **ArticleService**: http://localhost:8000-8002 (3 replicas, load balanced)
+- **ProfanityService**: http://localhost:8003
+- **CommentService**: http://localhost:8004
+- **DraftService**: http://localhost:8005
+- **PublisherService/NewsletterService**: http://localhost:8006
+- **SubscriberService**: http://localhost:8007
+- **Monitoring**: http://localhost:8085/api/cachemetrics/cache
 - **RabbitMQ Management**: http://localhost:15672 (guest/guest)
 - **Seq Logs**: http://localhost:5342
 - **Zipkin Tracing**: http://localhost:9411
 
-## Current Status (v0.5.1)
+## Current Status (v0.7.5)
 
-**Working:**
-- Subscriber CRUD operations with REST API
-- RabbitMQ event publishing for subscriber lifecycle
-- NewsletterService consuming subscriber events
-- Feature toggle for runtime enable/disable (Swarm mode)
-- Manual message acknowledgment with fault tolerance
-- Monitoring and distributed tracing
-- Unit tests for SubscriberService and NewsletterService (run with `dotnet test`)
+**Implemented:**
+- Full CRUD operations across all services (Article, Subscriber, Draft, Comment)
+- RabbitMQ event-driven architecture with retry logic and fault tolerance
+- Redis caching with Brotli compression (60-70% payload reduction)
+- Circuit breaker pattern for ProfanityService integration
+- Runtime feature toggles (Swarm mode)
+- Comprehensive integration test suite covering 8 services
+- Unit tests for SubscriberService and NewsletterService
+- Observability with Seq, Zipkin, and custom metrics dashboard
+- Green software architecture: payload compression, reduced network traffic
 
-**Known Issues:**
-- Blocking async operations in RabbitMQ consumer constructors
-- Feature toggle requires Swarm mode for true runtime changes
-- DraftService and CommentService occasionally fail on first startup (retry succeeds)
-- Integration tests not yet implemented (RabbitMQ and SQL Server require testcontainers)
+**Recent Improvements:**
+- Article CRUD with cache invalidation on updates/deletes
+- Automated deployment scripts (bash)
+- Integration testing with full service verification
+- Retry policies for database migrations and RabbitMQ connections
+- Profanity checking with circuit breaker resilience
 
 ## Documentation
 
@@ -98,12 +107,12 @@ HappyHeadlines/
 ├── *Database/               # EF Core database projects
 ├── docker-compose.yml       # Base container configuration
 ├── docker-compose.swarm.yml # Swarm-specific overrides
-└── Scripts/                 # Shell scripts for automation
+└── Scripts/                 # Bash scripts for automation
 ```
 
 ## Key Technologies
 
-- **.NET 8** - Microservices framework
+- **.NET 9** - Microservices framework
 - **Docker Swarm** - Container orchestration
 - **RabbitMQ** - Message broker (fanout exchanges)
 - **SQL Server 2017** - Relational databases
@@ -127,3 +136,4 @@ For detailed version history and technical decisions, see [PATCHNOTES.md](Docume
 **Note:** Some aspects of this codebase reflect learning and time constraints rather than production best practices. The documentation acknowledges these trade-offs explicitly.
 Writing the notes and comments is a way for me to relieve the pressure of perfectionism,
 and can be duly ignored, as the technical implementation remains sound.. sort of.
+

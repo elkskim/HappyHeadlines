@@ -46,6 +46,8 @@ Once more, the Github Copilot has estimated the benefits. Take these numbers wit
 - ~400 MB/day saved per million requests
 
 
+
+
 ## WHERE IS THE EVIDENCE
 
 All of these changes can be found in ```ArticleService/Services/ArticleAppService.cs```,

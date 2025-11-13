@@ -1,0 +1,2064 @@
+{
+  "configuration" : { },
+  "description" : "A distributed microservices-based news platform with fault isolation and feature toggles",
+  "documentation" : { },
+  "id" : 1,
+  "lastModifiedDate" : "2025-11-10T21:10:19Z",
+  "model" : {
+    "deploymentNodes" : [ {
+      "children" : [ {
+        "containerInstances" : [ {
+          "containerId" : "9",
+          "deploymentGroups" : [ "Default" ],
+          "environment" : "Live",
+          "id" : "54",
+          "instanceId" : 1,
+          "properties" : {
+            "structurizr.dsl.identifier" : "live.d6fd6b17-2526-47ef-b977-1ea38231e753.1a445b06-51dd-422b-a638-87e29cbc2f8d.528fa8c1-6a69-404b-aceb-510e4eb12d44"
+          },
+          "relationships" : [ {
+            "description" : "Routes to regional queues",
+            "destinationId" : "83",
+            "id" : "84",
+            "linkedRelationshipId" : "22",
+            "sourceId" : "54",
+            "technology" : "AMQP"
+          } ],
+          "tags" : "Container Instance"
+        }, {
+          "containerId" : "10",
+          "deploymentGroups" : [ "Default" ],
+          "environment" : "Live",
+          "id" : "55",
+          "instanceId" : 1,
+          "properties" : {
+            "structurizr.dsl.identifier" : "live.d6fd6b17-2526-47ef-b977-1ea38231e753.1a445b06-51dd-422b-a638-87e29cbc2f8d.817d4090-e700-4d57-b9b7-0b4bd2470f4d"
+          },
+          "relationships" : [ {
+            "description" : "Reads/writes",
+            "destinationId" : "57",
+            "id" : "58",
+            "linkedRelationshipId" : "25",
+            "sourceId" : "55",
+            "technology" : "SQL/TDS"
+          }, {
+            "description" : "Consumes + publishes events",
+            "destinationId" : "83",
+            "id" : "85",
+            "linkedRelationshipId" : "24",
+            "sourceId" : "55",
+            "technology" : "AMQP"
+          }, {
+            "description" : "Caches with compression",
+            "destinationId" : "88",
+            "id" : "89",
+            "linkedRelationshipId" : "26",
+            "sourceId" : "55",
+            "technology" : "Redis Protocol"
+          }, {
+            "description" : "Reports metrics",
+            "destinationId" : "93",
+            "id" : "95",
+            "linkedRelationshipId" : "28",
+            "sourceId" : "55",
+            "technology" : "HTTP"
+          } ],
+          "tags" : "Container Instance"
+        } ],
+        "environment" : "Live",
+        "id" : "53",
+        "instances" : "1",
+        "name" : "Services",
+        "properties" : {
+          "structurizr.dsl.identifier" : "live.d6fd6b17-2526-47ef-b977-1ea38231e753.1a445b06-51dd-422b-a638-87e29cbc2f8d"
+        },
+        "tags" : "Element,Deployment Node"
+      }, {
+        "containerInstances" : [ {
+          "containerId" : "11",
+          "deploymentGroups" : [ "Default" ],
+          "environment" : "Live",
+          "id" : "57",
+          "instanceId" : 1,
+          "properties" : {
+            "structurizr.dsl.identifier" : "live.d6fd6b17-2526-47ef-b977-1ea38231e753.e19c9daa-6e42-465b-a42d-4070ff138373.49eed922-b49c-43bf-b3c2-b8018c761ad0"
+          },
+          "tags" : "Container Instance"
+        } ],
+        "environment" : "Live",
+        "id" : "56",
+        "instances" : "1",
+        "name" : "Data",
+        "properties" : {
+          "structurizr.dsl.identifier" : "live.d6fd6b17-2526-47ef-b977-1ea38231e753.e19c9daa-6e42-465b-a42d-4070ff138373"
+        },
+        "tags" : "Element,Deployment Node"
+      } ],
+      "environment" : "Live",
+      "id" : "52",
+      "instances" : "1",
+      "name" : "Article Domain",
+      "properties" : {
+        "structurizr.dsl.identifier" : "live.d6fd6b17-2526-47ef-b977-1ea38231e753"
+      },
+      "tags" : "Element,Deployment Node"
+    }, {
+      "children" : [ {
+        "containerInstances" : [ {
+          "containerId" : "12",
+          "deploymentGroups" : [ "Default" ],
+          "environment" : "Live",
+          "id" : "61",
+          "instanceId" : 1,
+          "properties" : {
+            "structurizr.dsl.identifier" : "live.8e339628-22ae-404e-906e-b27a9c1a3feb.dfde724f-3ccb-4d94-9e91-3c5aa2506ce2.13241672-5416-406e-90c2-4d9fb5aa4491"
+          },
+          "relationships" : [ {
+            "description" : "Validates (circuit breaker)",
+            "destinationId" : "62",
+            "id" : "63",
+            "linkedRelationshipId" : "30",
+            "sourceId" : "61",
+            "technology" : "HTTP"
+          }, {
+            "description" : "Reads/writes",
+            "destinationId" : "65",
+            "id" : "66",
+            "linkedRelationshipId" : "29",
+            "sourceId" : "61",
+            "technology" : "SQL/TDS"
+          }, {
+            "description" : "Caches",
+            "destinationId" : "88",
+            "id" : "90",
+            "linkedRelationshipId" : "31",
+            "sourceId" : "61",
+            "technology" : "Redis Protocol"
+          }, {
+            "description" : "Reports metrics",
+            "destinationId" : "93",
+            "id" : "97",
+            "linkedRelationshipId" : "32",
+            "sourceId" : "61",
+            "technology" : "HTTP"
+          } ],
+          "tags" : "Container Instance"
+        }, {
+          "containerId" : "14",
+          "deploymentGroups" : [ "Default" ],
+          "environment" : "Live",
+          "id" : "62",
+          "instanceId" : 1,
+          "properties" : {
+            "structurizr.dsl.identifier" : "live.8e339628-22ae-404e-906e-b27a9c1a3feb.dfde724f-3ccb-4d94-9e91-3c5aa2506ce2.b24ae95e-3def-45e2-8754-ac9f661b1d76"
+          },
+          "relationships" : [ {
+            "description" : "Reads words",
+            "destinationId" : "67",
+            "id" : "68",
+            "linkedRelationshipId" : "33",
+            "sourceId" : "62",
+            "technology" : "SQL/TDS"
+          } ],
+          "tags" : "Container Instance"
+        } ],
+        "environment" : "Live",
+        "id" : "60",
+        "instances" : "1",
+        "name" : "Services",
+        "properties" : {
+          "structurizr.dsl.identifier" : "live.8e339628-22ae-404e-906e-b27a9c1a3feb.dfde724f-3ccb-4d94-9e91-3c5aa2506ce2"
+        },
+        "tags" : "Element,Deployment Node"
+      }, {
+        "containerInstances" : [ {
+          "containerId" : "13",
+          "deploymentGroups" : [ "Default" ],
+          "environment" : "Live",
+          "id" : "65",
+          "instanceId" : 1,
+          "properties" : {
+            "structurizr.dsl.identifier" : "live.8e339628-22ae-404e-906e-b27a9c1a3feb.4eb8bee9-ec56-418e-9296-66451a77cf72.1d9599b7-51d5-4d19-b320-b70f5e3f25db"
+          },
+          "tags" : "Container Instance"
+        }, {
+          "containerId" : "15",
+          "deploymentGroups" : [ "Default" ],
+          "environment" : "Live",
+          "id" : "67",
+          "instanceId" : 1,
+          "properties" : {
+            "structurizr.dsl.identifier" : "live.8e339628-22ae-404e-906e-b27a9c1a3feb.4eb8bee9-ec56-418e-9296-66451a77cf72.54cfe911-1fc4-46d1-b3fc-511a2d3cf393"
+          },
+          "tags" : "Container Instance"
+        } ],
+        "environment" : "Live",
+        "id" : "64",
+        "instances" : "1",
+        "name" : "Data",
+        "properties" : {
+          "structurizr.dsl.identifier" : "live.8e339628-22ae-404e-906e-b27a9c1a3feb.4eb8bee9-ec56-418e-9296-66451a77cf72"
+        },
+        "tags" : "Element,Deployment Node"
+      } ],
+      "environment" : "Live",
+      "id" : "59",
+      "instances" : "1",
+      "name" : "Comment Domain",
+      "properties" : {
+        "structurizr.dsl.identifier" : "live.8e339628-22ae-404e-906e-b27a9c1a3feb"
+      },
+      "tags" : "Element,Deployment Node"
+    }, {
+      "children" : [ {
+        "containerInstances" : [ {
+          "containerId" : "18",
+          "deploymentGroups" : [ "Default" ],
+          "environment" : "Live",
+          "id" : "71",
+          "instanceId" : 1,
+          "properties" : {
+            "structurizr.dsl.identifier" : "live.dacf3c45-3a77-48b0-a3c2-ed0e83b48649.a0919d69-ae0c-486f-82fb-a68a50e92c08.2ecfdd78-43b8-4fc1-a8c8-c0a893126ad8"
+          },
+          "relationships" : [ {
+            "description" : "Reads/writes",
+            "destinationId" : "74",
+            "id" : "75",
+            "linkedRelationshipId" : "35",
+            "sourceId" : "71",
+            "technology" : "SQL/TDS"
+          }, {
+            "description" : "Publishes events",
+            "destinationId" : "83",
+            "id" : "86",
+            "linkedRelationshipId" : "36",
+            "sourceId" : "71",
+            "technology" : "AMQP"
+          } ],
+          "tags" : "Container Instance"
+        }, {
+          "containerId" : "20",
+          "deploymentGroups" : [ "Default" ],
+          "environment" : "Live",
+          "id" : "72",
+          "instanceId" : 1,
+          "properties" : {
+            "structurizr.dsl.identifier" : "live.dacf3c45-3a77-48b0-a3c2-ed0e83b48649.a0919d69-ae0c-486f-82fb-a68a50e92c08.36ec49e6-a2ef-480f-8266-f242ea8ca28b"
+          },
+          "relationships" : [ {
+            "description" : "Consumes events",
+            "destinationId" : "83",
+            "id" : "87",
+            "linkedRelationshipId" : "37",
+            "sourceId" : "72",
+            "technology" : "AMQP"
+          } ],
+          "tags" : "Container Instance"
+        } ],
+        "environment" : "Live",
+        "id" : "70",
+        "instances" : "1",
+        "name" : "Services",
+        "properties" : {
+          "structurizr.dsl.identifier" : "live.dacf3c45-3a77-48b0-a3c2-ed0e83b48649.a0919d69-ae0c-486f-82fb-a68a50e92c08"
+        },
+        "tags" : "Element,Deployment Node"
+      }, {
+        "containerInstances" : [ {
+          "containerId" : "19",
+          "deploymentGroups" : [ "Default" ],
+          "environment" : "Live",
+          "id" : "74",
+          "instanceId" : 1,
+          "properties" : {
+            "structurizr.dsl.identifier" : "live.dacf3c45-3a77-48b0-a3c2-ed0e83b48649.1e9edb65-4e70-4a56-b26d-91bc8a5685df.87e9308f-58be-4e7b-9e48-5bb53ab75b1f"
+          },
+          "tags" : "Container Instance"
+        } ],
+        "environment" : "Live",
+        "id" : "73",
+        "instances" : "1",
+        "name" : "Data",
+        "properties" : {
+          "structurizr.dsl.identifier" : "live.dacf3c45-3a77-48b0-a3c2-ed0e83b48649.1e9edb65-4e70-4a56-b26d-91bc8a5685df"
+        },
+        "tags" : "Element,Deployment Node"
+      } ],
+      "environment" : "Live",
+      "id" : "69",
+      "instances" : "1",
+      "name" : "Newsletter Domain",
+      "properties" : {
+        "structurizr.dsl.identifier" : "live.dacf3c45-3a77-48b0-a3c2-ed0e83b48649"
+      },
+      "tags" : "Element,Deployment Node"
+    }, {
+      "children" : [ {
+        "containerInstances" : [ {
+          "containerId" : "16",
+          "deploymentGroups" : [ "Default" ],
+          "environment" : "Live",
+          "id" : "78",
+          "instanceId" : 1,
+          "properties" : {
+            "structurizr.dsl.identifier" : "live.ec076e37-6ce9-47d0-a5f5-69e2802bd15e.78250e46-6939-477a-9f56-0ccd1d802ffa.406a5bbe-5cf1-4969-ad55-2f050d6e1737"
+          },
+          "relationships" : [ {
+            "description" : "Reads/writes",
+            "destinationId" : "80",
+            "id" : "81",
+            "linkedRelationshipId" : "34",
+            "sourceId" : "78",
+            "technology" : "SQL/TDS"
+          } ],
+          "tags" : "Container Instance"
+        } ],
+        "environment" : "Live",
+        "id" : "77",
+        "instances" : "1",
+        "name" : "Services",
+        "properties" : {
+          "structurizr.dsl.identifier" : "live.ec076e37-6ce9-47d0-a5f5-69e2802bd15e.78250e46-6939-477a-9f56-0ccd1d802ffa"
+        },
+        "tags" : "Element,Deployment Node"
+      }, {
+        "containerInstances" : [ {
+          "containerId" : "17",
+          "deploymentGroups" : [ "Default" ],
+          "environment" : "Live",
+          "id" : "80",
+          "instanceId" : 1,
+          "properties" : {
+            "structurizr.dsl.identifier" : "live.ec076e37-6ce9-47d0-a5f5-69e2802bd15e.0549e228-fdf0-4a1a-ac83-1e54630a0081.f1b58243-2cab-4de8-9237-17438395f4ef"
+          },
+          "tags" : "Container Instance"
+        } ],
+        "environment" : "Live",
+        "id" : "79",
+        "instances" : "1",
+        "name" : "Data",
+        "properties" : {
+          "structurizr.dsl.identifier" : "live.ec076e37-6ce9-47d0-a5f5-69e2802bd15e.0549e228-fdf0-4a1a-ac83-1e54630a0081"
+        },
+        "tags" : "Element,Deployment Node"
+      } ],
+      "environment" : "Live",
+      "id" : "76",
+      "instances" : "1",
+      "name" : "Draft Domain",
+      "properties" : {
+        "structurizr.dsl.identifier" : "live.ec076e37-6ce9-47d0-a5f5-69e2802bd15e"
+      },
+      "tags" : "Element,Deployment Node"
+    }, {
+      "containerInstances" : [ {
+        "containerId" : "21",
+        "deploymentGroups" : [ "Default" ],
+        "environment" : "Live",
+        "id" : "93",
+        "instanceId" : 1,
+        "properties" : {
+          "structurizr.dsl.identifier" : "live.24fb45c7-3f4f-45c5-9426-fd3c8a726355.5bf1180b-80b8-412f-b680-f7c056f52d2d"
+        },
+        "relationships" : [ {
+          "description" : "Collects stats",
+          "destinationId" : "55",
+          "id" : "94",
+          "linkedRelationshipId" : "38",
+          "sourceId" : "93",
+          "technology" : "HTTP"
+        }, {
+          "description" : "Collects stats",
+          "destinationId" : "61",
+          "id" : "96",
+          "linkedRelationshipId" : "39",
+          "sourceId" : "93",
+          "technology" : "HTTP"
+        } ],
+        "tags" : "Container Instance"
+      } ],
+      "environment" : "Live",
+      "id" : "82",
+      "instances" : "1",
+      "name" : "Shared Infrastructure",
+      "properties" : {
+        "structurizr.dsl.identifier" : "live.24fb45c7-3f4f-45c5-9426-fd3c8a726355"
+      },
+      "softwareSystemInstances" : [ {
+        "deploymentGroups" : [ "Default" ],
+        "environment" : "Live",
+        "id" : "83",
+        "instanceId" : 1,
+        "properties" : {
+          "structurizr.dsl.identifier" : "live.24fb45c7-3f4f-45c5-9426-fd3c8a726355.af8b4e99-39f4-43ee-83a0-46d23837584f"
+        },
+        "softwareSystemId" : "3",
+        "tags" : "Software System Instance"
+      }, {
+        "deploymentGroups" : [ "Default" ],
+        "environment" : "Live",
+        "id" : "88",
+        "instanceId" : 1,
+        "properties" : {
+          "structurizr.dsl.identifier" : "live.24fb45c7-3f4f-45c5-9426-fd3c8a726355.0e8fabdc-f7d8-4301-83b3-7a32d5c90f62"
+        },
+        "softwareSystemId" : "5",
+        "tags" : "Software System Instance"
+      }, {
+        "deploymentGroups" : [ "Default" ],
+        "environment" : "Live",
+        "id" : "91",
+        "instanceId" : 1,
+        "properties" : {
+          "structurizr.dsl.identifier" : "live.24fb45c7-3f4f-45c5-9426-fd3c8a726355.ea49fbde-3ec0-4693-b517-c840fbb8995a"
+        },
+        "softwareSystemId" : "6",
+        "tags" : "Software System Instance"
+      }, {
+        "deploymentGroups" : [ "Default" ],
+        "environment" : "Live",
+        "id" : "92",
+        "instanceId" : 1,
+        "properties" : {
+          "structurizr.dsl.identifier" : "live.24fb45c7-3f4f-45c5-9426-fd3c8a726355.b5d560f1-5df7-4662-9f6d-536b742e825a"
+        },
+        "softwareSystemId" : "7",
+        "tags" : "Software System Instance"
+      } ],
+      "tags" : "Element,Deployment Node"
+    } ],
+    "people" : [ {
+      "description" : "Reads articles, posts comments, subscribes to newsletters",
+      "id" : "1",
+      "name" : "Reader",
+      "properties" : {
+        "structurizr.dsl.identifier" : "reader"
+      },
+      "relationships" : [ {
+        "description" : "Reads, comments, subscribes",
+        "destinationId" : "8",
+        "id" : "50",
+        "sourceId" : "1",
+        "tags" : "Relationship",
+        "technology" : "HTTPS"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Publishes articles to the platform",
+      "id" : "2",
+      "name" : "News Publisher",
+      "properties" : {
+        "structurizr.dsl.identifier" : "newsPublisher"
+      },
+      "relationships" : [ {
+        "description" : "Publishes articles",
+        "destinationId" : "8",
+        "id" : "51",
+        "sourceId" : "2",
+        "tags" : "Relationship",
+        "technology" : "HTTPS"
+      } ],
+      "tags" : "Element,Person"
+    } ],
+    "softwareSystems" : [ {
+      "description" : "Message broker for async communication",
+      "documentation" : { },
+      "id" : "3",
+      "name" : "RabbitMQ",
+      "properties" : {
+        "structurizr.dsl.identifier" : "rabbitmq"
+      },
+      "tags" : "Element,Software System,External"
+    }, {
+      "description" : "Relational database cluster (8 regional article databases + 4 centralized service databases)",
+      "documentation" : { },
+      "id" : "4",
+      "name" : "MS SQL Server",
+      "properties" : {
+        "structurizr.dsl.identifier" : "mssql"
+      },
+      "tags" : "Element,Software System,External"
+    }, {
+      "description" : "Distributed cache",
+      "documentation" : { },
+      "id" : "5",
+      "name" : "Redis",
+      "properties" : {
+        "structurizr.dsl.identifier" : "redis"
+      },
+      "tags" : "Element,Software System,External"
+    }, {
+      "description" : "Centralized logging",
+      "documentation" : { },
+      "id" : "6",
+      "name" : "Seq",
+      "properties" : {
+        "structurizr.dsl.identifier" : "seq"
+      },
+      "tags" : "Element,Software System,External"
+    }, {
+      "description" : "Distributed tracing",
+      "documentation" : { },
+      "id" : "7",
+      "name" : "Zipkin",
+      "properties" : {
+        "structurizr.dsl.identifier" : "zipkin"
+      },
+      "tags" : "Element,Software System,External"
+    }, {
+      "containers" : [ {
+        "description" : "Receives articles from publishers and routes to regional queues",
+        "documentation" : { },
+        "id" : "9",
+        "name" : "PublisherService",
+        "properties" : {
+          "structurizr.dsl.identifier" : "happyHeadlines.publisherService"
+        },
+        "relationships" : [ {
+          "description" : "Routes to regional queues",
+          "destinationId" : "3",
+          "id" : "22",
+          "sourceId" : "9",
+          "tags" : "Relationship",
+          "technology" : "AMQP"
+        } ],
+        "tags" : "Element,Container,ArticleDomain,Service",
+        "technology" : "ASP.NET Core 9.0"
+      }, {
+        "description" : "Routes article requests to 8 regional databases. 3 replicas for load balancing. Brotli compression caching.",
+        "documentation" : { },
+        "id" : "10",
+        "name" : "ArticleService",
+        "properties" : {
+          "structurizr.dsl.identifier" : "happyHeadlines.articleService"
+        },
+        "relationships" : [ {
+          "description" : "Consumes + publishes events",
+          "destinationId" : "3",
+          "id" : "24",
+          "sourceId" : "10",
+          "tags" : "Relationship",
+          "technology" : "AMQP"
+        }, {
+          "description" : "Reads/writes",
+          "destinationId" : "11",
+          "id" : "25",
+          "sourceId" : "10",
+          "tags" : "Relationship",
+          "technology" : "SQL/TDS"
+        }, {
+          "description" : "Caches with compression",
+          "destinationId" : "5",
+          "id" : "26",
+          "sourceId" : "10",
+          "tags" : "Relationship",
+          "technology" : "Redis Protocol"
+        }, {
+          "description" : "Reports metrics",
+          "destinationId" : "21",
+          "id" : "28",
+          "sourceId" : "10",
+          "tags" : "Relationship",
+          "technology" : "HTTP"
+        } ],
+        "tags" : "Element,Container,ArticleDomain,Service",
+        "technology" : "ASP.NET Core 9.0"
+      }, {
+        "description" : "8 regional instances: Global, Africa, Asia, Europe, N/S America, Oceania, Antarctica. Dynamic routing per request.",
+        "documentation" : { },
+        "id" : "11",
+        "name" : "ArticleDatabase",
+        "properties" : {
+          "structurizr.dsl.identifier" : "happyHeadlines.articleDb"
+        },
+        "relationships" : [ {
+          "description" : "8 regional instances",
+          "destinationId" : "4",
+          "id" : "45",
+          "sourceId" : "11",
+          "tags" : "Relationship",
+          "technology" : "SQL/TDS"
+        } ],
+        "tags" : "Element,Container,Database,ArticleDomain",
+        "technology" : "MS SQL Server 2017"
+      }, {
+        "description" : "Manages comments with profanity filtering",
+        "documentation" : { },
+        "id" : "12",
+        "name" : "CommentService",
+        "properties" : {
+          "structurizr.dsl.identifier" : "happyHeadlines.commentService"
+        },
+        "relationships" : [ {
+          "description" : "Reads/writes",
+          "destinationId" : "13",
+          "id" : "29",
+          "sourceId" : "12",
+          "tags" : "Relationship",
+          "technology" : "SQL/TDS"
+        }, {
+          "description" : "Validates (circuit breaker)",
+          "destinationId" : "14",
+          "id" : "30",
+          "sourceId" : "12",
+          "tags" : "Relationship",
+          "technology" : "HTTP"
+        }, {
+          "description" : "Caches",
+          "destinationId" : "5",
+          "id" : "31",
+          "sourceId" : "12",
+          "tags" : "Relationship",
+          "technology" : "Redis Protocol"
+        }, {
+          "description" : "Reports metrics",
+          "destinationId" : "21",
+          "id" : "32",
+          "sourceId" : "12",
+          "tags" : "Relationship",
+          "technology" : "HTTP"
+        } ],
+        "tags" : "Element,Container,CommentDomain,Service",
+        "technology" : "ASP.NET Core 9.0"
+      }, {
+        "description" : "Centralized comment storage across all regions",
+        "documentation" : { },
+        "id" : "13",
+        "name" : "CommentDatabase",
+        "properties" : {
+          "structurizr.dsl.identifier" : "happyHeadlines.commentDb"
+        },
+        "relationships" : [ {
+          "description" : "Centralized",
+          "destinationId" : "4",
+          "id" : "46",
+          "sourceId" : "13",
+          "tags" : "Relationship",
+          "technology" : "SQL/TDS"
+        } ],
+        "tags" : "Element,Container,Database,CommentDomain",
+        "technology" : "MS SQL Server 2017"
+      }, {
+        "description" : "Checks text for profanity",
+        "documentation" : { },
+        "id" : "14",
+        "name" : "ProfanityService",
+        "properties" : {
+          "structurizr.dsl.identifier" : "happyHeadlines.profanityService"
+        },
+        "relationships" : [ {
+          "description" : "Reads words",
+          "destinationId" : "15",
+          "id" : "33",
+          "sourceId" : "14",
+          "tags" : "Relationship",
+          "technology" : "SQL/TDS"
+        } ],
+        "tags" : "Element,Container,CommentDomain,Service",
+        "technology" : "ASP.NET Core 9.0"
+      }, {
+        "description" : "Centralized profanity word storage",
+        "documentation" : { },
+        "id" : "15",
+        "name" : "ProfanityDatabase",
+        "properties" : {
+          "structurizr.dsl.identifier" : "happyHeadlines.profanityDb"
+        },
+        "relationships" : [ {
+          "description" : "Centralized",
+          "destinationId" : "4",
+          "id" : "47",
+          "sourceId" : "15",
+          "tags" : "Relationship",
+          "technology" : "SQL/TDS"
+        } ],
+        "tags" : "Element,Container,Database,CommentDomain",
+        "technology" : "MS SQL Server 2017"
+      }, {
+        "description" : "Manages article drafts before publication",
+        "documentation" : { },
+        "id" : "16",
+        "name" : "DraftService",
+        "properties" : {
+          "structurizr.dsl.identifier" : "happyHeadlines.draftService"
+        },
+        "relationships" : [ {
+          "description" : "Reads/writes",
+          "destinationId" : "17",
+          "id" : "34",
+          "sourceId" : "16",
+          "tags" : "Relationship",
+          "technology" : "SQL/TDS"
+        } ],
+        "tags" : "Element,Container,DraftDomain,Service",
+        "technology" : "ASP.NET Core 9.0"
+      }, {
+        "description" : "Centralized draft storage",
+        "documentation" : { },
+        "id" : "17",
+        "name" : "DraftDatabase",
+        "properties" : {
+          "structurizr.dsl.identifier" : "happyHeadlines.draftDb"
+        },
+        "relationships" : [ {
+          "description" : "Centralized",
+          "destinationId" : "4",
+          "id" : "48",
+          "sourceId" : "17",
+          "tags" : "Relationship",
+          "technology" : "SQL/TDS"
+        } ],
+        "tags" : "Element,Container,Database,DraftDomain",
+        "technology" : "MS SQL Server 2017"
+      }, {
+        "description" : "Manages newsletter subscriptions with runtime feature toggle",
+        "documentation" : { },
+        "id" : "18",
+        "name" : "SubscriberService",
+        "properties" : {
+          "structurizr.dsl.identifier" : "happyHeadlines.subscriberService"
+        },
+        "relationships" : [ {
+          "description" : "Reads/writes",
+          "destinationId" : "19",
+          "id" : "35",
+          "sourceId" : "18",
+          "tags" : "Relationship",
+          "technology" : "SQL/TDS"
+        }, {
+          "description" : "Publishes events",
+          "destinationId" : "3",
+          "id" : "36",
+          "sourceId" : "18",
+          "tags" : "Relationship",
+          "technology" : "AMQP"
+        } ],
+        "tags" : "Element,Container,NewsletterDomain,Service",
+        "technology" : "ASP.NET Core 9.0"
+      }, {
+        "description" : "Centralized subscriber storage",
+        "documentation" : { },
+        "id" : "19",
+        "name" : "SubscriberDatabase",
+        "properties" : {
+          "structurizr.dsl.identifier" : "happyHeadlines.subscriberDb"
+        },
+        "relationships" : [ {
+          "description" : "Centralized",
+          "destinationId" : "4",
+          "id" : "49",
+          "sourceId" : "19",
+          "tags" : "Relationship",
+          "technology" : "SQL/TDS"
+        } ],
+        "tags" : "Element,Container,Database,NewsletterDomain",
+        "technology" : "MS SQL Server 2017"
+      }, {
+        "description" : "Aggregates content for newsletters",
+        "documentation" : { },
+        "id" : "20",
+        "name" : "NewsletterService",
+        "properties" : {
+          "structurizr.dsl.identifier" : "happyHeadlines.newsletterService"
+        },
+        "relationships" : [ {
+          "description" : "Consumes events",
+          "destinationId" : "3",
+          "id" : "37",
+          "sourceId" : "20",
+          "tags" : "Relationship",
+          "technology" : "AMQP"
+        } ],
+        "tags" : "Element,Container,NewsletterDomain,Service",
+        "technology" : "ASP.NET Core 9.0"
+      }, {
+        "description" : "Tracks cache metrics and system health",
+        "documentation" : { },
+        "id" : "21",
+        "name" : "Monitoring Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "happyHeadlines.monitoring"
+        },
+        "relationships" : [ {
+          "description" : "Collects stats",
+          "destinationId" : "10",
+          "id" : "38",
+          "sourceId" : "21",
+          "tags" : "Relationship",
+          "technology" : "HTTP"
+        }, {
+          "description" : "Collects stats",
+          "destinationId" : "12",
+          "id" : "39",
+          "sourceId" : "21",
+          "tags" : "Relationship",
+          "technology" : "HTTP"
+        } ],
+        "tags" : "Element,Container,Observability,Service,ArticleDomain",
+        "technology" : "ASP.NET Core 9.0"
+      } ],
+      "description" : "Distributed news platform with regional isolation and feature toggles",
+      "documentation" : { },
+      "id" : "8",
+      "name" : "HappyHeadlines",
+      "properties" : {
+        "structurizr.dsl.identifier" : "happyHeadlines"
+      },
+      "relationships" : [ {
+        "description" : "Routes to regional queues",
+        "destinationId" : "3",
+        "id" : "23",
+        "linkedRelationshipId" : "22",
+        "sourceId" : "8",
+        "technology" : "AMQP"
+      }, {
+        "description" : "Caches with compression",
+        "destinationId" : "5",
+        "id" : "27",
+        "linkedRelationshipId" : "26",
+        "sourceId" : "8",
+        "technology" : "Redis Protocol"
+      }, {
+        "description" : "Logs (Serilog)",
+        "destinationId" : "6",
+        "id" : "40",
+        "sourceId" : "8",
+        "tags" : "Relationship",
+        "technology" : "HTTP"
+      }, {
+        "description" : "Traces (OpenTelemetry)",
+        "destinationId" : "7",
+        "id" : "41",
+        "sourceId" : "8",
+        "tags" : "Relationship",
+        "technology" : "HTTP"
+      }, {
+        "description" : "Persists data (8 regional + 4 centralized DBs)",
+        "destinationId" : "4",
+        "id" : "42",
+        "sourceId" : "8",
+        "tags" : "Relationship",
+        "technology" : "SQL/TDS"
+      }, {
+        "description" : "Caches (Brotli compressed)",
+        "destinationId" : "5",
+        "id" : "43",
+        "sourceId" : "8",
+        "tags" : "Relationship",
+        "technology" : "Redis Protocol"
+      }, {
+        "description" : "Async messaging",
+        "destinationId" : "3",
+        "id" : "44",
+        "sourceId" : "8",
+        "tags" : "Relationship",
+        "technology" : "AMQP"
+      } ],
+      "tags" : "Element,Software System"
+    } ]
+  },
+  "name" : "HappyHeadlines",
+  "properties" : {
+    "structurizr.inspection.error" : "33",
+    "structurizr.dsl" : "d29ya3NwYWNlICJIYXBweUhlYWRsaW5lcyIgIkEgZGlzdHJpYnV0ZWQgbWljcm9zZXJ2aWNlcy1iYXNlZCBuZXdzIHBsYXRmb3JtIHdpdGggZmF1bHQgaXNvbGF0aW9uIGFuZCBmZWF0dXJlIHRvZ2dsZXMiIHsKCiAgICAhaWRlbnRpZmllcnMgaGllcmFyY2hpY2FsCgogICAgbW9kZWwgewogICAgICAgICMgRXh0ZXJuYWwgQWN0b3JzCiAgICAgICAgcmVhZGVyID0gcGVyc29uICJSZWFkZXIiICJSZWFkcyBhcnRpY2xlcywgcG9zdHMgY29tbWVudHMsIHN1YnNjcmliZXMgdG8gbmV3c2xldHRlcnMiCiAgICAgICAgbmV3c1B1Ymxpc2hlciA9IHBlcnNvbiAiTmV3cyBQdWJsaXNoZXIiICJQdWJsaXNoZXMgYXJ0aWNsZXMgdG8gdGhlIHBsYXRmb3JtIgoKICAgICAgICAjIEV4dGVybmFsIFN5c3RlbXMKICAgICAgICByYWJiaXRtcSA9IHNvZnR3YXJlU3lzdGVtICJSYWJiaXRNUSIgIk1lc3NhZ2UgYnJva2VyIGZvciBhc3luYyBjb21tdW5pY2F0aW9uIiAiRXh0ZXJuYWwiCiAgICAgICAgbXNzcWwgPSBzb2Z0d2FyZVN5c3RlbSAiTVMgU1FMIFNlcnZlciIgIlJlbGF0aW9uYWwgZGF0YWJhc2UgY2x1c3RlciAoOCByZWdpb25hbCBhcnRpY2xlIGRhdGFiYXNlcyArIDQgY2VudHJhbGl6ZWQgc2VydmljZSBkYXRhYmFzZXMpIiAiRXh0ZXJuYWwiCiAgICAgICAgcmVkaXMgPSBzb2Z0d2FyZVN5c3RlbSAiUmVkaXMiICJEaXN0cmlidXRlZCBjYWNoZSIgIkV4dGVybmFsIgogICAgICAgIHNlcSA9IHNvZnR3YXJlU3lzdGVtICJTZXEiICJDZW50cmFsaXplZCBsb2dnaW5nIiAiRXh0ZXJuYWwiCiAgICAgICAgemlwa2luID0gc29mdHdhcmVTeXN0ZW0gIlppcGtpbiIgIkRpc3RyaWJ1dGVkIHRyYWNpbmciICJFeHRlcm5hbCIKCiAgICAgICAgIyBNYWluIFN5c3RlbQogICAgICAgIGhhcHB5SGVhZGxpbmVzID0gc29mdHdhcmVTeXN0ZW0gIkhhcHB5SGVhZGxpbmVzIiAiRGlzdHJpYnV0ZWQgbmV3cyBwbGF0Zm9ybSB3aXRoIHJlZ2lvbmFsIGlzb2xhdGlvbiBhbmQgZmVhdHVyZSB0b2dnbGVzIiB7CgogICAgICAgICAgICAjIEFydGljbGUgRG9tYWluIChSZWdpb25hbCBpc29sYXRpb246IEFmcmljYSwgQXNpYSwgRXVyb3BlKQogICAgICAgICAgICBwdWJsaXNoZXJTZXJ2aWNlID0gY29udGFpbmVyICJQdWJsaXNoZXJTZXJ2aWNlIiAiUmVjZWl2ZXMgYXJ0aWNsZXMgZnJvbSBwdWJsaXNoZXJzIGFuZCByb3V0ZXMgdG8gcmVnaW9uYWwgcXVldWVzIiAiQVNQLk5FVCBDb3JlIDkuMCIgIkFydGljbGVEb21haW4sU2VydmljZSIKICAgICAgICAgICAgYXJ0aWNsZVNlcnZpY2UgPSBjb250YWluZXIgIkFydGljbGVTZXJ2aWNlIiAiUm91dGVzIGFydGljbGUgcmVxdWVzdHMgdG8gOCByZWdpb25hbCBkYXRhYmFzZXMuIDMgcmVwbGljYXMgZm9yIGxvYWQgYmFsYW5jaW5nLiBCcm90bGkgY29tcHJlc3Npb24gY2FjaGluZy4iICJBU1AuTkVUIENvcmUgOS4wIiAiQXJ0aWNsZURvbWFpbixTZXJ2aWNlIgogICAgICAgICAgICBhcnRpY2xlRGIgPSBjb250YWluZXIgIkFydGljbGVEYXRhYmFzZSIgIjggcmVnaW9uYWwgaW5zdGFuY2VzOiBHbG9iYWwsIEFmcmljYSwgQXNpYSwgRXVyb3BlLCBOL1MgQW1lcmljYSwgT2NlYW5pYSwgQW50YXJjdGljYS4gRHluYW1pYyByb3V0aW5nIHBlciByZXF1ZXN0LiIgIk1TIFNRTCBTZXJ2ZXIgMjAxNyIgIkRhdGFiYXNlLEFydGljbGVEb21haW4iCgogICAgICAgICAgICAjIENvbW1lbnQgRG9tYWluCiAgICAgICAgICAgIGNvbW1lbnRTZXJ2aWNlID0gY29udGFpbmVyICJDb21tZW50U2VydmljZSIgIk1hbmFnZXMgY29tbWVudHMgd2l0aCBwcm9mYW5pdHkgZmlsdGVyaW5nIiAiQVNQLk5FVCBDb3JlIDkuMCIgIkNvbW1lbnREb21haW4sU2VydmljZSIKICAgICAgICAgICAgY29tbWVudERiID0gY29udGFpbmVyICJDb21tZW50RGF0YWJhc2UiICJDZW50cmFsaXplZCBjb21tZW50IHN0b3JhZ2UgYWNyb3NzIGFsbCByZWdpb25zIiAiTVMgU1FMIFNlcnZlciAyMDE3IiAiRGF0YWJhc2UsQ29tbWVudERvbWFpbiIKICAgICAgICAgICAgcHJvZmFuaXR5U2VydmljZSA9IGNvbnRhaW5lciAiUHJvZmFuaXR5U2VydmljZSIgIkNoZWNrcyB0ZXh0IGZvciBwcm9mYW5pdHkiICJBU1AuTkVUIENvcmUgOS4wIiAiQ29tbWVudERvbWFpbixTZXJ2aWNlIgogICAgICAgICAgICBwcm9mYW5pdHlEYiA9IGNvbnRhaW5lciAiUHJvZmFuaXR5RGF0YWJhc2UiICJDZW50cmFsaXplZCBwcm9mYW5pdHkgd29yZCBzdG9yYWdlIiAiTVMgU1FMIFNlcnZlciAyMDE3IiAiRGF0YWJhc2UsQ29tbWVudERvbWFpbiIKCiAgICAgICAgICAgICMgRHJhZnQgRG9tYWluCiAgICAgICAgICAgIGRyYWZ0U2VydmljZSA9IGNvbnRhaW5lciAiRHJhZnRTZXJ2aWNlIiAiTWFuYWdlcyBhcnRpY2xlIGRyYWZ0cyBiZWZvcmUgcHVibGljYXRpb24iICJBU1AuTkVUIENvcmUgOS4wIiAiRHJhZnREb21haW4sU2VydmljZSIKICAgICAgICAgICAgZHJhZnREYiA9IGNvbnRhaW5lciAiRHJhZnREYXRhYmFzZSIgIkNlbnRyYWxpemVkIGRyYWZ0IHN0b3JhZ2UiICJNUyBTUUwgU2VydmVyIDIwMTciICJEYXRhYmFzZSxEcmFmdERvbWFpbiIKCiAgICAgICAgICAgICMgTmV3c2xldHRlciBEb21haW4gKEZlYXR1cmUgVG9nZ2xlKQogICAgICAgICAgICBzdWJzY3JpYmVyU2VydmljZSA9IGNvbnRhaW5lciAiU3Vic2NyaWJlclNlcnZpY2UiICJNYW5hZ2VzIG5ld3NsZXR0ZXIgc3Vic2NyaXB0aW9ucyB3aXRoIHJ1bnRpbWUgZmVhdHVyZSB0b2dnbGUiICJBU1AuTkVUIENvcmUgOS4wIiAiTmV3c2xldHRlckRvbWFpbixTZXJ2aWNlIgogICAgICAgICAgICBzdWJzY3JpYmVyRGIgPSBjb250YWluZXIgIlN1YnNjcmliZXJEYXRhYmFzZSIgIkNlbnRyYWxpemVkIHN1YnNjcmliZXIgc3RvcmFnZSIgIk1TIFNRTCBTZXJ2ZXIgMjAxNyIgIkRhdGFiYXNlLE5ld3NsZXR0ZXJEb21haW4iCiAgICAgICAgICAgIG5ld3NsZXR0ZXJTZXJ2aWNlID0gY29udGFpbmVyICJOZXdzbGV0dGVyU2VydmljZSIgIkFnZ3JlZ2F0ZXMgY29udGVudCBmb3IgbmV3c2xldHRlcnMiICJBU1AuTkVUIENvcmUgOS4wIiAiTmV3c2xldHRlckRvbWFpbixTZXJ2aWNlIgoKICAgICAgICAgICAgIyBNb25pdG9yaW5nIERvbWFpbgogICAgICAgICAgICBtb25pdG9yaW5nID0gY29udGFpbmVyICJNb25pdG9yaW5nIFNlcnZpY2UiICJUcmFja3MgY2FjaGUgbWV0cmljcyBhbmQgc3lzdGVtIGhlYWx0aCIgIkFTUC5ORVQgQ29yZSA5LjAiICJPYnNlcnZhYmlsaXR5LFNlcnZpY2UsQXJ0aWNsZURvbWFpbiIKCgogICAgICAgICAgICAjIFB1Ymxpc2hlciBTZXJ2aWNlIHJlbGF0aW9uc2hpcHMKICAgICAgICAgICAgcHVibGlzaGVyU2VydmljZSAtPiByYWJiaXRtcSAiUm91dGVzIHRvIHJlZ2lvbmFsIHF1ZXVlcyIgIkFNUVAiCgogICAgICAgICAgICAjIEFydGljbGUgU2VydmljZSByZWxhdGlvbnNoaXBzCiAgICAgICAgICAgIGFydGljbGVTZXJ2aWNlIC0+IHJhYmJpdG1xICJDb25zdW1lcyArIHB1Ymxpc2hlcyBldmVudHMiICJBTVFQIgogICAgICAgICAgICBhcnRpY2xlU2VydmljZSAtPiBhcnRpY2xlRGIgIlJlYWRzL3dyaXRlcyIgIlNRTC9URFMiCiAgICAgICAgICAgIGFydGljbGVTZXJ2aWNlIC0+IHJlZGlzICJDYWNoZXMgd2l0aCBjb21wcmVzc2lvbiIgIlJlZGlzIFByb3RvY29sIgogICAgICAgICAgICBhcnRpY2xlU2VydmljZSAtPiBtb25pdG9yaW5nICJSZXBvcnRzIG1ldHJpY3MiICJIVFRQIgoKICAgICAgICAgICAgIyBDb21tZW50IFNlcnZpY2UgcmVsYXRpb25zaGlwcwogICAgICAgICAgICBjb21tZW50U2VydmljZSAtPiBjb21tZW50RGIgIlJlYWRzL3dyaXRlcyIgIlNRTC9URFMiCiAgICAgICAgICAgIGNvbW1lbnRTZXJ2aWNlIC0+IHByb2Zhbml0eVNlcnZpY2UgIlZhbGlkYXRlcyAoY2lyY3VpdCBicmVha2VyKSIgIkhUVFAiCiAgICAgICAgICAgIGNvbW1lbnRTZXJ2aWNlIC0+IHJlZGlzICJDYWNoZXMiICJSZWRpcyBQcm90b2NvbCIKICAgICAgICAgICAgY29tbWVudFNlcnZpY2UgLT4gbW9uaXRvcmluZyAiUmVwb3J0cyBtZXRyaWNzIiAiSFRUUCIKCiAgICAgICAgICAgICMgUHJvZmFuaXR5IFNlcnZpY2UgcmVsYXRpb25zaGlwcwogICAgICAgICAgICBwcm9mYW5pdHlTZXJ2aWNlIC0+IHByb2Zhbml0eURiICJSZWFkcyB3b3JkcyIgIlNRTC9URFMiCgogICAgICAgICAgICAjIERyYWZ0IFNlcnZpY2UgcmVsYXRpb25zaGlwcwogICAgICAgICAgICBkcmFmdFNlcnZpY2UgLT4gZHJhZnREYiAiUmVhZHMvd3JpdGVzIiAiU1FML1REUyIKCiAgICAgICAgICAgICMgU3Vic2NyaWJlciBTZXJ2aWNlIHJlbGF0aW9uc2hpcHMKICAgICAgICAgICAgc3Vic2NyaWJlclNlcnZpY2UgLT4gc3Vic2NyaWJlckRiICJSZWFkcy93cml0ZXMiICJTUUwvVERTIgogICAgICAgICAgICBzdWJzY3JpYmVyU2VydmljZSAtPiByYWJiaXRtcSAiUHVibGlzaGVzIGV2ZW50cyIgIkFNUVAiCgogICAgICAgICAgICAjIE5ld3NsZXR0ZXIgU2VydmljZSByZWxhdGlvbnNoaXBzCiAgICAgICAgICAgIG5ld3NsZXR0ZXJTZXJ2aWNlIC0+IHJhYmJpdG1xICJDb25zdW1lcyBldmVudHMiICJBTVFQIgoKICAgICAgICAgICAgIyBNb25pdG9yaW5nIFNlcnZpY2UgcmVsYXRpb25zaGlwcwogICAgICAgICAgICBtb25pdG9yaW5nIC0+IGFydGljbGVTZXJ2aWNlICJDb2xsZWN0cyBzdGF0cyIgIkhUVFAiCiAgICAgICAgICAgIG1vbml0b3JpbmcgLT4gY29tbWVudFNlcnZpY2UgIkNvbGxlY3RzIHN0YXRzIiAiSFRUUCIKCiAgICAgICAgICAgICMgT2JzZXJ2YWJpbGl0eSByZWxhdGlvbnNoaXBzCiAgICAgICAgICAgIGhhcHB5SGVhZGxpbmVzIC0+IHNlcSAiTG9ncyAoU2VyaWxvZykiICJIVFRQIgogICAgICAgICAgICBoYXBweUhlYWRsaW5lcyAtPiB6aXBraW4gIlRyYWNlcyAoT3BlblRlbGVtZXRyeSkiICJIVFRQIgoKICAgICAgICAgICAgIyBJbmZyYXN0cnVjdHVyZSByZWxhdGlvbnNoaXBzIC0gU3lzdGVtIENvbnRleHQgTGV2ZWwKICAgICAgICAgICAgaGFwcHlIZWFkbGluZXMgLT4gbXNzcWwgIlBlcnNpc3RzIGRhdGEgKDggcmVnaW9uYWwgKyA0IGNlbnRyYWxpemVkIERCcykiICJTUUwvVERTIgogICAgICAgICAgICBoYXBweUhlYWRsaW5lcyAtPiByZWRpcyAiQ2FjaGVzIChCcm90bGkgY29tcHJlc3NlZCkiICJSZWRpcyBQcm90b2NvbCIKICAgICAgICAgICAgaGFwcHlIZWFkbGluZXMgLT4gcmFiYml0bXEgIkFzeW5jIG1lc3NhZ2luZyIgIkFNUVAiCgogICAgICAgICAgICAjIERhdGFiYXNlLWxldmVsIGluZnJhc3RydWN0dXJlCiAgICAgICAgICAgIGFydGljbGVEYiAtPiBtc3NxbCAiOCByZWdpb25hbCBpbnN0YW5jZXMiICJTUUwvVERTIgogICAgICAgICAgICBjb21tZW50RGIgLT4gbXNzcWwgIkNlbnRyYWxpemVkIiAiU1FML1REUyIKICAgICAgICAgICAgcHJvZmFuaXR5RGIgLT4gbXNzcWwgIkNlbnRyYWxpemVkIiAiU1FML1REUyIKICAgICAgICAgICAgZHJhZnREYiAtPiBtc3NxbCAiQ2VudHJhbGl6ZWQiICJTUUwvVERTIgogICAgICAgICAgICBzdWJzY3JpYmVyRGIgLT4gbXNzcWwgIkNlbnRyYWxpemVkIiAiU1FML1REUyIKICAgICAgICB9CgogICAgICAgICMgVXNlciBJbnRlcmFjdGlvbnMgLSBTeXN0ZW0gQ29udGV4dCBMZXZlbAogICAgICAgIHJlYWRlciAtPiBoYXBweUhlYWRsaW5lcyAiUmVhZHMsIGNvbW1lbnRzLCBzdWJzY3JpYmVzIiAiSFRUUFMiCiAgICAgICAgbmV3c1B1Ymxpc2hlciAtPiBoYXBweUhlYWRsaW5lcyAiUHVibGlzaGVzIGFydGljbGVzIiAiSFRUUFMiCgogICAgICAgIGxpdmUgPSBkZXBsb3ltZW50RW52aXJvbm1lbnQgIkxpdmUiIHsKICAgICAgICAgICAgZGVwbG95bWVudE5vZGUgIkFydGljbGUgRG9tYWluIiB7CiAgICAgICAgICAgICAgICBkZXBsb3ltZW50Tm9kZSAiU2VydmljZXMiIHsKICAgICAgICAgICAgICAgICAgICBjb250YWluZXJJbnN0YW5jZSBoYXBweUhlYWRsaW5lcy5wdWJsaXNoZXJTZXJ2aWNlCiAgICAgICAgICAgICAgICAgICAgY29udGFpbmVySW5zdGFuY2UgaGFwcHlIZWFkbGluZXMuYXJ0aWNsZVNlcnZpY2UKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIGRlcGxveW1lbnROb2RlICJEYXRhIiB7CiAgICAgICAgICAgICAgICAgICAgY29udGFpbmVySW5zdGFuY2UgaGFwcHlIZWFkbGluZXMuYXJ0aWNsZURiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIGRlcGxveW1lbnROb2RlICJDb21tZW50IERvbWFpbiIgewogICAgICAgICAgICAgICAgZGVwbG95bWVudE5vZGUgIlNlcnZpY2VzIiB7CiAgICAgICAgICAgICAgICAgICAgY29udGFpbmVySW5zdGFuY2UgaGFwcHlIZWFkbGluZXMuY29tbWVudFNlcnZpY2UKICAgICAgICAgICAgICAgICAgICBjb250YWluZXJJbnN0YW5jZSBoYXBweUhlYWRsaW5lcy5wcm9mYW5pdHlTZXJ2aWNlCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICBkZXBsb3ltZW50Tm9kZSAiRGF0YSIgewogICAgICAgICAgICAgICAgICAgIGNvbnRhaW5lckluc3RhbmNlIGhhcHB5SGVhZGxpbmVzLmNvbW1lbnREYgogICAgICAgICAgICAgICAgICAgIGNvbnRhaW5lckluc3RhbmNlIGhhcHB5SGVhZGxpbmVzLnByb2Zhbml0eURiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIGRlcGxveW1lbnROb2RlICJOZXdzbGV0dGVyIERvbWFpbiIgewogICAgICAgICAgICAgICAgZGVwbG95bWVudE5vZGUgIlNlcnZpY2VzIiB7CiAgICAgICAgICAgICAgICAgICAgY29udGFpbmVySW5zdGFuY2UgaGFwcHlIZWFkbGluZXMuc3Vic2NyaWJlclNlcnZpY2UKICAgICAgICAgICAgICAgICAgICBjb250YWluZXJJbnN0YW5jZSBoYXBweUhlYWRsaW5lcy5uZXdzbGV0dGVyU2VydmljZQogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgZGVwbG95bWVudE5vZGUgIkRhdGEiIHsKICAgICAgICAgICAgICAgICAgICBjb250YWluZXJJbnN0YW5jZSBoYXBweUhlYWRsaW5lcy5zdWJzY3JpYmVyRGIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQoKICAgICAgICAgICAgZGVwbG95bWVudE5vZGUgIkRyYWZ0IERvbWFpbiIgewogICAgICAgICAgICAgICAgZGVwbG95bWVudE5vZGUgIlNlcnZpY2VzIiB7CiAgICAgICAgICAgICAgICAgICAgY29udGFpbmVySW5zdGFuY2UgaGFwcHlIZWFkbGluZXMuZHJhZnRTZXJ2aWNlCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICBkZXBsb3ltZW50Tm9kZSAiRGF0YSIgewogICAgICAgICAgICAgICAgICAgIGNvbnRhaW5lckluc3RhbmNlIGhhcHB5SGVhZGxpbmVzLmRyYWZ0RGIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQoKICAgICAgICAgICAgZGVwbG95bWVudE5vZGUgIlNoYXJlZCBJbmZyYXN0cnVjdHVyZSIgewogICAgICAgICAgICAgICAgc29mdHdhcmVTeXN0ZW1JbnN0YW5jZSByYWJiaXRtcQogICAgICAgICAgICAgICAgc29mdHdhcmVTeXN0ZW1JbnN0YW5jZSByZWRpcwogICAgICAgICAgICAgICAgc29mdHdhcmVTeXN0ZW1JbnN0YW5jZSBzZXEKICAgICAgICAgICAgICAgIHNvZnR3YXJlU3lzdGVtSW5zdGFuY2Ugemlwa2luCiAgICAgICAgICAgICAgICBjb250YWluZXJJbnN0YW5jZSBoYXBweUhlYWRsaW5lcy5tb25pdG9yaW5nCiAgICAgICAgICAgIH0KICAgICAgICB9CgogICAgfQoKICAgIHZpZXdzIHsKICAgICAgICAjIFN5c3RlbSBDb250ZXh0CiAgICAgICAgc3lzdGVtQ29udGV4dCBoYXBweUhlYWRsaW5lcyAiU3lzdGVtQ29udGV4dCIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgCiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJTeXN0ZW0gY29udGV4dCBmb3IgSGFwcHlIZWFkbGluZXMgd2l0aCByZWdpb25hbCBpc29sYXRpb24sIGZhdWx0IHRvbGVyYW5jZSwgYW5kIHJ1bnRpbWUgZmVhdHVyZSB0b2dnbGVzLiIKICAgICAgICB9CgogICAgICAgICMgQ29udGFpbmVyIFZpZXcgLSBDb21wbGV0ZSBBcmNoaXRlY3R1cmUKICAgICAgICBjb250YWluZXIgaGFwcHlIZWFkbGluZXMgIkNvbnRhaW5lcnMtQWxsIiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgICAgICAKICAgICAgICAgICAgZGVzY3JpcHRpb24gIkNvbXBsZXRlIGNvbnRhaW5lciB2aWV3IHNob3dpbmcgYWxsIHNlcnZpY2VzLCBkYXRhYmFzZXMsIGFuZCBpbmZyYXN0cnVjdHVyZS4iCiAgICAgICAgfQoKICAgICAgICAjIENvbnRhaW5lciBWaWV3IC0gU2VydmljZSBNZXNoCiAgICAgICAgY29udGFpbmVyIGhhcHB5SGVhZGxpbmVzICJDb250YWluZXJzLVNlcnZpY2VzIiB7CiAgICAgICAgICAgIGluY2x1ZGUgImVsZW1lbnQudGFnPT1TZXJ2aWNlIgogICAgICAgICAgICBpbmNsdWRlIHJhYmJpdG1xIHJlZGlzIHNlcSB6aXBraW4KICAgICAgICAgICAgCiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJTZXJ2aWNlIGxheWVyIHdpdGggYXN5bmMgbWVzc2FnaW5nIChSYWJiaXRNUSkgYW5kIGNhY2hpbmcgKFJlZGlzKS4iCiAgICAgICAgfQoKICAgICAgICAjIENvbnRhaW5lciBWaWV3IC0gRGF0YSBMYXllcgogICAgICAgIGNvbnRhaW5lciBoYXBweUhlYWRsaW5lcyAiQ29udGFpbmVycy1EYXRhIiB7CiAgICAgICAgICAgIGluY2x1ZGUgImVsZW1lbnQudGFnPT1EYXRhYmFzZSIKICAgICAgICAgICAgaW5jbHVkZSBtc3NxbAogICAgICAgICAgICAKICAgICAgICAgICAgZGVzY3JpcHRpb24gIkRhdGEgYXJjaGl0ZWN0dXJlOiA4IHJlZ2lvbmFsIGFydGljbGUgZGF0YWJhc2VzICsgNCBjZW50cmFsaXplZCBzZXJ2aWNlIGRhdGFiYXNlcy4iCiAgICAgICAgfQoKICAgICAgICAjIENvbnRhaW5lciBWaWV3IC0gT2JzZXJ2YWJpbGl0eQogICAgICAgIGNvbnRhaW5lciBoYXBweUhlYWRsaW5lcyAiQ29udGFpbmVycy1PYnNlcnZhYmlsaXR5IiB7CiAgICAgICAgICAgIGluY2x1ZGUgImVsZW1lbnQudGFnPT1TZXJ2aWNlIgogICAgICAgICAgICBpbmNsdWRlICJlbGVtZW50LnRhZz09T2JzZXJ2YWJpbGl0eSIKICAgICAgICAgICAgaW5jbHVkZSBzZXEgemlwa2luCiAgICAgICAgICAgIAogICAgICAgICAgICBkZXNjcmlwdGlvbiAiTW9uaXRvcmluZywgbG9nZ2luZyAoU2VxL1Nlcmlsb2cpLCBhbmQgdHJhY2luZyAoWmlwa2luL09wZW5UZWxlbWV0cnkpLiIKICAgICAgICB9CgogICAgICAgICMgRG9tYWluIFZpZXdzCiAgICAgICAgY29udGFpbmVyIGhhcHB5SGVhZGxpbmVzICJBcnRpY2xlRG9tYWluIiB7CiAgICAgICAgICAgIGluY2x1ZGUgImVsZW1lbnQudGFnPT1BcnRpY2xlRG9tYWluIgogICAgICAgICAgICBpbmNsdWRlICJlbGVtZW50LnRhZz09T2JzZXJ2YWJpbGl0eSIKICAgICAgICAgICAgaW5jbHVkZSByYWJiaXRtcSByZWRpcwogICAgICAgICAgICAKICAgICAgICAgICAgZGVzY3JpcHRpb24gIjMgcmVwbGljYXMsIDggcmVnaW9uYWwgREJzIHdpdGggZHluYW1pYyByb3V0aW5nLiIKICAgICAgICB9CgogICAgICAgIGNvbnRhaW5lciBoYXBweUhlYWRsaW5lcyAiQ29tbWVudERvbWFpbiIgewogICAgICAgICAgICBpbmNsdWRlICJlbGVtZW50LnRhZz09Q29tbWVudERvbWFpbiIKICAgICAgICAgICAgaW5jbHVkZSByYWJiaXRtcSByZWRpcwogICAgICAgICAgICAKICAgICAgICAgICAgZGVzY3JpcHRpb24gIkNvbW1lbnQgdmFsaWRhdGlvbiB3aXRoIFBvbGx5IGNpcmN1aXQgYnJlYWtlciB0byBQcm9mYW5pdHlTZXJ2aWNlLiIKICAgICAgICB9CgogICAgICAgIGNvbnRhaW5lciBoYXBweUhlYWRsaW5lcyAiTmV3c2xldHRlckRvbWFpbiIgewogICAgICAgICAgICBpbmNsdWRlICJlbGVtZW50LnRhZz09TmV3c2xldHRlckRvbWFpbiIKICAgICAgICAgICAgaW5jbHVkZSByYWJiaXRtcQogICAgICAgICAgICAKICAgICAgICAgICAgZGVzY3JpcHRpb24gIlN1YnNjcmliZXJTZXJ2aWNlIHdpdGggcnVudGltZSBmZWF0dXJlIHRvZ2dsZS4iCiAgICAgICAgfQoKCiAgICAgICAgIyBEeW5hbWljIFZpZXdzIHJlbWFpbiB0aGUgc2FtZQogICAgICAgICMgRHluYW1pYyBWaWV3cwogICAgICAgIGR5bmFtaWMgaGFwcHlIZWFkbGluZXMgIkFydGljbGVQdWJsaWNhdGlvbkZsb3ciIHsKICAgICAgICAgICAgaGFwcHlIZWFkbGluZXMucHVibGlzaGVyU2VydmljZSAtPiByYWJiaXRtcSAiMS4gUm91dGVzIHRvIHJlZ2lvbmFsIGV4Y2hhbmdlIgogICAgICAgICAgICByYWJiaXRtcSAtPiBoYXBweUhlYWRsaW5lcy5hcnRpY2xlU2VydmljZSAiMi4gRGVsaXZlcnMgdG8gcmVnaW9uYWwgcXVldWUiCiAgICAgICAgICAgIGhhcHB5SGVhZGxpbmVzLmFydGljbGVTZXJ2aWNlIC0+IGhhcHB5SGVhZGxpbmVzLmFydGljbGVEYiAiMy4gUGVyc2lzdHMgdG8gcmVnaW9uYWwgREIiCiAgICAgICAgICAgIGhhcHB5SGVhZGxpbmVzLmFydGljbGVTZXJ2aWNlIC0+IHJlZGlzICI0LiBDYWNoZXMgY29tcHJlc3NlZCIKICAgICAgICAgICAgaGFwcHlIZWFkbGluZXMuYXJ0aWNsZVNlcnZpY2UgLT4gcmFiYml0bXEgIjUuIFB1Ymxpc2hlcyBuZXdzbGV0dGVyIGV2ZW50IgogICAgICAgICAgICByYWJiaXRtcSAtPiBoYXBweUhlYWRsaW5lcy5uZXdzbGV0dGVyU2VydmljZSAiNi4gRGVsaXZlcnMgdG8gbmV3c2xldHRlciBxdWV1ZSIKICAgICAgICAgICAgCiAgICAgICAgfQoKICAgICAgICBkeW5hbWljIGhhcHB5SGVhZGxpbmVzICJDb21tZW50UHJvZmFuaXR5RmxvdyIgewogICAgICAgICAgICBoYXBweUhlYWRsaW5lcy5jb21tZW50U2VydmljZSAtPiBoYXBweUhlYWRsaW5lcy5wcm9mYW5pdHlTZXJ2aWNlICIxLiBWYWxpZGF0ZXMgKGNpcmN1aXQgYnJlYWtlcikiCiAgICAgICAgICAgIGhhcHB5SGVhZGxpbmVzLnByb2Zhbml0eVNlcnZpY2UgLT4gaGFwcHlIZWFkbGluZXMucHJvZmFuaXR5RGIgIjIuIENoZWNrcyB3b3JkcyIKICAgICAgICAgICAgaGFwcHlIZWFkbGluZXMucHJvZmFuaXR5U2VydmljZSAtPiBoYXBweUhlYWRsaW5lcy5jb21tZW50U2VydmljZSAiMy4gUmV0dXJucyByZXN1bHQiCiAgICAgICAgICAgIGhhcHB5SGVhZGxpbmVzLmNvbW1lbnRTZXJ2aWNlIC0+IGhhcHB5SGVhZGxpbmVzLmNvbW1lbnREYiAiNC4gUGVyc2lzdHMgaWYgY2xlYW4iCiAgICAgICAgICAgIGhhcHB5SGVhZGxpbmVzLmNvbW1lbnRTZXJ2aWNlIC0+IHJlZGlzICI1LiBDYWNoZXMiCiAgICAgICAgICAgIAogICAgICAgIH0KCiAgICAgICAgZHluYW1pYyBoYXBweUhlYWRsaW5lcyAiU3Vic2NyaXB0aW9uRmxvdyIgewogICAgICAgICAgICBoYXBweUhlYWRsaW5lcy5zdWJzY3JpYmVyU2VydmljZSAtPiBoYXBweUhlYWRsaW5lcy5zdWJzY3JpYmVyRGIgIjEuIFBlcnNpc3RzIGlmIGVuYWJsZWQiCiAgICAgICAgICAgIGhhcHB5SGVhZGxpbmVzLnN1YnNjcmliZXJTZXJ2aWNlIC0+IHJhYmJpdG1xICIyLiBQdWJsaXNoZXMgZXZlbnQiCiAgICAgICAgICAgIHJhYmJpdG1xIC0+IGhhcHB5SGVhZGxpbmVzLm5ld3NsZXR0ZXJTZXJ2aWNlICIzLiBEZWxpdmVycyB0byBxdWV1ZSIKICAgICAgICAgICAgCiAgICAgICAgfQoKICAgICAgICBkZXBsb3ltZW50ICogbGl2ZSB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgICAgICAKICAgICAgICAgICAgZGVzY3JpcHRpb24gIlByb2R1Y3Rpb24gZGVwbG95bWVudCBzaG93aW5nIGRvbWFpbiBzd2ltbGFuZXMiCiAgICAgICAgfQoKCgoKICAgICAgICBzdHlsZXMgewogICAgICAgICAgICBlbGVtZW50ICJQZXJzb24iIHsKICAgICAgICAgICAgICAgIHNoYXBlIFBlcnNvbgogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjMDg0MjdiCiAgICAgICAgICAgICAgICBjb2xvciAjZmZmZmZmCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiU29mdHdhcmUgU3lzdGVtIiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICMxMTY4YmQKICAgICAgICAgICAgICAgIGNvbG9yICNmZmZmZmYKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJFeHRlcm5hbCIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjOTk5OTk5CiAgICAgICAgICAgICAgICBjb2xvciAjZmZmZmZmCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiQ29udGFpbmVyIiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICM0MzhkZDUKICAgICAgICAgICAgICAgIGNvbG9yICNmZmZmZmYKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJEYXRhYmFzZSIgewogICAgICAgICAgICAgICAgc2hhcGUgQ3lsaW5kZXIKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzQzOGRkNQogICAgICAgICAgICAgICAgY29sb3IgI2ZmZmZmZgogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICB0aGVtZXMgaHR0cHM6Ly9zdGF0aWMuc3RydWN0dXJpenIuY29tL3RoZW1lcy9kZWZhdWx0L3RoZW1lLmpzb24KICAgIH0KfQ==",
+    "structurizr.inspection.info" : "0",
+    "structurizr.inspection.ignore" : "0",
+    "structurizr.inspection.warning" : "0"
+  },
+  "views" : {
+    "configuration" : {
+      "branding" : { },
+      "lastSavedView" : "Deployment-001",
+      "styles" : {
+        "elements" : [ {
+          "background" : "#438dd5",
+          "color" : "#ffffff",
+          "tag" : "Container"
+        }, {
+          "background" : "#438dd5",
+          "color" : "#ffffff",
+          "shape" : "Cylinder",
+          "tag" : "Database"
+        }, {
+          "background" : "#999999",
+          "color" : "#ffffff",
+          "tag" : "External"
+        }, {
+          "background" : "#08427b",
+          "color" : "#ffffff",
+          "shape" : "Person",
+          "tag" : "Person"
+        }, {
+          "background" : "#1168bd",
+          "color" : "#ffffff",
+          "tag" : "Software System"
+        } ]
+      },
+      "terminology" : { },
+      "themes" : [ "https://static.structurizr.com/themes/default/theme.json" ]
+    },
+    "containerViews" : [ {
+      "description" : "Complete container view showing all services, databases, and infrastructure.",
+      "dimensions" : {
+        "height" : 4209,
+        "width" : 4620
+      },
+      "elements" : [ {
+        "id" : "3",
+        "x" : 970,
+        "y" : 143
+      }, {
+        "id" : "4",
+        "x" : 3970,
+        "y" : 1847
+      }, {
+        "id" : "5",
+        "x" : 2470,
+        "y" : 3652
+      }, {
+        "id" : "9",
+        "x" : 220,
+        "y" : 652
+      }, {
+        "id" : "10",
+        "x" : 220,
+        "y" : 3052
+      }, {
+        "id" : "11",
+        "x" : 970,
+        "y" : 2197
+      }, {
+        "id" : "12",
+        "x" : 1720,
+        "y" : 3052
+      }, {
+        "id" : "13",
+        "x" : 2470,
+        "y" : 3052
+      }, {
+        "id" : "14",
+        "x" : 2470,
+        "y" : 2452
+      }, {
+        "id" : "15",
+        "x" : 3220,
+        "y" : 2452
+      }, {
+        "id" : "16",
+        "x" : 220,
+        "y" : 2452
+      }, {
+        "id" : "17",
+        "x" : 970,
+        "y" : 1472
+      }, {
+        "id" : "18",
+        "x" : 220,
+        "y" : 1852
+      }, {
+        "id" : "19",
+        "x" : 970,
+        "y" : 810
+      }, {
+        "id" : "20",
+        "x" : 220,
+        "y" : 1252
+      }, {
+        "id" : "21",
+        "x" : 970,
+        "y" : 3052
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Containers-All",
+      "name" : "Container View: HappyHeadlines",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "22"
+      }, {
+        "id" : "24",
+        "vertices" : [ {
+          "x" : 670,
+          "y" : 2902
+        }, {
+          "x" : 970,
+          "y" : 472
+        } ]
+      }, {
+        "id" : "25"
+      }, {
+        "id" : "26",
+        "vertices" : [ {
+          "x" : 970,
+          "y" : 3502
+        } ]
+      }, {
+        "id" : "28",
+        "vertices" : [ {
+          "x" : 820,
+          "y" : 3352
+        } ]
+      }, {
+        "id" : "29"
+      }, {
+        "id" : "30"
+      }, {
+        "id" : "31"
+      }, {
+        "id" : "32",
+        "vertices" : [ {
+          "x" : 1570,
+          "y" : 3052
+        } ]
+      }, {
+        "id" : "33"
+      }, {
+        "id" : "34"
+      }, {
+        "id" : "35",
+        "vertices" : [ {
+          "x" : 670,
+          "y" : 1702
+        } ]
+      }, {
+        "id" : "36",
+        "vertices" : [ {
+          "x" : 670,
+          "y" : 1702
+        }, {
+          "x" : 970,
+          "y" : 472
+        } ]
+      }, {
+        "id" : "37",
+        "vertices" : [ {
+          "x" : 670,
+          "y" : 1102
+        }, {
+          "x" : 970,
+          "y" : 472
+        } ]
+      }, {
+        "id" : "38",
+        "vertices" : [ {
+          "x" : 820,
+          "y" : 3052
+        } ]
+      }, {
+        "id" : "39",
+        "vertices" : [ {
+          "x" : 1570,
+          "y" : 3352
+        } ]
+      }, {
+        "id" : "45"
+      }, {
+        "id" : "46",
+        "vertices" : [ {
+          "x" : 3774,
+          "y" : 2902
+        } ]
+      }, {
+        "id" : "47"
+      }, {
+        "id" : "48",
+        "vertices" : [ {
+          "x" : 3774,
+          "y" : 1852
+        } ]
+      }, {
+        "id" : "49",
+        "vertices" : [ {
+          "x" : 3774,
+          "y" : 1602
+        } ]
+      } ],
+      "softwareSystemId" : "8"
+    }, {
+      "description" : "Service layer with async messaging (RabbitMQ) and caching (Redis).",
+      "dimensions" : {
+        "height" : 4809,
+        "width" : 3140
+      },
+      "elements" : [ {
+        "id" : "3",
+        "x" : 970,
+        "y" : 4251
+      }, {
+        "id" : "5",
+        "x" : 2470,
+        "y" : 4251
+      }, {
+        "id" : "6",
+        "x" : 220,
+        "y" : 742
+      }, {
+        "id" : "7",
+        "x" : 220,
+        "y" : 142
+      }, {
+        "id" : "9",
+        "x" : 220,
+        "y" : 3742
+      }, {
+        "id" : "10",
+        "x" : 220,
+        "y" : 1342
+      }, {
+        "id" : "12",
+        "x" : 1720,
+        "y" : 1342
+      }, {
+        "id" : "14",
+        "x" : 2470,
+        "y" : 1342
+      }, {
+        "id" : "16",
+        "x" : 220,
+        "y" : 1942
+      }, {
+        "id" : "18",
+        "x" : 220,
+        "y" : 2542
+      }, {
+        "id" : "20",
+        "x" : 220,
+        "y" : 3142
+      }, {
+        "id" : "21",
+        "x" : 970,
+        "y" : 1342
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Containers-Services",
+      "name" : "Container View: HappyHeadlines",
+      "order" : 3,
+      "relationships" : [ {
+        "id" : "22"
+      }, {
+        "id" : "24",
+        "vertices" : [ {
+          "x" : 670,
+          "y" : 1792
+        }, {
+          "x" : 970,
+          "y" : 4221
+        } ]
+      }, {
+        "id" : "26",
+        "vertices" : [ {
+          "x" : 2470,
+          "y" : 4221
+        } ]
+      }, {
+        "id" : "28",
+        "vertices" : [ {
+          "x" : 820,
+          "y" : 1642
+        } ]
+      }, {
+        "id" : "30"
+      }, {
+        "id" : "31",
+        "vertices" : [ {
+          "x" : 2470,
+          "y" : 4221
+        } ]
+      }, {
+        "id" : "32",
+        "vertices" : [ {
+          "x" : 1570,
+          "y" : 1342
+        } ]
+      }, {
+        "id" : "36",
+        "vertices" : [ {
+          "x" : 670,
+          "y" : 2992
+        }, {
+          "x" : 970,
+          "y" : 4221
+        } ]
+      }, {
+        "id" : "37",
+        "vertices" : [ {
+          "x" : 670,
+          "y" : 3592
+        }, {
+          "x" : 970,
+          "y" : 4221
+        } ]
+      }, {
+        "id" : "38",
+        "vertices" : [ {
+          "x" : 820,
+          "y" : 1342
+        } ]
+      }, {
+        "id" : "39",
+        "vertices" : [ {
+          "x" : 1570,
+          "y" : 1642
+        } ]
+      } ],
+      "softwareSystemId" : "8"
+    }, {
+      "description" : "Data architecture: 8 regional article databases + 4 centralized service databases.",
+      "dimensions" : {
+        "height" : 3219,
+        "width" : 1620
+      },
+      "elements" : [ {
+        "id" : "4",
+        "x" : 970,
+        "y" : 1363
+      }, {
+        "id" : "11",
+        "x" : 220,
+        "y" : 163
+      }, {
+        "id" : "13",
+        "x" : 220,
+        "y" : 763
+      }, {
+        "id" : "15",
+        "x" : 220,
+        "y" : 1363
+      }, {
+        "id" : "17",
+        "x" : 220,
+        "y" : 1963
+      }, {
+        "id" : "19",
+        "x" : 220,
+        "y" : 2563
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Containers-Data",
+      "name" : "Container View: HappyHeadlines",
+      "order" : 4,
+      "relationships" : [ {
+        "id" : "45",
+        "vertices" : [ {
+          "x" : 774,
+          "y" : 613
+        } ]
+      }, {
+        "id" : "46"
+      }, {
+        "id" : "47"
+      }, {
+        "id" : "48"
+      }, {
+        "id" : "49",
+        "vertices" : [ {
+          "x" : 774,
+          "y" : 2413
+        } ]
+      } ],
+      "softwareSystemId" : "8"
+    }, {
+      "description" : "Monitoring, logging (Seq/Serilog), and tracing (Zipkin/OpenTelemetry).",
+      "dimensions" : {
+        "height" : 2619,
+        "width" : 5370
+      },
+      "elements" : [ {
+        "id" : "6",
+        "x" : 199,
+        "y" : 162
+      }, {
+        "id" : "7",
+        "x" : 949,
+        "y" : 162
+      }, {
+        "id" : "9",
+        "x" : 1699,
+        "y" : 162
+      }, {
+        "id" : "10",
+        "x" : 4699,
+        "y" : 162
+      }, {
+        "id" : "12",
+        "x" : 4699,
+        "y" : 1362
+      }, {
+        "id" : "14",
+        "x" : 4699,
+        "y" : 1962
+      }, {
+        "id" : "16",
+        "x" : 3949,
+        "y" : 162
+      }, {
+        "id" : "18",
+        "x" : 3199,
+        "y" : 162
+      }, {
+        "id" : "20",
+        "x" : 2449,
+        "y" : 162
+      }, {
+        "id" : "21",
+        "x" : 4699,
+        "y" : 762
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Containers-Observability",
+      "name" : "Container View: HappyHeadlines",
+      "order" : 5,
+      "relationships" : [ {
+        "id" : "28",
+        "vertices" : [ {
+          "x" : 4774,
+          "y" : 612
+        } ]
+      }, {
+        "id" : "30"
+      }, {
+        "id" : "32",
+        "vertices" : [ {
+          "x" : 5074,
+          "y" : 1212
+        } ]
+      }, {
+        "id" : "38",
+        "vertices" : [ {
+          "x" : 5074,
+          "y" : 612
+        } ]
+      }, {
+        "id" : "39",
+        "vertices" : [ {
+          "x" : 4774,
+          "y" : 1212
+        } ]
+      } ],
+      "softwareSystemId" : "8"
+    }, {
+      "description" : "3 replicas, 8 regional DBs with dynamic routing.",
+      "dimensions" : {
+        "height" : 2528,
+        "width" : 1640
+      },
+      "elements" : [ {
+        "id" : "3",
+        "x" : 970,
+        "y" : 1970
+      }, {
+        "id" : "5",
+        "x" : 970,
+        "y" : 1370
+      }, {
+        "id" : "9",
+        "x" : 220,
+        "y" : 770
+      }, {
+        "id" : "10",
+        "x" : 220,
+        "y" : 170
+      }, {
+        "id" : "11",
+        "x" : 970,
+        "y" : 770
+      }, {
+        "id" : "21",
+        "x" : 970,
+        "y" : 170
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "ArticleDomain",
+      "name" : "Container View: HappyHeadlines",
+      "order" : 6,
+      "relationships" : [ {
+        "id" : "22",
+        "vertices" : [ {
+          "x" : 970,
+          "y" : 1820
+        } ]
+      }, {
+        "id" : "24",
+        "vertices" : [ {
+          "x" : 670,
+          "y" : 620
+        }, {
+          "x" : 970,
+          "y" : 1820
+        } ]
+      }, {
+        "id" : "25"
+      }, {
+        "id" : "26",
+        "vertices" : [ {
+          "x" : 670,
+          "y" : 620
+        }, {
+          "x" : 970,
+          "y" : 1249
+        } ]
+      }, {
+        "id" : "28",
+        "vertices" : [ {
+          "x" : 820,
+          "y" : 470
+        } ]
+      }, {
+        "id" : "38",
+        "vertices" : [ {
+          "x" : 820,
+          "y" : 170
+        } ]
+      } ],
+      "softwareSystemId" : "8"
+    }, {
+      "description" : "Comment validation with Polly circuit breaker to ProfanityService.",
+      "dimensions" : {
+        "height" : 1920,
+        "width" : 2390
+      },
+      "elements" : [ {
+        "id" : "3",
+        "x" : 220,
+        "y" : 1363
+      }, {
+        "id" : "5",
+        "x" : 970,
+        "y" : 1363
+      }, {
+        "id" : "12",
+        "x" : 220,
+        "y" : 763
+      }, {
+        "id" : "13",
+        "x" : 970,
+        "y" : 763
+      }, {
+        "id" : "14",
+        "x" : 970,
+        "y" : 163
+      }, {
+        "id" : "15",
+        "x" : 1720,
+        "y" : 163
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "CommentDomain",
+      "name" : "Container View: HappyHeadlines",
+      "order" : 7,
+      "relationships" : [ {
+        "id" : "29"
+      }, {
+        "id" : "30"
+      }, {
+        "id" : "31"
+      }, {
+        "id" : "33"
+      } ],
+      "softwareSystemId" : "8"
+    }, {
+      "description" : "SubscriberService with runtime feature toggle.",
+      "dimensions" : {
+        "height" : 1828,
+        "width" : 1640
+      },
+      "elements" : [ {
+        "id" : "3",
+        "x" : 970,
+        "y" : 1270
+      }, {
+        "id" : "18",
+        "x" : 220,
+        "y" : 162
+      }, {
+        "id" : "19",
+        "x" : 970,
+        "y" : 162
+      }, {
+        "id" : "20",
+        "x" : 220,
+        "y" : 762
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "NewsletterDomain",
+      "name" : "Container View: HappyHeadlines",
+      "order" : 8,
+      "relationships" : [ {
+        "id" : "35"
+      }, {
+        "id" : "36",
+        "vertices" : [ {
+          "x" : 670,
+          "y" : 612
+        }, {
+          "x" : 970,
+          "y" : 1241
+        } ]
+      }, {
+        "id" : "37"
+      } ],
+      "softwareSystemId" : "8"
+    } ],
+    "deploymentViews" : [ {
+      "description" : "Production deployment showing domain swimlanes",
+      "dimensions" : {
+        "height" : 3508,
+        "width" : 4961
+      },
+      "elements" : [ {
+        "id" : "52",
+        "x" : 875,
+        "y" : 875
+      }, {
+        "id" : "53",
+        "x" : 875,
+        "y" : 875
+      }, {
+        "id" : "54",
+        "x" : 895,
+        "y" : 820
+      }, {
+        "id" : "55",
+        "x" : 145,
+        "y" : 820
+      }, {
+        "id" : "56",
+        "x" : 875,
+        "y" : 875
+      }, {
+        "id" : "57",
+        "x" : 145,
+        "y" : 220
+      }, {
+        "id" : "59",
+        "x" : 875,
+        "y" : 875
+      }, {
+        "id" : "60",
+        "x" : 875,
+        "y" : 875
+      }, {
+        "id" : "61",
+        "x" : 165,
+        "y" : 2706
+      }, {
+        "id" : "62",
+        "x" : 165,
+        "y" : 2106
+      }, {
+        "id" : "64",
+        "x" : 875,
+        "y" : 875
+      }, {
+        "id" : "65",
+        "x" : 915,
+        "y" : 1460
+      }, {
+        "id" : "67",
+        "x" : 165,
+        "y" : 1460
+      }, {
+        "id" : "69",
+        "x" : 875,
+        "y" : 875
+      }, {
+        "id" : "70",
+        "x" : 875,
+        "y" : 875
+      }, {
+        "id" : "71",
+        "x" : 3175,
+        "y" : 2255
+      }, {
+        "id" : "72",
+        "x" : 2425,
+        "y" : 2255
+      }, {
+        "id" : "73",
+        "x" : 875,
+        "y" : 875
+      }, {
+        "id" : "74",
+        "x" : 3175,
+        "y" : 1655
+      }, {
+        "id" : "76",
+        "x" : 875,
+        "y" : 875
+      }, {
+        "id" : "77",
+        "x" : 875,
+        "y" : 875
+      }, {
+        "id" : "78",
+        "x" : 4075,
+        "y" : 2255
+      }, {
+        "id" : "79",
+        "x" : 875,
+        "y" : 875
+      }, {
+        "id" : "80",
+        "x" : 4075,
+        "y" : 1655
+      }, {
+        "id" : "82",
+        "x" : 875,
+        "y" : 875
+      }, {
+        "id" : "83",
+        "x" : 4465,
+        "y" : 140
+      }, {
+        "id" : "88",
+        "x" : 3715,
+        "y" : 140
+      }, {
+        "id" : "91",
+        "x" : 2965,
+        "y" : 140
+      }, {
+        "id" : "92",
+        "x" : 2215,
+        "y" : 140
+      }, {
+        "id" : "93",
+        "x" : 1465,
+        "y" : 140
+      } ],
+      "environment" : "Live",
+      "generatedKey" : true,
+      "key" : "Deployment-001",
+      "name" : "Deployment View: Live",
+      "order" : 12,
+      "paperSize" : "A3_Landscape",
+      "relationships" : [ {
+        "id" : "58"
+      }, {
+        "id" : "63"
+      }, {
+        "id" : "66",
+        "vertices" : [ {
+          "x" : 555,
+          "y" : 2680
+        }, {
+          "x" : 555,
+          "y" : 2575
+        }, {
+          "x" : 1140,
+          "y" : 2575
+        } ]
+      }, {
+        "id" : "68"
+      }, {
+        "id" : "75"
+      }, {
+        "id" : "81"
+      }, {
+        "id" : "84",
+        "vertices" : [ {
+          "x" : 1220,
+          "y" : 720
+        }, {
+          "x" : 4350,
+          "y" : 690
+        }, {
+          "x" : 4350,
+          "y" : 320
+        } ]
+      }, {
+        "id" : "85",
+        "vertices" : [ {
+          "x" : 60,
+          "y" : 945
+        }, {
+          "x" : 55,
+          "y" : 55
+        }, {
+          "x" : 4685,
+          "y" : 45
+        } ]
+      }, {
+        "id" : "86",
+        "vertices" : [ {
+          "x" : 3845,
+          "y" : 2410
+        }, {
+          "x" : 3835,
+          "y" : 1340
+        }, {
+          "x" : 4675,
+          "y" : 1310
+        } ]
+      }, {
+        "id" : "87",
+        "vertices" : [ {
+          "x" : 2650,
+          "y" : 1505
+        }, {
+          "x" : 3690,
+          "y" : 1495
+        }, {
+          "x" : 3685,
+          "y" : 1065
+        }, {
+          "x" : 4510,
+          "y" : 1050
+        }, {
+          "x" : 4515,
+          "y" : 480
+        } ]
+      }, {
+        "id" : "89",
+        "vertices" : [ {
+          "x" : 20,
+          "y" : 990
+        }, {
+          "x" : 25,
+          "y" : 20
+        }, {
+          "x" : 3935,
+          "y" : 25
+        } ]
+      }, {
+        "id" : "90",
+        "vertices" : [ {
+          "x" : 635,
+          "y" : 2950
+        }, {
+          "x" : 2155,
+          "y" : 2955
+        }, {
+          "x" : 2170,
+          "y" : 920
+        }, {
+          "x" : 3940,
+          "y" : 895
+        } ]
+      }, {
+        "id" : "94",
+        "vertices" : [ {
+          "x" : 1415,
+          "y" : 395
+        }, {
+          "x" : 1120,
+          "y" : 405
+        }, {
+          "x" : 1115,
+          "y" : 745
+        }, {
+          "x" : 570,
+          "y" : 750
+        } ]
+      }, {
+        "id" : "95",
+        "vertices" : [ {
+          "x" : 455,
+          "y" : 800
+        }, {
+          "x" : 455,
+          "y" : 695
+        }, {
+          "x" : 745,
+          "y" : 685
+        }, {
+          "x" : 750,
+          "y" : 310
+        } ]
+      }, {
+        "id" : "96",
+        "vertices" : [ {
+          "x" : 1900,
+          "y" : 470
+        }, {
+          "x" : 1900,
+          "y" : 1315
+        }, {
+          "x" : 1900,
+          "y" : 2870
+        } ]
+      }, {
+        "id" : "97",
+        "vertices" : [ {
+          "x" : 635,
+          "y" : 2775
+        }, {
+          "x" : 1675,
+          "y" : 2765
+        }, {
+          "x" : 1685,
+          "y" : 1490
+        } ]
+      } ]
+    } ],
+    "dynamicViews" : [ {
+      "dimensions" : {
+        "height" : 1419,
+        "width" : 3778
+      },
+      "elementId" : "8",
+      "elements" : [ {
+        "id" : "3",
+        "x" : 3128,
+        "y" : 779
+      }, {
+        "id" : "5",
+        "x" : 2378,
+        "y" : 779
+      }, {
+        "id" : "9",
+        "x" : 970,
+        "y" : 179
+      }, {
+        "id" : "10",
+        "x" : 220,
+        "y" : 179
+      }, {
+        "id" : "11",
+        "x" : 220,
+        "y" : 779
+      }, {
+        "id" : "20",
+        "x" : 1720,
+        "y" : 179
+      } ],
+      "externalBoundariesVisible" : false,
+      "key" : "ArticlePublicationFlow",
+      "name" : "Dynamic View: HappyHeadlines",
+      "order" : 9,
+      "relationships" : [ {
+        "description" : "1. Routes to regional exchange",
+        "id" : "22",
+        "order" : "1",
+        "response" : false,
+        "vertices" : [ {
+          "x" : 1570,
+          "y" : 479
+        }, {
+          "x" : 2978,
+          "y" : 779
+        } ]
+      }, {
+        "description" : "2. Delivers to regional queue",
+        "id" : "24",
+        "order" : "2",
+        "response" : true,
+        "vertices" : [ {
+          "x" : 2828,
+          "y" : 779
+        } ]
+      }, {
+        "description" : "3. Persists to regional DB",
+        "id" : "25",
+        "order" : "3",
+        "response" : false
+      }, {
+        "description" : "4. Caches compressed",
+        "id" : "26",
+        "order" : "4",
+        "response" : false,
+        "vertices" : [ {
+          "x" : 820,
+          "y" : 479
+        } ]
+      }, {
+        "description" : "5. Publishes newsletter event",
+        "id" : "24",
+        "order" : "5",
+        "response" : false,
+        "vertices" : [ {
+          "x" : 2828,
+          "y" : 779
+        } ]
+      }, {
+        "description" : "6. Delivers to newsletter queue",
+        "id" : "37",
+        "order" : "6",
+        "response" : true
+      } ]
+    }, {
+      "dimensions" : {
+        "height" : 2019,
+        "width" : 2370
+      },
+      "elementId" : "8",
+      "elements" : [ {
+        "id" : "5",
+        "x" : 1719,
+        "y" : 780
+      }, {
+        "id" : "12",
+        "x" : 969,
+        "y" : 180
+      }, {
+        "id" : "13",
+        "x" : 219,
+        "y" : 780
+      }, {
+        "id" : "14",
+        "x" : 969,
+        "y" : 780
+      }, {
+        "id" : "15",
+        "x" : 969,
+        "y" : 1380
+      } ],
+      "externalBoundariesVisible" : false,
+      "key" : "CommentProfanityFlow",
+      "name" : "Dynamic View: HappyHeadlines",
+      "order" : 10,
+      "relationships" : [ {
+        "description" : "1. Validates (circuit breaker)",
+        "id" : "30",
+        "order" : "1",
+        "response" : false,
+        "vertices" : [ {
+          "x" : 1044,
+          "y" : 630
+        } ]
+      }, {
+        "description" : "2. Checks words",
+        "id" : "33",
+        "order" : "2",
+        "response" : false
+      }, {
+        "description" : "3. Returns result",
+        "id" : "30",
+        "order" : "3",
+        "response" : true,
+        "vertices" : [ {
+          "x" : 1344,
+          "y" : 630
+        } ]
+      }, {
+        "description" : "4. Persists if clean",
+        "id" : "29",
+        "order" : "4",
+        "response" : false
+      }, {
+        "description" : "5. Caches",
+        "id" : "31",
+        "order" : "5",
+        "response" : false
+      } ]
+    }, {
+      "elementId" : "8",
+      "elements" : [ {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "18",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "19",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "20",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalBoundariesVisible" : false,
+      "key" : "SubscriptionFlow",
+      "name" : "Dynamic View: HappyHeadlines",
+      "order" : 11,
+      "relationships" : [ {
+        "description" : "1. Persists if enabled",
+        "id" : "35",
+        "order" : "1",
+        "response" : false
+      }, {
+        "description" : "2. Publishes event",
+        "id" : "36",
+        "order" : "2",
+        "response" : false
+      }, {
+        "description" : "3. Delivers to queue",
+        "id" : "37",
+        "order" : "3",
+        "response" : true
+      } ]
+    } ],
+    "systemContextViews" : [ {
+      "description" : "System context for HappyHeadlines with regional isolation, fault tolerance, and runtime feature toggles.",
+      "dimensions" : {
+        "height" : 2000,
+        "width" : 3850
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 1375,
+        "y" : 142
+      }, {
+        "id" : "2",
+        "x" : 2075,
+        "y" : 142
+      }, {
+        "id" : "3",
+        "x" : 200,
+        "y" : 1442
+      }, {
+        "id" : "4",
+        "x" : 950,
+        "y" : 1442
+      }, {
+        "id" : "5",
+        "x" : 1700,
+        "y" : 1442
+      }, {
+        "id" : "6",
+        "x" : 2450,
+        "y" : 1442
+      }, {
+        "id" : "7",
+        "x" : 3200,
+        "y" : 1442
+      }, {
+        "id" : "8",
+        "x" : 1700,
+        "y" : 842
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "SystemContext",
+      "name" : "System Context View: HappyHeadlines",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "23",
+        "vertices" : [ {
+          "x" : 1119,
+          "y" : 1152
+        } ]
+      }, {
+        "id" : "27",
+        "vertices" : [ {
+          "x" : 1775,
+          "y" : 1292
+        } ]
+      }, {
+        "id" : "40"
+      }, {
+        "id" : "41"
+      }, {
+        "id" : "42"
+      }, {
+        "id" : "43",
+        "vertices" : [ {
+          "x" : 2075,
+          "y" : 1292
+        } ]
+      }, {
+        "id" : "44",
+        "vertices" : [ {
+          "x" : 1120,
+          "y" : 1345
+        } ]
+      }, {
+        "id" : "50"
+      }, {
+        "id" : "51"
+      } ],
+      "softwareSystemId" : "8"
+    } ]
+  }
+}

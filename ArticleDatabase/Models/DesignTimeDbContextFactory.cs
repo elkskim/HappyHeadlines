@@ -10,7 +10,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ArticleDbC
     {
         var optionsBuilder = new DbContextOptionsBuilder<ArticleDbContext>();
 
-        // for fucks sake
+        // for fuck's sake
         var region = args.Length > 0 ? args[0] : "Global";
 
         var config = new ConfigurationBuilder()

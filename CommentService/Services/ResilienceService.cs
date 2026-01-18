@@ -37,7 +37,8 @@ public class ResilienceService : IResilienceService
                 TimeSpan.FromSeconds(30), // stay open for 30s
                 (ex, breakDelay) =>
                 {
-                    MonitorService.Log.Error(ex, "Circuit breaker OPENED for {Delay}s - ProfanityService failing", breakDelay.TotalSeconds);
+                    MonitorService.Log.Error(ex, "Circuit breaker OPENED for {Delay}s - ProfanityService failing", 
+                        breakDelay.TotalSeconds);
                 },
                 () => MonitorService.Log.Information("Circuit breaker CLOSED - ProfanityService recovered"),
                 () => MonitorService.Log.Warning("Circuit breaker HALF-OPEN - Testing ProfanityService recovery")
@@ -49,7 +50,8 @@ public class ResilienceService : IResilienceService
                 new ProfanityCheckResult(true, true), // Fail closed: treat as profane when service unavailable
                 e =>
                 {
-                    MonitorService.Log.Warning(e.Exception, "Fallback triggered - ProfanityService unavailable, blocking comment");
+                    MonitorService.Log.Warning(e.Exception, "Fallback triggered - ProfanityService unavailable, " +
+                                                            "blocking comment");
                     return Task.CompletedTask;
                 });
         _policy = fallback.WrapAsync(circuitbreak);
@@ -88,8 +90,6 @@ public class ResilienceService : IResilienceService
             var response =
                 await _httpClient.GetAsync("http://profanity-service:80/api/Profanity", cancellationToken);
             
-            // Throw exception on non-success status codes so circuit breaker can count failures
-            // After 3 consecutive failures, circuit opens and fast-fails without HTTP call
             response.EnsureSuccessStatusCode();
             
             var profanities = await response.Content.ReadFromJsonAsync<List<Profanity>>(cancellationToken);

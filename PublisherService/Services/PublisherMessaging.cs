@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using ArticleDatabase.Models;
@@ -59,14 +60,24 @@ public class PublisherMessaging
     public async Task<Article> PublishArticle(Article article)
     {
         using var activity = MonitorService.ActivitySource.StartActivity("PublishArticle");
-        MonitorService.Log.Information("Publishing article");
+        MonitorService.Log.Information("Publishing article with TraceId: {TraceId}", activity?.TraceId);
         
         var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(article));
         var properties = new BasicProperties
         {
             ContentType = "application/json",
-            DeliveryMode = DeliveryModes.Persistent
+            DeliveryMode = DeliveryModes.Persistent,
+            Headers = new Dictionary<string, object?>()
         };
+        
+        // CRITICAL: Inject trace context into message headers for distributed tracing
+        // This ensures traces are NOT broken when crossing service boundaries
+        if (activity != null)
+        {
+            properties.Headers["traceparent"] = $"00-{activity.TraceId}-{activity.SpanId}-01";
+            properties.Headers["tracestate"] = activity.TraceStateString ?? string.Empty;
+            MonitorService.Log.Information("Injected trace context: traceparent={TraceParent}", properties.Headers["traceparent"]);
+        }
         
         if (_channel == null) throw new ArgumentNullException(nameof(_channel));
 

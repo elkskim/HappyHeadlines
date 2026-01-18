@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using ArticleDatabase;
@@ -78,11 +79,37 @@ public class ArticleConsumer : IAsyncDisposable
                 {
                     try
                     {
-                        using var activity = MonitorService.ActivitySource?.StartActivity();
+                        // CRITICAL: Extract trace context from message headers to continue distributed trace
+                        // This ensures traces are NOT broken when crossing service boundaries
+                        ActivityContext parentContext = default;
+                        
+                        if (ea.BasicProperties.Headers != null && 
+                            ea.BasicProperties.Headers.TryGetValue("traceparent", out var traceparentObj) &&
+                            traceparentObj is byte[] traceparentBytes)
+                        {
+                            var traceparent = Encoding.UTF8.GetString(traceparentBytes);
+                            MonitorService.Log?.Information("Extracted traceparent from message: {TraceParent}", traceparent);
+                            
+                            // Parse W3C traceparent format: "00-{traceId}-{spanId}-{flags}"
+                            var parts = traceparent.Split('-');
+                            if (parts.Length == 4)
+                            {
+                                var traceId = ActivityTraceId.CreateFromString(parts[1].AsSpan());
+                                var spanId = ActivitySpanId.CreateFromString(parts[2].AsSpan());
+                                parentContext = new ActivityContext(traceId, spanId, ActivityTraceFlags.Recorded, isRemote: true);
+                            }
+                        }
+                        
+                        // Start activity as a child of the publisher's span
+                        using var activity = MonitorService.ActivitySource.StartActivity(
+                            "ConsumeArticle",
+                            ActivityKind.Consumer,
+                            parentContext != default ? parentContext : default);
                         
                         var json = Encoding.UTF8.GetString(ea.Body.ToArray());
                         Console.WriteLine($"=== ARTICLE RECEIVED === {json}");
-                        MonitorService.Log?.Information("ArticleConsumer received message. Payload: {Json}", json);
+                        MonitorService.Log?.Information("ArticleConsumer received message with TraceId: {TraceId}. Payload: {Json}", 
+                            activity?.TraceId, json);
                         
                         var article = JsonSerializer.Deserialize<Article>(json);
 
@@ -100,12 +127,19 @@ public class ArticleConsumer : IAsyncDisposable
                         // Use the article's region to determine which database to persist to
                         var dbContext = dbContextFactory.CreateDbContext(new[] { "region", article.Region ?? "Global" });
                         
+                        // Child span for database operation - provides granular timing in traces
+                        using var dbActivity = MonitorService.ActivitySource.StartActivity("SaveArticleToDatabase");
+                        dbActivity?.SetTag("article.title", article.Title);
+                        dbActivity?.SetTag("article.author", article.Author);
+                        dbActivity?.SetTag("article.region", article.Region ?? "Global");
+                        
                         MonitorService.Log?.Information("Adding article to {Region} database context", article.Region);
                         await dbContext.Articles.AddAsync(article);
                         
                         MonitorService.Log?.Information("Saving changes to {Region} database", article.Region);
                         await dbContext.SaveChangesAsync();
                         
+                        dbActivity?.SetTag("article.id", article.Id);
                         MonitorService.Log?.Information("Successfully persisted article: {Title} with ID: {Id} to {Region} database", article.Title, article.Id, article.Region);
                     }
                     catch (Exception ex)

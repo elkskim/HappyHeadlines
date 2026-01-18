@@ -45,6 +45,10 @@ public class ArticleAppService : IArticleAppService
 
     public async Task<Article?> GetArticleAsync(int id, string region, CancellationToken ct = default)
     {
+        using var activity = MonitorService.ActivitySource.StartActivity("ArticleAppService.GetArticle");
+        activity?.SetTag("article.id", id);
+        activity?.SetTag("article.region", region);
+        
         MonitorService.Log.Information("Getting article with ID {Id}", id);
 
         var key = $"article:{region}:{id}";
@@ -52,6 +56,7 @@ public class ArticleAppService : IArticleAppService
         // L1: Memory cache check (fastest, local RAM)
         if (_memoryCache.TryGetValue(key, out Article? cachedArticle))
         {
+            activity?.SetTag("cache.hit", "L1-Memory");
             MonitorService.Log.Information("L1 cache hit for article {Id} (memory)", id);
             await _metrics.RecordHitAsync();
             return cachedArticle;
@@ -72,6 +77,8 @@ public class ArticleAppService : IArticleAppService
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
                 });
 
+                activity?.SetTag("cache.hit", "L2-Redis");
+                activity?.SetTag("cache.compressed_size", compressedBytes.Length);
                 MonitorService.Log.Information(
                     "L2 cache hit for article {Id} (Redis, compressed: {CompressedSize} bytes)", 
                     id, compressedBytes.Length);
@@ -82,6 +89,7 @@ public class ArticleAppService : IArticleAppService
         }
         
         // L3: Database fetch (slowest, authoritative)
+        activity?.SetTag("cache.hit", "L3-Database");
         MonitorService.Log.Information("Cache miss for article {Id}; fetching from database", id);
         await _metrics.RecordMissAsync();
         
@@ -93,6 +101,10 @@ public class ArticleAppService : IArticleAppService
             var originalSize = System.Text.Encoding.UTF8.GetByteCount(json);
             var compressedPayload = _compression.Compress(json);
             var ratio = _compression.CalculateCompressionRatio(originalSize, compressedPayload.Length);
+            
+            activity?.SetTag("compression.original_size", originalSize);
+            activity?.SetTag("compression.compressed_size", compressedPayload.Length);
+            activity?.SetTag("compression.ratio", ratio);
             
             await _cache.SetAsync(key, compressedPayload, new DistributedCacheEntryOptions
             {

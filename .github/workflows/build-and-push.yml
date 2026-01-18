@@ -160,20 +160,34 @@ jobs:
           BASE_URL="http://localhost"
           FAILED=0
 
+          # Helper function to safely run curl (always returns 0 to shell)
+          safe_curl() {
+            local response
+            local http_code
+            local exit_code
+            response=$(curl -s -w "\nHTTP_CODE:%{http_code}" "$@" 2>&1) || true
+            exit_code=$?
+            http_code=$(echo "$response" | grep "HTTP_CODE:" | cut -d':' -f2)
+            body=$(echo "$response" | grep -v "HTTP_CODE:")
+            echo "EXIT:$exit_code"
+            echo "HTTP:$http_code"
+            echo "BODY:$body"
+          }
+
           # Test 1: Publish an article via PublisherService
           echo "📝 Test 1: Publishing article via PublisherService..."
           ARTICLE_JSON='{"Title":"CI Integration Test Article","Content":"This article was created by GitHub Actions integration test.","Author":"GitHub Actions","Region":"'$REGION'"}'
           
-          PUBLISH_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "${BASE_URL}:8006/api/Publisher" \
+          RESULT=$(safe_curl -X POST "${BASE_URL}:8006/api/Publisher" \
               -H "Content-Type: application/json" \
               -d "$ARTICLE_JSON")
-          HTTP_CODE=$(echo "$PUBLISH_RESPONSE" | tail -n1)
+          CURL_EXIT=$(echo "$RESULT" | grep "EXIT:" | cut -d':' -f2)
+          HTTP_CODE=$(echo "$RESULT" | grep "HTTP:" | cut -d':' -f2)
           
-          if [[ "$HTTP_CODE" =~ ^2 ]]; then
+          if [ "$CURL_EXIT" = "0" ] && [[ "$HTTP_CODE" =~ ^2 ]]; then
             echo "✅ Article published successfully"
           else
-            echo "❌ Failed to publish article (HTTP $HTTP_CODE)"
-            echo "Response: $PUBLISH_RESPONSE"
+            echo "❌ Failed to publish article (curl exit: $CURL_EXIT, HTTP: $HTTP_CODE)"
             FAILED=1
           fi
 
@@ -181,61 +195,65 @@ jobs:
           echo "⏳ Waiting for ArticleService to consume message (15 seconds)..."
           sleep 15
 
-          # Test 2: Retrieve articles from ArticleService (port 8000, not 8001)
+          # Test 2: Retrieve articles from ArticleService (port 8000)
           echo "📖 Test 2: Retrieving articles from ArticleService..."
-          ARTICLES_RESPONSE=$(curl -s -w "\n%{http_code}" "${BASE_URL}:8000/api/Article?region=$REGION")
-          HTTP_CODE=$(echo "$ARTICLES_RESPONSE" | tail -n1)
+          RESULT=$(safe_curl "${BASE_URL}:8000/api/Article?region=$REGION")
+          CURL_EXIT=$(echo "$RESULT" | grep "EXIT:" | cut -d':' -f2)
+          HTTP_CODE=$(echo "$RESULT" | grep "HTTP:" | cut -d':' -f2)
           
-          if [[ "$HTTP_CODE" =~ ^2 ]]; then
+          if [ "$CURL_EXIT" = "0" ] && [[ "$HTTP_CODE" =~ ^2 ]]; then
             echo "✅ Articles retrieved successfully"
           else
-            echo "❌ Failed to retrieve articles (HTTP $HTTP_CODE)"
-            echo "Response: $ARTICLES_RESPONSE"
+            echo "❌ Failed to retrieve articles (curl exit: $CURL_EXIT, HTTP: $HTTP_CODE)"
             FAILED=1
           fi
 
-          # Test 3: Test ProfanityService
+          # Test 3: Test ProfanityService (GET /api/Profanity)
           echo "🔍 Test 3: Testing ProfanityService..."
-          PROFANITY_RESPONSE=$(curl -s -w "\n%{http_code}" "${BASE_URL}:8003/api/Profanity/check?text=hello")
-          HTTP_CODE=$(echo "$PROFANITY_RESPONSE" | tail -n1)
+          RESULT=$(safe_curl "${BASE_URL}:8003/api/Profanity")
+          CURL_EXIT=$(echo "$RESULT" | grep "EXIT:" | cut -d':' -f2)
+          HTTP_CODE=$(echo "$RESULT" | grep "HTTP:" | cut -d':' -f2)
           
-          if [[ "$HTTP_CODE" =~ ^2 ]]; then
+          if [ "$CURL_EXIT" = "0" ] && [[ "$HTTP_CODE" =~ ^2 ]]; then
             echo "✅ ProfanityService responding"
           else
-            echo "⚠️ ProfanityService returned HTTP $HTTP_CODE (non-critical)"
+            echo "⚠️ ProfanityService issue (curl exit: $CURL_EXIT, HTTP: $HTTP_CODE) - non-critical"
           fi
 
           # Test 4: Test SubscriberService
           echo "👤 Test 4: Testing SubscriberService..."
           SUBSCRIBER_JSON='{"Email":"citest@happyheadlines.com","Name":"CI Test User"}'
-          SUBSCRIBER_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "${BASE_URL}:8007/api/Subscriber" \
+          RESULT=$(safe_curl -X POST "${BASE_URL}:8007/api/Subscriber" \
               -H "Content-Type: application/json" \
               -d "$SUBSCRIBER_JSON")
-          HTTP_CODE=$(echo "$SUBSCRIBER_RESPONSE" | tail -n1)
+          CURL_EXIT=$(echo "$RESULT" | grep "EXIT:" | cut -d':' -f2)
+          HTTP_CODE=$(echo "$RESULT" | grep "HTTP:" | cut -d':' -f2)
           
-          if [[ "$HTTP_CODE" =~ ^2 ]]; then
+          if [ "$CURL_EXIT" = "0" ] && [[ "$HTTP_CODE" =~ ^2 ]]; then
             echo "✅ SubscriberService responding"
           else
-            echo "⚠️ SubscriberService returned HTTP $HTTP_CODE (may be expected if feature toggle is off)"
+            echo "⚠️ SubscriberService issue (curl exit: $CURL_EXIT, HTTP: $HTTP_CODE) - non-critical"
           fi
 
           # Test 5: Test Monitoring service
           echo "📊 Test 5: Testing Monitoring service..."
-          MONITORING_RESPONSE=$(curl -s -w "\n%{http_code}" "${BASE_URL}:8085/api/Monitor/metrics")
-          HTTP_CODE=$(echo "$MONITORING_RESPONSE" | tail -n1)
+          RESULT=$(safe_curl "${BASE_URL}:8085/api/Monitor/metrics")
+          CURL_EXIT=$(echo "$RESULT" | grep "EXIT:" | cut -d':' -f2)
+          HTTP_CODE=$(echo "$RESULT" | grep "HTTP:" | cut -d':' -f2)
           
-          if [[ "$HTTP_CODE" =~ ^2 ]]; then
+          if [ "$CURL_EXIT" = "0" ] && [[ "$HTTP_CODE" =~ ^2 ]]; then
             echo "✅ Monitoring service responding"
           else
-            echo "⚠️ Monitoring service returned HTTP $HTTP_CODE (non-critical)"
+            echo "⚠️ Monitoring service issue (curl exit: $CURL_EXIT, HTTP: $HTTP_CODE) - non-critical"
           fi
 
+          # Final result
           if [ $FAILED -eq 1 ]; then
             echo "❌ Critical integration tests failed"
             exit 1
           fi
 
-          echo "✅ All integration tests passed!"
+          echo "✅ All critical integration tests passed!"
 
       - name: Show service logs on failure
         if: failure()

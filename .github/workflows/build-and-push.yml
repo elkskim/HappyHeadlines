@@ -5,27 +5,41 @@ on:
     branches: [main]
 
 jobs:
-  build-and-push:
+  # Step 1: Run unit tests
+  unit-tests:
+    name: 🧪 Unit Tests
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          dotnet-version: '9.0.x'
+
+      - name: Restore NuGet packages
+        run: dotnet restore HappyHeadlines.sln
+
+      - name: Build solution
+        run: dotnet build HappyHeadlines.sln -c Release --no-restore
+
+      - name: Run unit tests
+        run: dotnet test HappyHeadlines.sln -c Release --no-build --verbosity normal
+
+  # Step 2: Build Docker images
+  build:
+    name: 🔨 Build Docker Images
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push HappyHeadlines service images
+      - name: Build all service images
         run: |
           declare -A MAP=(
             ["ArticleService"]="article-service"
@@ -38,12 +52,214 @@ jobs:
             ["SubscriberService"]="subscriber-service"
           )
 
-          OWNER=${{ github.repository_owner }}
-
           for DIR in "${!MAP[@]}"; do
             IMAGE="${MAP[$DIR]}"
-            IMAGE_NAME="ghcr.io/${OWNER}/${IMAGE}:latest"
-            echo "🚀 Building $DIR → $IMAGE_NAME"
-            docker build -f "./$DIR/Dockerfile" -t "$IMAGE_NAME" .
-            docker push "$IMAGE_NAME"
+            echo "🔨 Building $DIR → $IMAGE:latest"
+            docker build -f "./$DIR/Dockerfile" -t "$IMAGE:latest" .
           done
+
+          echo "✅ All images built successfully"
+
+      - name: Save Docker images as artifacts
+        run: |
+          mkdir -p /tmp/images
+          docker save article-service:latest -o /tmp/images/article-service.tar
+          docker save comment-service:latest -o /tmp/images/comment-service.tar
+          docker save draft-service:latest -o /tmp/images/draft-service.tar
+          docker save profanity-service:latest -o /tmp/images/profanity-service.tar
+          docker save publisher-service:latest -o /tmp/images/publisher-service.tar
+          docker save newsletter-service:latest -o /tmp/images/newsletter-service.tar
+          docker save monitoring-service:latest -o /tmp/images/monitoring-service.tar
+          docker save subscriber-service:latest -o /tmp/images/subscriber-service.tar
+
+      - name: Upload Docker images artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-images
+          path: /tmp/images
+          retention-days: 1
+
+  # Step 3: Run integration tests
+  integration-tests:
+    name: 🔗 Integration Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Docker images artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-images
+          path: /tmp/images
+
+      - name: Load Docker images
+        run: |
+          for img in /tmp/images/*.tar; do
+            echo "📦 Loading $(basename $img)..."
+            docker load -i "$img"
+          done
+          echo "✅ All images loaded"
+
+      - name: Start all services
+        run: |
+          echo "🚀 Starting all services with docker-compose..."
+          docker compose -f docker-compose.yml up -d
+
+          echo "⏳ Waiting for services to be ready (60 seconds)..."
+          sleep 60
+
+      - name: Run integration tests
+        run: |
+          echo "🧪 Running integration tests..."
+          
+          REGION="Europe"
+          BASE_URL="http://localhost"
+          FAILED=0
+
+          # Test 1: Publish an article via PublisherService
+          echo "📝 Test 1: Publishing article via PublisherService..."
+          ARTICLE_JSON='{"Title":"CI Integration Test Article","Content":"This article was created by GitHub Actions integration test.","Author":"GitHub Actions","Region":"'$REGION'"}'
+          
+          PUBLISH_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "${BASE_URL}:8006/api/Publisher" \
+              -H "Content-Type: application/json" \
+              -d "$ARTICLE_JSON")
+          HTTP_CODE=$(echo "$PUBLISH_RESPONSE" | tail -n1)
+          
+          if [[ "$HTTP_CODE" =~ ^2 ]]; then
+            echo "✅ Article published successfully"
+          else
+            echo "❌ Failed to publish article (HTTP $HTTP_CODE)"
+            FAILED=1
+          fi
+
+          # Wait for message queue consumption
+          echo "⏳ Waiting for ArticleService to consume message (10 seconds)..."
+          sleep 10
+
+          # Test 2: Retrieve articles from ArticleService
+          echo "📖 Test 2: Retrieving articles from ArticleService..."
+          ARTICLES_RESPONSE=$(curl -s -w "\n%{http_code}" "${BASE_URL}:8001/api/Article?region=$REGION")
+          HTTP_CODE=$(echo "$ARTICLES_RESPONSE" | tail -n1)
+          
+          if [[ "$HTTP_CODE" =~ ^2 ]]; then
+            echo "✅ Articles retrieved successfully"
+          else
+            echo "❌ Failed to retrieve articles (HTTP $HTTP_CODE)"
+            FAILED=1
+          fi
+
+          # Test 3: Test ProfanityService
+          echo "🔍 Test 3: Testing ProfanityService..."
+          PROFANITY_RESPONSE=$(curl -s -w "\n%{http_code}" "${BASE_URL}:8003/api/Profanity/check?text=hello")
+          HTTP_CODE=$(echo "$PROFANITY_RESPONSE" | tail -n1)
+          
+          if [[ "$HTTP_CODE" =~ ^2 ]]; then
+            echo "✅ ProfanityService responding"
+          else
+            echo "❌ ProfanityService not responding (HTTP $HTTP_CODE)"
+            FAILED=1
+          fi
+
+          # Test 4: Test SubscriberService
+          echo "👤 Test 4: Testing SubscriberService..."
+          SUBSCRIBER_JSON='{"Email":"citest@happyheadlines.com","Name":"CI Test User"}'
+          SUBSCRIBER_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "${BASE_URL}:8007/api/Subscriber" \
+              -H "Content-Type: application/json" \
+              -d "$SUBSCRIBER_JSON")
+          HTTP_CODE=$(echo "$SUBSCRIBER_RESPONSE" | tail -n1)
+          
+          if [[ "$HTTP_CODE" =~ ^2 ]]; then
+            echo "✅ SubscriberService responding"
+          else
+            echo "⚠️ SubscriberService returned HTTP $HTTP_CODE (may be expected if feature toggle is off)"
+          fi
+
+          # Test 5: Test Monitoring service
+          echo "📊 Test 5: Testing Monitoring service..."
+          MONITORING_RESPONSE=$(curl -s -w "\n%{http_code}" "${BASE_URL}:8085/api/Monitor/metrics")
+          HTTP_CODE=$(echo "$MONITORING_RESPONSE" | tail -n1)
+          
+          if [[ "$HTTP_CODE" =~ ^2 ]]; then
+            echo "✅ Monitoring service responding"
+          else
+            echo "❌ Monitoring service not responding (HTTP $HTTP_CODE)"
+            FAILED=1
+          fi
+
+          if [ $FAILED -eq 1 ]; then
+            echo "❌ Some integration tests failed"
+            exit 1
+          fi
+
+          echo "✅ All integration tests passed!"
+
+      - name: Show service logs on failure
+        if: failure()
+        run: |
+          echo "📋 Service logs:"
+          docker compose -f docker-compose.yml logs --tail=50
+
+      - name: Stop services
+        if: always()
+        run: |
+          echo "🧹 Stopping services..."
+          docker compose -f docker-compose.yml down
+
+  # Step 4: Push to GitHub Container Registry
+  push:
+    name: 🚀 Push to Registry
+    runs-on: ubuntu-latest
+    needs: integration-tests
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Download Docker images artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-images
+          path: /tmp/images
+
+      - name: Load Docker images
+        run: |
+          for img in /tmp/images/*.tar; do
+            echo "📦 Loading $(basename $img)..."
+            docker load -i "$img"
+          done
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag and push images
+        run: |
+          declare -A MAP=(
+            ["article-service"]="article-service"
+            ["comment-service"]="comment-service"
+            ["draft-service"]="draft-service"
+            ["profanity-service"]="profanity-service"
+            ["publisher-service"]="publisher-service"
+            ["newsletter-service"]="newsletter-service"
+            ["monitoring-service"]="monitoring-service"
+            ["subscriber-service"]="subscriber-service"
+          )
+
+          OWNER=${{ github.repository_owner }}
+
+          for IMAGE in "${!MAP[@]}"; do
+            LOCAL_TAG="$IMAGE:latest"
+            REMOTE_TAG="ghcr.io/${OWNER}/${IMAGE}:latest"
+            
+            echo "🏷️ Tagging $LOCAL_TAG → $REMOTE_TAG"
+            docker tag "$LOCAL_TAG" "$REMOTE_TAG"
+            
+            echo "🚀 Pushing $REMOTE_TAG"
+            docker push "$REMOTE_TAG"
+          done
+
+          echo "✅ All images pushed successfully"
